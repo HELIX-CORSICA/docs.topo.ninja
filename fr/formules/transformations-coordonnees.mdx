@@ -1,0 +1,234 @@
+---
+title: "Transformations de coordonnees"
+description: "Principes des transformations de coordonnees entre systemes de reference (CRS), conversions de hauteurs avec geoide, et formats de saisie supportes."
+icon: "calculator"
+---
+
+## Contexte
+
+En topographie, les coordonnees d'un meme point s'expriment differemment selon le **systeme de reference** (CRS -- Coordinate Reference System) utilise. Un geometre peut recevoir des coordonnees GPS en WGS84 (degres), travailler en Lambert 93 (metres) et livrer un plan en coordonnees locales. La conversion entre ces systemes est une operation quotidienne.
+
+Topo.ninja fournit un **convertisseur de coordonnees** qui s'appuie sur la bibliotheque PROJ, le standard industriel pour les transformations geodesiques.
+
+<Note>
+  Cette page documente les principes mathematiques derriere les conversions. Pour un guide pratique d'utilisation du convertisseur, consultez la page [Convertisseur de coordonnees](/fr/outils/convertisseur-coordonnees).
+</Note>
+
+## Qu'est-ce qu'un CRS ?
+
+Un systeme de reference de coordonnees (CRS) definit **comment des nombres** (coordonnees) **correspondent a des positions** sur la surface terrestre. Il comporte trois ingredients :
+
+<AccordionGroup>
+  <Accordion title="1. Le datum (reference geodesique)">
+    Le datum fixe la forme et la position de l'ellipsoide de reference par rapport a la Terre reelle.
+
+    - **WGS84** : datum mondial utilise par le GPS. L'ellipsoide est centre sur le centre de masse de la Terre.
+    - **RGF93** : datum francais, quasi identique au WGS84 a l'epoque de sa realisation (1993). Les coordonnees WGS84 et RGF93 different de quelques centimetres en France metropolitaine.
+    - **NTF** : ancien datum francais (ellipsoide de Clarke 1880). Les coordonnees NTF et RGF93 peuvent differer de plusieurs centaines de metres.
+  </Accordion>
+  <Accordion title="2. La projection (pour les CRS projetes)">
+    La projection convertit les coordonnees geographiques (latitude, longitude sur l'ellipsoide) en coordonnees planes (X, Y en metres sur une carte).
+
+    - **Lambert Conforme Conique** : utilisee pour Lambert 93 et les Coniques Conformes (CC42-CC50). Conserve les angles (projection conforme).
+    - **Transverse de Mercator** : utilisee pour les zones UTM. Egalement conforme, organisee en fuseaux de 6 degres de longitude.
+  </Accordion>
+  <Accordion title="3. Le code EPSG">
+    Chaque CRS est identifie par un code unique dans le registre EPSG (European Petroleum Survey Group). Exemples :
+
+    | Code EPSG | CRS | Usage |
+    |-----------|-----|-------|
+    | 4326 | WGS84 geographique | GPS, cartes web |
+    | 2154 | RGF93 / Lambert 93 | France metropolitaine (officiel) |
+    | 32631 | WGS84 / UTM zone 31N | Fuseau 0 deg -- 6 deg E |
+    | 27561 | NTF / Lambert Nord France | Ancien systeme, nord de la France |
+    | 3942 -- 3950 | RGF93 / CC42 a CC50 | Coniques Conformes, France |
+  </Accordion>
+</AccordionGroup>
+
+## Comment fonctionne la conversion
+
+### Pipeline de transformation
+
+Topo.ninja utilise la bibliotheque **PROJ** (via un endpoint backend) pour effectuer les transformations. PROJ determine automatiquement le **pipeline de transformation** optimal entre le CRS source et le CRS cible.
+
+Un pipeline typique se decompose ainsi :
+
+$$
+\text{CRS source} \xrightarrow{\text{deprojection}} \text{geographique source} \xrightarrow{\text{changement de datum}} \text{geographique cible} \xrightarrow{\text{projection}} \text{CRS cible}
+$$
+
+<Info>
+  PROJ gere automatiquement les cas complexes : grilles de transformation (comme la grille NTF vers RGF93), transformations en 7 parametres (Helmert), et conversions d'unites. L'utilisateur n'a qu'a specifier les codes EPSG source et cible.
+</Info>
+
+### Processus dans Topo.ninja
+
+1. L'utilisateur saisit les coordonnees source et selectionne le CRS source (code EPSG).
+2. L'utilisateur selectionne le CRS cible (code EPSG).
+3. Les coordonnees sont envoyees au backend via l'endpoint `/api/pdf/cct`.
+4. PROJ calcule la transformation et retourne les coordonnees transformees.
+5. Les resultats sont affiches avec la precision appropriee.
+
+## Transformations de hauteur et geoide
+
+### Hauteur ellipsoidale vs. hauteur orthometrique
+
+En geodesie, deux systemes de hauteur coexistent :
+
+- **Hauteur ellipsoidale** ($h$) : distance au-dessus de l'ellipsoide mathematique de reference. C'est ce que fournit directement le GPS.
+- **Hauteur orthometrique** ($H$) : distance au-dessus du geoide (surface equipotentielle proche du niveau moyen des mers). C'est la hauteur "pratique" utilisee en topographie et en construction.
+
+La relation entre les deux :
+
+$$
+H = h - N
+$$
+
+ou $N$ est l'**ondulation du geoide** (difference entre l'ellipsoide et le geoide au point considere).
+
+### Representation geometrique
+
+Imaginez trois surfaces empilees :
+
+1. **Le sol** : la surface physique reelle (terrain naturel).
+2. **Le geoide** : une surface gravitationnelle theorique, proche du niveau moyen des mers. Ses ondulations par rapport a l'ellipsoide peuvent atteindre +/- 100 m selon les regions du globe. En France metropolitaine, $N$ varie entre environ 43 m et 54 m.
+3. **L'ellipsoide** : une surface mathematique lisse (ellipsoide de revolution) qui approxime la forme de la Terre.
+
+La hauteur GPS ($h$) est mesuree depuis l'ellipsoide. La hauteur du terrain ($H$) est mesuree depuis le geoide. La difference ($N$) est l'ondulation.
+
+### Grilles de geoide
+
+Pour convertir entre ces deux systemes de hauteur, on utilise une **grille de geoide** qui donne la valeur de $N$ en tout point.
+
+| Grille | Zone | Systeme vertical |
+|--------|------|-----------------|
+| **RAF20** | France metropolitaine | IGN69 (altitudes normales) |
+| **RAF18** | France metropolitaine | IGN69 (version precedente) |
+| **RAC09** | Corse | IGN78 |
+
+<Warning>
+  Si vous ne selectionnez pas de grille de geoide dans le convertisseur, les hauteurs seront transformees comme des hauteurs ellipsoidales. Pour obtenir des altitudes IGN69 a partir de coordonnees GPS, vous **devez** selectionner la grille RAF20 (ou RAF18).
+</Warning>
+
+### Exemple concret
+
+Un point GPS en France :
+
+| Donnee | Valeur |
+|--------|--------|
+| Latitude WGS84 | 43.604500 deg N |
+| Longitude WGS84 | 1.444200 deg E |
+| Hauteur ellipsoidale ($h$) | 193.50 m |
+| Ondulation du geoide ($N$, via RAF20) | ~50.00 m |
+| **Altitude IGN69** ($H = h - N$) | **~143.50 m** |
+
+## Format DMS (Degres Minutes Secondes)
+
+Les coordonnees geographiques peuvent etre saisies en format decimal ou en format DMS. Le convertisseur accepte les deux.
+
+### Conversion DMS vers decimal
+
+$$
+\text{decimal} = D + \frac{M}{60} + \frac{S}{3600}
+$$
+
+ou $D$ = degres, $M$ = minutes, $S$ = secondes.
+
+**Exemple** :
+
+$$
+43°17'25.3''\text{N} = 43 + \frac{17}{60} + \frac{25.3}{3600} = 43.290361°
+$$
+
+### Conversion decimal vers DMS
+
+$$
+D = \lfloor |\text{decimal}| \rfloor
+$$
+
+$$
+M = \lfloor (|\text{decimal}| - D) \times 60 \rfloor
+$$
+
+$$
+S = \left((|\text{decimal}| - D) \times 60 - M\right) \times 60
+$$
+
+Le signe est donne par la direction : N/S pour la latitude, E/W pour la longitude.
+
+## Cas d'usage courants en France
+
+<Tabs>
+  <Tab title="Lambert 93 <-> WGS84">
+    **CRS source** : EPSG:2154 (RGF93 / Lambert 93)
+    **CRS cible** : EPSG:4326 (WGS84 geographique)
+
+    C'est la conversion la plus courante. Lambert 93 est le systeme officiel francais ; WGS84 est le systeme GPS. La transformation est quasi directe car RGF93 et WGS84 sont tres proches.
+
+    <Tip>
+      Pour une conversion avec altitudes IGN69, ajoutez la grille RAF20. Sans elle, vous obtiendrez des hauteurs ellipsoidales (decalees d'environ 50 m en France metropolitaine).
+    </Tip>
+  </Tab>
+  <Tab title="Coniques Conformes (CC42-CC50)">
+    **Exemple** : EPSG:3943 (CC43) vers EPSG:3944 (CC44)
+
+    Les Coniques Conformes couvrent la France en bandes horizontales de 2 degres de latitude. Le passage d'une zone a l'autre est necessaire quand un projet chevauche deux zones.
+
+    Les codes vont de EPSG:3942 (CC42, sud de la France) a EPSG:3950 (CC50, nord de la France).
+  </Tab>
+  <Tab title="NTF -> RGF93">
+    **CRS source** : EPSG:27561 a 27564 (NTF Lambert zones I a IV)
+    **CRS cible** : EPSG:2154 (RGF93 / Lambert 93)
+
+    Conversion depuis l'ancien systeme francais NTF vers le systeme actuel. PROJ utilise la grille de transformation NTF-RGF93 (gr3df97a) pour une precision centimetrique.
+
+    <Warning>
+      Les coordonnees NTF et RGF93 d'un meme point different de plusieurs centaines de metres. Une erreur de CRS peut avoir des consequences graves sur le chantier. Verifiez toujours le systeme de reference de vos donnees source.
+    </Warning>
+  </Tab>
+  <Tab title="Altitudes ellipsoidales <-> IGN69">
+    **Avec grille** : RAF20
+
+    Pour convertir des hauteurs GPS (ellipsoidales) en altitudes pratiques (IGN69), selectionnez la grille de geoide RAF20 dans le convertisseur. La transformation applique la correction $H = h - N$ point par point.
+
+    Cette conversion est independante de la projection horizontale : vous pouvez l'appliquer en meme temps qu'une conversion Lambert 93 vers WGS84, par exemple.
+  </Tab>
+</Tabs>
+
+## Implementation dans Topo.ninja
+
+Le convertisseur de coordonnees fonctionne ainsi :
+
+1. **Saisie** : les coordonnees source sont entrees manuellement ou collees depuis un tableur.
+2. **Selection des CRS** : l'utilisateur choisit les codes EPSG source et cible dans une liste avec recherche.
+3. **Geoide (optionnel)** : une grille de geoide peut etre selectionnee pour la transformation verticale.
+4. **Calcul** : les coordonnees sont envoyees au backend qui utilise PROJ pour la transformation.
+5. **Resultats** : les coordonnees transformees sont affichees et peuvent etre copiees ou exportees.
+
+<Info>
+  La precision des transformations depend de la qualite des donnees d'entree et des grilles disponibles. PROJ utilise les meilleures grilles de transformation disponibles pour chaque couple de CRS. Pour les conversions courantes en France (RGF93/Lambert 93, WGS84, NTF), la precision est centimetrique ou meilleure.
+</Info>
+
+## Interpretation des resultats
+
+| Situation | Ce qu'il faut verifier |
+|-----------|----------------------|
+| Coordonnees inattendues (decalage de centaines de metres) | Verifiez que le CRS source est correct. Une confusion NTF/RGF93 est la cause la plus frequente. |
+| Altitude aberrante (decalage de ~50 m) | Vous comparez probablement une hauteur ellipsoidale avec une altitude IGN69. Activez la grille de geoide RAF20. |
+| Resultat "hors zone" | Le CRS cible a une zone de validite limitee (par exemple, CC43 ne couvre que la bande 42 deg -- 44 deg N). |
+| Differences sub-metriques entre WGS84 et RGF93 | C'est normal. Les deux datums different de quelques centimetres. Pour la plupart des travaux topographiques, ils sont interchangeables. |
+
+<Tip>
+  En cas de doute sur le CRS de vos donnees, convertissez un point connu (borne geodesique, repere IGN) et comparez avec les coordonnees officielles. La fiche signaletique de la borne donne ses coordonnees dans tous les systemes courants.
+</Tip>
+
+## Voir aussi
+
+<CardGroup cols={2}>
+  <Card title="Convertisseur de coordonnees" icon="arrow-right-arrow-left" href="/fr/outils/convertisseur-coordonnees">
+    L'outil qui utilise ces transformations
+  </Card>
+  <Card title="Distances orthogonales" icon="ruler-combined" href="/fr/formules/distances-orthogonales">
+    Autre formule utilisee dans les outils Topo.ninja
+  </Card>
+</CardGroup>

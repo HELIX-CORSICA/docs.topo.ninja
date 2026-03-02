@@ -1,0 +1,140 @@
+---
+title: "Assignateur de roles"
+description: "Classifiez vos points en points projet et points implantes grace au glisser-deposer et a la detection automatique."
+icon: "arrows-left-right-to-line"
+---
+
+L'assignateur de roles vous permet de trier vos points importes en deux categories : les **points projet** (coordonnees theoriques / de conception) et les **points implantes** (coordonnees mesurees sur le terrain). Cette etape est essentielle pour la generation des fiches signaletiques.
+
+<Note>
+  Disponible sur les plans **Standard**, **Premium** et **Enterprise**.
+</Note>
+
+## Comment ca fonctionne
+
+Apres l'import de vos points, tous arrivent dans un **pool central** (colonne du milieu). Votre travail consiste a les repartir dans les deux colonnes laterales :
+
+<CardGroup cols={3}>
+  <Card title="Points Projet" icon="compass-drafting">
+    Coordonnees theoriques issues du plan ou du projet. Ce sont les positions **attendues**.
+  </Card>
+  <Card title="Pool central" icon="layer-group">
+    Tous les points non assignes. C'est le point de depart apres chaque import.
+  </Card>
+  <Card title="Points Implantes" icon="location-crosshairs">
+    Coordonnees relevees sur le terrain. Ce sont les positions **reelles** mesurees.
+  </Card>
+</CardGroup>
+
+## Utilisation
+
+<Steps>
+  <Step title="Importer vos points">
+    Importez vos points via CSV ou saisie manuelle. Tous les points apparaissent dans le pool central.
+  </Step>
+  <Step title="Utiliser la detection automatique (recommande)">
+    Activez la detection automatique pour identifier les points implantes grace a leurs marqueurs de nommage. Topo.ninja recherche des motifs comme :
+    - `STKD`, `STKED` (stakeout / staked)
+    - `IMP` (implante)
+    - Ou tout prefixe/suffixe personnalise que vous definissez
+
+    Par exemple, un point nomme `BORNE_A_STKD` sera automatiquement identifie comme point implante.
+  </Step>
+  <Step title="Completer manuellement par glisser-deposer">
+    Pour les points qui n'ont pas ete detectes automatiquement, glissez-les du pool central vers la colonne appropriee.
+  </Step>
+  <Step title="Verifier et valider">
+    Verifiez que chaque colonne contient les bons points, puis validez pour passer a l'etape suivante (appairage).
+  </Step>
+</Steps>
+
+## Methodes de selection
+
+Vous disposez de plusieurs methodes pour selectionner des points dans chaque colonne :
+
+| Methode | Geste | Description |
+|---------|-------|-------------|
+| **Selection simple** | Clic | Selectionne un seul point |
+| **Multi-selection** | Ctrl + Clic | Ajoute ou retire des points un par un |
+| **Selection par plage** | Shift + Clic | Selectionne tous les points entre le premier et le dernier clic |
+| **Lasso / Rectangle** | Clic + glisser | Dessinez une zone de selection sur les points |
+
+## Detection automatique
+
+La detection automatique analyse le nom de chaque point pour identifier les marqueurs d'implantation :
+
+<AccordionGroup>
+  <Accordion title="Marqueurs reconnus par defaut">
+    Les tokens suivants sont recherches dans les noms de points (insensible a la casse) :
+    - `stkd` ou `stked` (stakeout / staked)
+    - `imp` (implante)
+
+    Exemples : `BORNE_A_STKD`, `IMP_POINT_12`, `PT05_stked`
+  </Accordion>
+  <Accordion title="Marqueurs personnalises">
+    Vous pouvez definir vos propres prefixes ou suffixes pour correspondre aux conventions de nommage de votre equipe ou de votre logiciel de terrain. Par exemple :
+    - Suffixe `_MES` pour "mesure"
+    - Prefixe `R_` pour "releve"
+  </Accordion>
+  <Accordion title="Comment ca detecte">
+    L'algorithme decoupe le nom du point en segments (separateurs : underscore, tiret, espace) et cherche si l'un des segments correspond a un marqueur connu. Si oui, le point est classe comme implante.
+  </Accordion>
+</AccordionGroup>
+
+## Tri, filtrage et recherche
+
+<Tabs>
+  <Tab title="Tri">
+    Cliquez sur l'en-tete d'une colonne (Nom, X, Y, Z) pour trier les points par ordre croissant ou decroissant. Pratique pour regrouper visuellement les points par zone geographique.
+  </Tab>
+  <Tab title="Filtrage par coordonnees">
+    Filtrez les points selon des criteres sur les coordonnees :
+    - **Egal a** : valeur exacte
+    - **Superieur a** / **Inferieur a** : une borne
+    - **Entre** : plage de valeurs (min et max)
+
+    Utile pour isoler les points d'une zone specifique.
+  </Tab>
+  <Tab title="Recherche par nom">
+    Utilisez la barre de recherche pour trouver rapidement un point par son nom. La recherche est instantanee et filtre les trois colonnes simultanement.
+  </Tab>
+</Tabs>
+
+## Annuler / Refaire
+
+L'assignateur conserve un historique de **10 niveaux** d'annulation. Utilisez :
+- **Ctrl + Z** pour annuler la derniere action
+- **Ctrl + Y** pour refaire une action annulee
+
+<Info>
+  L'historique couvre toutes les operations : glisser-deposer, detection automatique, suppressions, etc.
+</Info>
+
+## Menu contextuel
+
+Un clic droit sur un ou plusieurs points selectionnes ouvre un menu contextuel avec des actions rapides : deplacer vers une colonne, supprimer, etc.
+
+## Astuces
+
+<Tip>
+  **Conventions de nommage** : adoptez une convention coherente sur le terrain (par exemple, ajoutez toujours `_IMP` aux points implantes). La detection automatique fonctionnera alors parfaitement a chaque import.
+</Tip>
+
+<Tip>
+  **Import separe** : si vos points projet et vos points implantes sont dans deux fichiers CSV distincts, importez-les en deux temps. Le premier import ira dans le pool, assignez-le a "Points Projet", puis importez le second fichier.
+</Tip>
+
+<Tip>
+  **Selection rapide** : pour deplacer un grand nombre de points, utilisez la selection par lasso plutot que Ctrl+Clic un par un.
+</Tip>
+
+## Voir aussi
+
+<CardGroup cols={2}>
+  <Card title="Appairage automatique" icon="link" href="/fr/fonctionnalites/appairage-automatique">
+    Etape suivante : associer chaque point implante a son point projet
+  </Card>
+  <Card title="Fiche signaletique" icon="id-card" href="/fr/outils/fiche-signaletique">
+    Outil qui utilise l'assignateur de roles
+  </Card>
+</CardGroup>

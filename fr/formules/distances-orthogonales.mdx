@@ -1,0 +1,161 @@
+---
+title: "Distances orthogonales"
+description: "Calcul des distances orthogonales d'un point par rapport a un axe de reference, utilise dans la fiche de controle par axe."
+icon: "calculator"
+---
+
+## Contexte
+
+Lors du controle d'implantation par axe, chaque point est decrit par sa position relative a un axe de reference. Plutot que de donner des coordonnees absolues (X, Y), on exprime :
+
+- la **distance le long de l'axe** (ou se situe la projection du point sur l'axe) ;
+- la **distance orthogonale** (l'ecart lateral par rapport a l'axe, avec un signe indiquant le cote).
+
+Cette representation est naturelle sur chantier : l'axe correspond a un alignement physique (mur, bordure, fil d'eau...) et les ecarts lateraux se mesurent a l'equerre.
+
+<Note>
+  Cette formule est utilisee dans l'outil **Fiche de controle par axe**. Chaque point est projete sur l'axe selectionne, et les distances resultantes apparaissent dans les colonnes du tableur et sur le PDF genere.
+</Note>
+
+## Formule
+
+### Donnees d'entree
+
+On dispose de :
+- un axe defini par deux points $A(x_A, y_A)$ et $B(x_B, y_B)$ ;
+- un point a projeter $P(x_P, y_P)$.
+
+### Etape 1 -- Vecteur directeur de l'axe
+
+$$
+\vec{V} = B - A = \begin{pmatrix} x_B - x_A \\ y_B - y_A \end{pmatrix}
+$$
+
+Ce vecteur donne la direction et le sens de l'axe. Le sens (de $A$ vers $B$) est important car il determine la convention de signe des distances orthogonales.
+
+### Etape 2 -- Vecteur du point par rapport a l'origine de l'axe
+
+$$
+\vec{W} = P - A = \begin{pmatrix} x_P - x_A \\ y_P - y_A \end{pmatrix}
+$$
+
+### Etape 3 -- Parametre de projection
+
+Le parametre $t$ represente la position de la projection orthogonale de $P$ sur la droite $(AB)$, exprimee comme fraction de la longueur $AB$ :
+
+$$
+t = \frac{\vec{W} \cdot \vec{V}}{|\vec{V}|^2} = \frac{(x_P - x_A)(x_B - x_A) + (y_P - y_A)(y_B - y_A)}{(x_B - x_A)^2 + (y_B - y_A)^2}
+$$
+
+<Info>
+  - Si $t = 0$, la projection tombe exactement sur $A$.
+  - Si $t = 1$, la projection tombe exactement sur $B$.
+  - Si $0 < t < 1$, la projection est entre $A$ et $B$.
+  - Si $t < 0$ ou $t > 1$, la projection tombe en dehors du segment $[AB]$, mais le calcul reste valide sur la droite.
+</Info>
+
+### Etape 4 -- Point projete
+
+Le pied de la perpendiculaire $H$ (projection orthogonale de $P$ sur l'axe) est :
+
+$$
+H = A + t \cdot \vec{V} = \begin{pmatrix} x_A + t \cdot (x_B - x_A) \\ y_A + t \cdot (y_B - y_A) \end{pmatrix}
+$$
+
+### Etape 5 -- Produit vectoriel 2D (determinant)
+
+Pour determiner de quel cote de l'axe se trouve le point $P$, on calcule le produit vectoriel 2D (composante $z$ du produit vectoriel 3D) :
+
+$$
+C = V_x \cdot (y_P - y_A) - V_y \cdot (x_P - x_A)
+$$
+
+soit :
+
+$$
+C = (x_B - x_A)(y_P - y_A) - (y_B - y_A)(x_P - x_A)
+$$
+
+Le signe de $C$ indique le cote :
+- $C > 0$ : le point est **a droite** de l'axe (en regardant de $A$ vers $B$)
+- $C < 0$ : le point est **a gauche** de l'axe
+- $C = 0$ : le point est exactement sur l'axe
+
+### Etape 6 -- Distance orthogonale signee
+
+$$
+d_\perp = \text{signe}(C) \times |P - H|
+$$
+
+ou la distance euclidienne $|P - H|$ vaut :
+
+$$
+|P - H| = \sqrt{(x_P - x_H)^2 + (y_P - y_H)^2}
+$$
+
+<Warning>
+  La convention de signe depend du sens de l'axe. Si vous inversez $A$ et $B$, les signes des distances orthogonales s'inversent. Assurez-vous que le sens de l'axe correspond a la convention souhaitee sur le chantier.
+</Warning>
+
+### Etape 7 -- Distances le long de l'axe
+
+La distance du point projete $H$ par rapport a chaque extremite de l'axe :
+
+$$
+d_A = |H - A| = \sqrt{(x_H - x_A)^2 + (y_H - y_A)^2}
+$$
+
+$$
+d_B = |H - B| = \sqrt{(x_H - x_B)^2 + (y_H - y_B)^2}
+$$
+
+On a la relation : $d_A + d_B = |AB|$ lorsque $H$ est entre $A$ et $B$ (c'est-a-dire $0 \leq t \leq 1$).
+
+## Representation geometrique
+
+Imaginez-vous debout au point $A$, regardant vers le point $B$ :
+
+- L'**axe** est la ligne droite qui passe sous vos pieds et s'etend vers $B$.
+- La **projection** $H$ est le point sur l'axe le plus proche de $P$ : c'est l'endroit ou une perpendiculaire abaissee de $P$ rencontre l'axe.
+- La **distance le long de l'axe** $d_A$ vous dit a quelle distance devant vous (le long de l'axe) se trouve cette perpendiculaire.
+- La **distance orthogonale** $d_\perp$ vous dit a quelle distance laterale se trouve le point $P$ par rapport a l'axe :
+  - valeur **positive** = le point est a votre **droite** ;
+  - valeur **negative** = le point est a votre **gauche**.
+
+## Implementation dans Topo.ninja
+
+Dans l'outil **Fiche de controle par axe**, le calcul est applique automatiquement :
+
+1. L'utilisateur definit un ou plusieurs axes en specifiant deux points chacun (ou en selectionnant des points existants).
+2. Chaque point de la fiche est associe a un axe.
+3. L'application calcule la projection orthogonale et affiche :
+   - la distance le long de l'axe depuis le point $A$ ;
+   - la distance orthogonale signee.
+4. Si des coordonnees projet et implante existent, l'ecart entre les deux distances orthogonales est egalement calcule.
+
+Ces valeurs apparaissent dans les colonnes du tableur et sont reportees sur le PDF genere.
+
+## Interpretation des resultats
+
+| Valeur | Signification |
+|--------|---------------|
+| $d_\perp > 0$ | Le point est a **droite** de l'axe (sens $A \to B$) |
+| $d_\perp < 0$ | Le point est a **gauche** de l'axe |
+| $d_\perp = 0$ | Le point est exactement **sur** l'axe |
+| $d_A$ | Distance depuis l'origine de l'axe ($A$) jusqu'a la projection |
+| $d_B$ | Distance depuis l'extremite de l'axe ($B$) jusqu'a la projection |
+
+<Tip>
+  En pratique, un ecart orthogonal de quelques millimetres est generalement acceptable pour de l'implantation courante. Les tolerances dependent du type d'ouvrage et du cahier des charges du chantier.
+</Tip>
+
+## Voir aussi
+
+<CardGroup cols={2}>
+  <Card title="Fiche de controle par axe" icon="ruler-combined" href="/fr/outils/fiche-axe">
+    L'outil qui utilise ce calcul
+  </Card>
+  <Card title="GDOP et score de qualite" icon="chart-line" href="/fr/formules/gdop-qualite">
+    Autre formule utilisee dans les outils Topo.ninja
+  </Card>
+</CardGroup>

@@ -1,0 +1,140 @@
+---
+title: "Convertisseur de coordonnees"
+description: "Convertissez vos coordonnees entre differents systemes de reference (Lambert 93, WGS84, UTM, etc.) avec ou sans geoide."
+icon: "arrow-right-arrow-left"
+---
+
+Le **Convertisseur de coordonnees** vous permet de transformer des coordonnees d'un systeme de reference (CRS) vers un autre. Il prend en charge les projections courantes en topographie francaise et internationale, et propose une variante avec geoide pour les transformations altimetriques.
+
+<Note>
+  **Disponible sur :** Tous les plans (y compris le plan gratuit)
+</Note>
+
+## A quoi sert cet outil ?
+
+En topographie, vous travaillez regulierement avec plusieurs systemes de coordonnees. Vos points GNSS sont en WGS84, votre plan est en Lambert 93, et votre client vous demande des coordonnees UTM. Le convertisseur vous evite les conversions manuelles et les risques d'erreur :
+
+- Conversion entre n'importe quels CRS definis par un code EPSG
+- Conversion par lot de plusieurs points en une seule operation
+- Support des coordonnees en degres-minutes-secondes (DMS)
+- Transformation altimetrique avec grille de geoide
+
+## Deux variantes
+
+<Tabs>
+  <Tab title="Convertisseur standard">
+    Le convertisseur standard effectue une transformation CRS vers CRS. Vous choisissez le systeme source et le systeme cible via leurs codes EPSG, et l'outil convertit toutes vos coordonnees.
+
+    C'est la variante a utiliser pour les conversions planimétriques courantes (Lambert 93 vers WGS84, UTM vers Lambert, etc.).
+  </Tab>
+  <Tab title="Convertisseur avec geoide">
+    La variante avec geoide ajoute la prise en charge d'une **grille de geoide** pour la transformation verticale. Cela vous permet de passer d'une altitude ellipsoidale a une altitude sur le geoide (et inversement).
+
+    Utilisez cette variante lorsque vous avez besoin de convertir des altitudes entre le systeme ellipsoidal WGS84 et le systeme altimetrique francais (RAF20, RAF18, etc.) ou tout autre geoide.
+  </Tab>
+</Tabs>
+
+## Comment l'utiliser
+
+<Steps>
+  <Step title="Choisir les systemes de coordonnees">
+    Selectionnez le **CRS source** (le systeme dans lequel sont vos coordonnees actuelles) et le **CRS cible** (le systeme vers lequel vous voulez convertir).
+
+    Utilisez le selecteur de code EPSG pour trouver votre systeme. Les codes les plus courants en France :
+
+    | Systeme | Code EPSG |
+    |---------|-----------|
+    | Lambert 93 | 2154 |
+    | WGS84 geographique | 4326 |
+    | UTM zone 31N | 32631 |
+    | UTM zone 32N | 32632 |
+    | RGF93 v2 / Lambert-93 | 9794 |
+    | CC42 a CC50 | 3942 a 3950 |
+
+    <Tip>
+      Si vous ne connaissez pas le code EPSG de votre systeme, tapez son nom dans le champ de recherche. Le selecteur filtre les resultats en temps reel.
+    </Tip>
+  </Step>
+
+  <Step title="Saisir ou importer vos points">
+    Ajoutez vos points dans l'editeur CSV integre :
+    - **Saisie manuelle** : renseignez le nom, X, Y et Z de chaque point
+    - **Import CSV** : chargez un fichier CSV avec vos points
+
+    Pour les coordonnees geographiques (latitude/longitude), vous pouvez saisir les valeurs en **degres-minutes-secondes** (DMS). L'outil les convertira automatiquement en degres decimaux avant la transformation.
+  </Step>
+
+  <Step title="Lancer la conversion">
+    Cliquez sur **Convertir**. Les coordonnees converties apparaissent dans le tableau de resultats. Si vous avez active l'option geoide, les altitudes transformees sont egalement affichees.
+
+    <Info>
+      Les conversions sont effectuees avec la bibliotheque PROJ, qui est la reference en matiere de transformations geodesiques. Les resultats sont fiables et conformes aux standards internationaux.
+    </Info>
+  </Step>
+
+  <Step title="Exporter les resultats">
+    Deux options d'export sont disponibles :
+    - **CSV fusionne** : un fichier contenant les coordonnees originales ET les coordonnees converties cote a cote
+    - **CSV converti uniquement** : un fichier contenant uniquement les coordonnees dans le systeme cible
+
+    Choisissez le format qui correspond a votre usage.
+  </Step>
+</Steps>
+
+## Fonctionnalites
+
+### Selecteur EPSG
+
+Le selecteur de code EPSG vous donne acces a des milliers de systemes de coordonnees. Tapez un nom ou un code pour filtrer la liste. Les systemes les plus utilises en topographie francaise sont disponibles.
+
+### Conversion par lot
+
+Vous pouvez convertir des dizaines ou des centaines de points en une seule operation. L'import CSV est la methode la plus rapide pour les gros volumes de donnees.
+
+### Support DMS
+
+Pour les coordonnees geographiques, le convertisseur accepte les valeurs en degres-minutes-secondes. C'est pratique lorsque vous travaillez avec des coordonnees issues de GPS de poche ou de fiches existantes.
+
+### Grille de geoide
+
+La variante avec geoide vous permet de charger un fichier de grille de geoide (RAF20, RAF18, etc.) pour effectuer des transformations altimetriques precises. La grille est utilisee pour calculer l'ondulation du geoide a chaque point et convertir entre altitude ellipsoidale et altitude normale.
+
+<Warning>
+  La precision de la transformation altimetrique depend de la grille de geoide utilisee. Assurez-vous d'utiliser la grille adaptee a votre zone de travail et a l'epoque de vos mesures.
+</Warning>
+
+### Cas d'usage courants
+
+<AccordionGroup>
+  <Accordion title="Lambert 93 vers WGS84">
+    Conversion classique pour obtenir des coordonnees geographiques (latitude/longitude) a partir de coordonnees en projection Lambert 93. Utile pour la localisation sur Google Maps ou pour des applications SIG.
+
+    - Source : EPSG 2154 (Lambert 93)
+    - Cible : EPSG 4326 (WGS84)
+  </Accordion>
+
+  <Accordion title="WGS84 vers Lambert 93">
+    L'operation inverse : transformer des coordonnees GPS (WGS84) en coordonnees Lambert 93 pour les integrer a votre plan de projet.
+
+    - Source : EPSG 4326 (WGS84)
+    - Cible : EPSG 2154 (Lambert 93)
+  </Accordion>
+
+  <Accordion title="Conversion entre zones UTM">
+    Lorsque votre chantier est a cheval sur deux zones UTM, vous devez convertir les points d'une zone a l'autre pour travailler dans un systeme unique.
+
+    - Source : EPSG 32631 (UTM 31N)
+    - Cible : EPSG 32632 (UTM 32N)
+  </Accordion>
+
+  <Accordion title="Transformation altimetrique avec geoide">
+    Passage d'altitudes ellipsoidales (GPS) en altitudes normales (NGF/IGN69) a l'aide d'une grille de geoide RAF20.
+
+    Utilisez la variante avec geoide et chargez le fichier de grille correspondant.
+  </Accordion>
+</AccordionGroup>
+
+## Voir aussi
+
+- [Transformations de coordonnees](/fr/formules/transformations-coordonnees) -- Formules et methodes de transformation utilisees
+- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Details sur les formats CSV supportes

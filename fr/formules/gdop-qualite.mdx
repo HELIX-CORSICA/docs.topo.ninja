@@ -1,0 +1,257 @@
+---
+title: "GDOP et score de qualite"
+description: "Calcul du GDOP (Geometric Dilution of Precision) et du score de qualite pour evaluer la geometrie d'une resection 3D."
+icon: "calculator"
+---
+
+## Contexte
+
+Lorsqu'on installe une station totale sur un chantier, la precision de la position calculee depend non seulement de la precision angulaire de l'instrument, mais aussi de la **disposition geometrique** des points de reference utilises pour la resection.
+
+Le **GDOP** (Geometric Dilution of Precision) quantifie cet effet geometrique. Deux configurations avec le meme instrument peuvent donner des precisions tres differentes :
+
+- Des references bien reparties autour de la station donnent un GDOP faible (bonne precision).
+- Des references alignees ou concentrees dans une direction donnent un GDOP eleve (precision degradee).
+
+<Note>
+  Le GDOP est un concept issu de la navigation par satellites (GPS). Topo.ninja l'adapte au contexte de la resection topographique classique, en utilisant les observations angulaires (directions horizontales et angles verticaux) plutot que des pseudo-distances.
+</Note>
+
+## Formule
+
+Le calcul se decompose en cinq etapes : construction de la matrice de design, calcul de la matrice normale, inversion pour obtenir la matrice cofacteur, estimation de l'incertitude positionnelle, et normalisation en score.
+
+### Etape 1 -- Matrice de design $H$ (Jacobienne)
+
+Pour chaque point de reference $i$ situe en $(x_i, y_i, z_i)$, observe depuis la station $(s_x, s_y, s_z)$, on calcule d'abord les differences de coordonnees :
+
+$$
+\Delta x_i = x_i - s_x \qquad \Delta y_i = y_i - s_y \qquad \Delta z_i = z_i - s_z
+$$
+
+Puis les distances 2D et 3D :
+
+$$
+d_{2D,i} = \sqrt{\Delta x_i^2 + \Delta y_i^2}
+$$
+
+$$
+d_{3D,i} = \sqrt{\Delta x_i^2 + \Delta y_i^2 + \Delta z_i^2}
+$$
+
+Chaque point de reference contribue **deux lignes** a la matrice $H$, correspondant aux deux types d'observations angulaires :
+
+**Ligne 1 -- Direction horizontale** (derivees partielles de l'azimut par rapport a la position de la station) :
+
+$$
+\mathbf{h}_{i,\text{hz}} = \begin{pmatrix} \dfrac{-\Delta y_i}{d_{2D,i}^2} & \dfrac{\Delta x_i}{d_{2D,i}^2} & 0 \end{pmatrix}
+$$
+
+**Ligne 2 -- Angle vertical** (derivees partielles de l'angle zenithal par rapport a la position de la station) :
+
+$$
+\mathbf{h}_{i,\text{v}} = \begin{pmatrix} \dfrac{\Delta x_i \cdot \Delta z_i}{d_{3D,i}^2 \cdot d_{2D,i}} & \dfrac{\Delta y_i \cdot \Delta z_i}{d_{3D,i}^2 \cdot d_{2D,i}} & \dfrac{-d_{2D,i}}{d_{3D,i}^2} \end{pmatrix}
+$$
+
+<Info>
+  **Pourquoi ces formules ?** Elles representent la sensibilite des observations angulaires a un deplacement de la station. La direction horizontale est sensible aux deplacements lateraux (perpendiculaires a la visee), tandis que l'angle vertical est sensible aux deplacements verticaux et radiaux.
+</Info>
+
+Pour $n$ points de reference, la matrice $H$ a la dimension $2n \times 3$ :
+
+$$
+H = \begin{pmatrix}
+\mathbf{h}_{1,\text{hz}} \\
+\mathbf{h}_{1,\text{v}} \\
+\mathbf{h}_{2,\text{hz}} \\
+\mathbf{h}_{2,\text{v}} \\
+\vdots \\
+\mathbf{h}_{n,\text{hz}} \\
+\mathbf{h}_{n,\text{v}}
+\end{pmatrix}
+$$
+
+### Etape 2 -- Matrice normale $N$
+
+La matrice normale est le produit :
+
+$$
+N = H^T H
+$$
+
+C'est une matrice $3 \times 3$ symetrique :
+
+$$
+N = \begin{pmatrix}
+N_{11} & N_{12} & N_{13} \\
+N_{12} & N_{22} & N_{23} \\
+N_{13} & N_{23} & N_{33}
+\end{pmatrix}
+$$
+
+Chaque element $N_{jk} = \sum_{r} H_{rj} \cdot H_{rk}$ accumule les contributions de toutes les observations.
+
+### Etape 3 -- Matrice cofacteur $Q$
+
+L'inversion de $N$ donne la matrice cofacteur $Q = N^{-1}$, qui decrit l'incertitude de la position estimee. C'est la que le GDOP se manifeste : une mauvaise geometrie rend $N$ presque singuliere et gonfle les elements de $Q$.
+
+<Tabs>
+  <Tab title="Cas 3D (geometrie verticale suffisante)">
+    Lorsque $N_{33} > 10^{-12}$ (les observations apportent de l'information verticale), on utilise l'inversion 3D complete.
+
+    **Cofacteurs de la matrice des cofacteurs** (comatrice) :
+
+    $$
+    C_{11} = N_{22} \cdot N_{33} - N_{23}^2
+    $$
+    $$
+    C_{22} = N_{11} \cdot N_{33} - N_{13}^2
+    $$
+    $$
+    C_{33} = N_{11} \cdot N_{22} - N_{12}^2
+    $$
+    $$
+    C_{12} = N_{13} \cdot N_{23} - N_{12} \cdot N_{33}
+    $$
+    $$
+    C_{13} = N_{12} \cdot N_{23} - N_{13} \cdot N_{22}
+    $$
+
+    **Determinant** :
+
+    $$
+    \det(N) = N_{11} \cdot C_{11} + N_{12} \cdot C_{12} + N_{13} \cdot C_{13}
+    $$
+
+    **Trace de la matrice cofacteur** :
+
+    $$
+    \text{tr}(Q) = \frac{C_{11} + C_{22} + C_{33}}{\det(N)}
+    $$
+  </Tab>
+  <Tab title="Cas 2D (repli sans geometrie verticale)">
+    Lorsque $N_{33} < 10^{-12}$, la geometrie verticale est insuffisante (par exemple, tous les points de reference sont a la meme altitude que la station). Le calcul se replie sur une inversion 2D en ne conservant que le sous-bloc $2 \times 2$ superieur gauche.
+
+    **Determinant 2D** :
+
+    $$
+    \det(N_{2 \times 2}) = N_{11} \cdot N_{22} - N_{12}^2
+    $$
+
+    **Trace de la matrice cofacteur 2D** :
+
+    $$
+    \text{tr}(Q) = \frac{N_{11} + N_{22}}{\det(N_{2 \times 2})}
+    $$
+
+    <Warning>
+      Le repli 2D signifie que l'altitude de la station ne peut pas etre determinee par la geometrie des references. L'incertitude reportee ne concerne alors que la position planimétrique $(x, y)$.
+    </Warning>
+  </Tab>
+</Tabs>
+
+### Etape 4 -- Incertitude positionnelle
+
+La precision angulaire de l'instrument $\sigma_\theta$ (en secondes d'arc) est d'abord convertie en radians :
+
+$$
+\sigma_\theta^{(\text{rad})} = \sigma_\theta^{(\text{arcsec})} \times \frac{\pi}{648\,000}
+$$
+
+<Info>
+  La constante $648\,000$ provient de $180 \times 3\,600 = 648\,000$ secondes d'arc dans un demi-cercle (180 degres).
+</Info>
+
+L'incertitude positionnelle (ecart-type sur la position) est alors :
+
+$$
+\sigma_{\text{pos}} = \sigma_\theta^{(\text{rad})} \times \sqrt{\text{tr}(Q)}
+$$
+
+Cette valeur represente l'incertitude combinee sur la position de la station, en metres, en supposant que toutes les observations angulaires ont la meme precision $\sigma_\theta$.
+
+### Etape 5 -- Normalisation en score
+
+Le score final est un nombre entier de 0 a 100, calcule en trois etapes :
+
+**1. Score brut** :
+
+$$
+\text{score}_{\text{brut}} = 100 \times \text{clamp}\!\left(1 - \frac{\sigma_{\text{pos}}}{\text{seuil}},\ 0,\ 1\right)
+$$
+
+ou $\text{seuil}$ est la tolerance lineaire definie dans les preferences utilisateur (par defaut, la tolerance de l'outil de resection).
+
+**2. Facteur de redondance** :
+
+| Nombre de references | Facteur |
+|---------------------|---------|
+| 3 | 0.85 |
+| 4 | 0.95 |
+| 5 ou plus | 1.00 |
+
+Ce facteur penalise les configurations avec peu de references, car la redondance (nombre d'observations surnumeraires) est trop faible pour detecter des erreurs grossieres.
+
+<Info>
+  **Pourquoi 3 references donnent un facteur de 0.85 ?** Avec 3 references et 2 observations par reference (direction + angle vertical), on a 6 observations pour 3 inconnues. La redondance existe, mais elle est minimale. Avec 5 references (10 observations), la redondance est bien plus confortable et permet de fiabiliser le resultat.
+</Info>
+
+**3. Score final** :
+
+$$
+\text{score} = \text{arrondi}(\text{score}_{\text{brut}} \times f_{\text{redondance}})
+$$
+
+## Implementation dans Topo.ninja
+
+Dans l'outil **Resection 3D**, le score de qualite est calcule en temps reel :
+
+1. L'utilisateur place sa station et ses points de reference sur la carte.
+2. L'application calcule le GDOP pour la geometrie courante.
+3. La precision angulaire $\sigma_\theta$ est lue depuis les preferences (precision de l'instrument).
+4. Le seuil est la tolerance lineaire configuree dans les preferences de l'outil.
+5. Le score est affiche sous forme d'une jauge coloree a cote de chaque station.
+
+<Tip>
+  Pour ameliorer le score, vous pouvez :
+  - **ajouter des references** pour augmenter la redondance ;
+  - **repartir les references** autour de la station (eviter qu'elles soient toutes du meme cote) ;
+  - **varier les distances** aux references (pas toutes a la meme distance) ;
+  - **varier les deniveles** pour renforcer la geometrie verticale.
+</Tip>
+
+## Interpretation des resultats
+
+| Score | Qualite | Recommandation |
+|-------|---------|----------------|
+| **80 -- 100** | Excellente | La geometrie est tres favorable. La position de la station est bien determinee. |
+| **60 -- 79** | Bonne | Acceptable pour la plupart des travaux courants. |
+| **40 -- 59** | Moyenne | La geometrie est limite. Envisagez d'ajouter des references ou de modifier leur disposition. |
+| **0 -- 39** | Insuffisante | La geometrie est inadequate. La position de la station sera mal determinee. Il faut revoir la configuration. |
+
+<Warning>
+  Un score eleve ne garantit pas l'absence d'erreurs grossieres sur les coordonnees des references. Le GDOP mesure uniquement l'effet de la geometrie, en supposant que les coordonnees des references sont correctes et que les erreurs d'observation sont aleatoires.
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="Pourquoi la matrice de design a cette forme ?">
+    Chaque ligne de $H$ represente la derivee partielle d'une observation angulaire par rapport aux coordonnees de la station. La direction horizontale (azimut) est l'arctangente de $\Delta x / \Delta y$, et sa derivee par rapport a $s_x$ et $s_y$ donne les termes en $1/d_{2D}^2$. L'angle vertical depend du rapport $\Delta z / d_{2D}$, ce qui produit les termes plus complexes de la deuxieme ligne.
+  </Accordion>
+  <Accordion title="Quelle difference avec le GDOP GPS ?">
+    En GPS, le GDOP est base sur des mesures de **distance** (pseudo-distances aux satellites). Ici, le GDOP est base sur des mesures **angulaires** (directions horizontales et angles verticaux). La matrice de design est donc differente, mais le principe est le meme : on propage les incertitudes des observations vers les inconnues de position via la matrice cofacteur.
+  </Accordion>
+  <Accordion title="Que se passe-t-il avec des references alignees ?">
+    Si toutes les references sont alignees (sur une meme droite), la matrice $N$ devient singuliere ou presque singuliere. Son determinant tend vers zero, la trace de $Q$ explose, et le score chute vers zero. Cela reflete une realite physique : des references alignees ne permettent pas de determiner la position de la station dans la direction perpendiculaire a cet alignement.
+  </Accordion>
+</AccordionGroup>
+
+## Voir aussi
+
+<CardGroup cols={2}>
+  <Card title="Resection 3D" icon="location-crosshairs" href="/fr/outils/resection-3d">
+    L'outil qui utilise ce calcul
+  </Card>
+  <Card title="Visibilite 3D" icon="eye" href="/fr/formules/visibilite-3d">
+    Algorithme de detection d'obstacles pour la resection
+  </Card>
+</CardGroup>

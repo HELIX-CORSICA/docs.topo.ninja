@@ -1,0 +1,103 @@
+---
+title: "Automatic Point Pairing"
+description: "Automatically match implanted (field) points to project (design) points by name or distance."
+icon: "link"
+---
+
+Automatic pairing matches each implanted (field-measured) point to its corresponding project (design) point. This step is essential for computing deviations in the Signaletic Sheet. Topo.ninja offers two pairing methods to handle different naming conventions and field scenarios.
+
+<Note>
+  **Available on:** Standard, Premium, Enterprise
+</Note>
+
+## What is this feature?
+
+After classifying your points into Project and Implanted roles, you need to establish which implanted point corresponds to which project point. Doing this manually for hundreds of points is tedious. Automatic pairing does it for you.
+
+## Pairing methods
+
+<Tabs>
+  <Tab title="Name-based pairing">
+    ### How it works
+
+    The algorithm extracts common tokens from point names and matches points that share the same base identifier.
+
+    **Example:**
+
+    | Project point | Implanted point | Shared token | Result |
+    |---------------|-----------------|--------------|--------|
+    | P1 | P1_imp | P1 | Paired |
+    | AXE_A_01 | AXE_A_01_stkd | AXE_A_01 | Paired |
+    | BORNE_12 | BORNE_12 | BORNE_12 | Paired |
+    | NAIL_05 | NAIL_06 | -- | Not paired |
+
+    The algorithm strips known suffixes and prefixes (such as "_imp", "_stkd", "_project", etc.) to find the base name, then matches points with the same base.
+
+    <Tip>
+      Name-based pairing is the fastest and most reliable method when your naming convention is consistent. Make sure project and implanted points share the same root name.
+    </Tip>
+  </Tab>
+
+  <Tab title="Distance-based pairing">
+    ### How it works
+
+    For each implanted point, the algorithm finds the nearest project point within a configurable distance threshold. You can choose between:
+    - **2D distance**: only horizontal distance (ignores elevation)
+    - **3D distance**: full spatial distance
+
+    The algorithm processes points greedily: each implanted point is paired with its closest available project point, and once a project point is taken, it is no longer available for other implanted points.
+
+    **Configuration:**
+
+    | Parameter | Description | Default |
+    |-----------|-------------|---------|
+    | **Threshold** | Maximum distance for a valid pair | 1.0 m |
+    | **Mode** | 2D or 3D distance | 2D |
+
+    <Warning>
+      Distance-based pairing works well when points are well-separated relative to the threshold. If multiple implanted points are very close to the same project point, manual verification is recommended.
+    </Warning>
+  </Tab>
+</Tabs>
+
+## How to use it
+
+<Steps>
+  <Step title="Complete role assignment">
+    Make sure all your points have been classified as Project or Implanted in the Role Assignment step.
+  </Step>
+
+  <Step title="Choose a pairing method">
+    Select either **Name-based** or **Distance-based** pairing. If your points follow a consistent naming convention, start with name-based.
+  </Step>
+
+  <Step title="Run the pairing">
+    Click the pairing button. The algorithm processes all points and shows the results:
+    - **Paired**: implanted point matched to a project point
+    - **Unmatched**: no corresponding point found
+
+    Review the pairs to confirm they are correct.
+  </Step>
+
+  <Step title="Fix unmatched points">
+    If some points remain unmatched, you can:
+    - Pair them manually by drag-and-drop
+    - Try the other pairing method
+    - Adjust the distance threshold (for distance-based pairing)
+  </Step>
+</Steps>
+
+## Tips
+
+<Tip>
+  **Combine both methods**: run name-based pairing first to catch the obvious matches, then use distance-based pairing for the remaining unmatched points.
+</Tip>
+
+<Tip>
+  **Check your naming**: before running pairing, scan your point list for typos or inconsistent naming. A single extra character can prevent a name-based match.
+</Tip>
+
+## See also
+
+- [Role Assignment](/en/features/role-assignment) -- Classify points before pairing
+- [Signaletic Sheet](/en/tools/signaletic-sheet) -- The tool that uses automatic pairing

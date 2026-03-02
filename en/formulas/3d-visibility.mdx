@@ -1,0 +1,125 @@
+---
+title: "3D Visibility Algorithm"
+description: "How Topo.ninja determines whether a total station can see a reference point, accounting for obstacles and 3D geometry."
+icon: "calculator"
+---
+
+The 3D visibility algorithm determines whether a clear line of sight exists between a candidate station position and each reference point. It is a core component of the [3D Resection Planner](/en/tools/3d-resection), running for every grid cell and every reference point.
+
+## Context
+
+Before computing a GDOP score, the planner needs to know which reference points are actually visible from a given station position. A point is not visible if:
+
+- A building, wall, or other obstacle blocks the line of sight
+- The ray grazes an obstacle too closely (grazing angle exception)
+- The incidence angle on an oriented target is too steep
+
+The algorithm performs 3D ray casting from the station to each reference point and checks for intersections with all modeled obstacles.
+
+## Formula
+
+### Ray definition
+
+Let the station be at position $S = (x_S, y_S, z_S)$ and a reference point at $R = (x_R, y_R, z_R)$, where $z_S$ includes the instrument height and $z_R$ includes the prism/target height.
+
+The ray from $S$ to $R$ is parameterized as:
+
+$$
+\mathbf{r}(t) = S + t \cdot (R - S), \quad t \in [0, 1]
+$$
+
+At $t = 0$, we are at the station. At $t = 1$, we are at the reference point.
+
+### Obstacle intersection
+
+Each obstacle is modeled as a 2D footprint (polygon or line segment) with a height $h_{\text{obs}}$.
+
+**Step 1 -- 2D intersection**: project the ray onto the horizontal plane and find the intersection parameter $t_{\text{int}}$ where the projected ray crosses the obstacle boundary.
+
+For a polygon edge from $E_1$ to $E_2$ and the projected ray from $S'$ to $R'$ (both in 2D), solve the standard line-segment intersection to find $t_{\text{int}}$.
+
+**Step 2 -- Height comparison**: at the intersection parameter $t_{\text{int}}$, compute the ray height:
+
+$$
+z_{\text{ray}}(t_{\text{int}}) = z_S + t_{\text{int}} \cdot (z_R - z_S)
+$$
+
+If $z_{\text{ray}}(t_{\text{int}}) \leq h_{\text{obs}}$, the ray is blocked by the obstacle.
+
+If $z_{\text{ray}}(t_{\text{int}}) > h_{\text{obs}}$, the ray passes over the obstacle.
+
+### Grazing angle exception
+
+A ray that barely clears an obstacle is unreliable in practice -- atmospheric refraction, target sway, and measurement uncertainty can make a "just visible" line of sight unusable. The algorithm applies a grazing angle check:
+
+$$
+\alpha_{\text{graze}} = \arctan\!\left(\frac{z_{\text{ray}}(t_{\text{int}}) - h_{\text{obs}}}{d_{\text{horiz}}(t_{\text{int}})}\right)
+$$
+
+where $d_{\text{horiz}}(t_{\text{int}})$ is the horizontal distance from the obstacle edge to the nearest endpoint (station or reference point).
+
+If $\alpha_{\text{graze}}$ is below a minimum threshold, the line of sight is considered blocked despite technically clearing the obstacle. This provides a safety margin.
+
+### Target vs. nail visibility
+
+Two types of reference points have different visibility rules:
+
+**Oriented targets (prisms)**: in addition to the line-of-sight check, the algorithm verifies the **incidence angle** -- the angle between the line of sight and the target's face normal:
+
+$$
+\theta_{\text{inc}} = \arccos\!\left(\frac{|\vec{d} \cdot \vec{n}|}{|\vec{d}| \cdot |\vec{n}|}\right)
+$$
+
+where $\vec{d} = R - S$ is the direction from station to target and $\vec{n}$ is the target face normal. If $\theta_{\text{inc}}$ exceeds the maximum incidence angle (typically around 45--60 degrees), the target cannot be reliably measured.
+
+**Omnidirectional nails**: no incidence angle constraint. The point is visible if the line of sight is clear.
+
+### Angular filtering
+
+After determining which reference points are visible, the algorithm checks the angular separation between all pairs of visible points, as seen from the station:
+
+$$
+\phi_{ij} = \arccos\!\left(\frac{\vec{d}_i \cdot \vec{d}_j}{|\vec{d}_i| \cdot |\vec{d}_j|}\right)
+$$
+
+where $\vec{d}_i = R_i - S$ and $\vec{d}_j = R_j - S$.
+
+If any pair has $\phi_{ij}$ below the configured minimum angular separation, the corresponding combination is flagged as geometrically weak. The GDOP calculation may still proceed, but the quality score will be penalized.
+
+## Implementation in Topo.ninja
+
+For each grid cell in the heatmap computation:
+
+1. For each reference point, cast a ray from the station to the target
+2. Test all obstacle edges for intersection
+3. Apply the height comparison and grazing angle check
+4. For oriented targets, check the incidence angle
+5. Build the list of visible reference points
+6. Apply angular filtering to validate the geometry
+7. Pass the visible points to the GDOP calculation
+
+This runs in the browser using optimized spatial indexing for obstacle queries. Even complex sites with many obstacles compute in seconds.
+
+## Interpreting results
+
+In the 3D Resection Planner, the visibility status of each reference point is shown when you click on a candidate position:
+
+| Status | Meaning |
+|--------|---------|
+| **Visible** | Clear line of sight, incidence angle OK |
+| **Blocked** | An obstacle intersects the line of sight |
+| **Grazing** | The ray clears the obstacle but the angle is too shallow |
+| **Poor incidence** | Oriented target is at too steep an angle |
+
+<Tip>
+  If a reference point appears as "blocked" but you know the line of sight should be clear on site, check whether your obstacle model is accurate. Obstacle heights and footprints directly affect the result.
+</Tip>
+
+<Warning>
+  The visibility algorithm uses the obstacle models you define. It does not account for vegetation, temporary structures, or atmospheric conditions. Always validate the analysis against actual site conditions.
+</Warning>
+
+## See also
+
+- [3D Resection Planner](/en/tools/3d-resection) -- The tool that uses this algorithm
+- [GDOP Quality](/en/formulas/gdop-quality) -- The score computed from visible reference points

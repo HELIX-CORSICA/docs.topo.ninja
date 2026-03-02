@@ -1,0 +1,158 @@
+---
+title: "Coordinate Transformations"
+description: "How coordinate reference system transformations work in Topo.ninja, including PROJ, geoid grids, and DMS parsing."
+icon: "calculator"
+---
+
+Topo.ninja's [Coordinate Converter](/en/tools/coordinate-converter) transforms coordinates between different Coordinate Reference Systems (CRS). This page explains the underlying concepts and how they are implemented.
+
+## Context
+
+A Coordinate Reference System (CRS) defines how coordinates on the Earth's surface are expressed as numbers. Different CRS exist for different purposes:
+
+- **Geographic CRS** (e.g., WGS84): coordinates are latitude and longitude in degrees
+- **Projected CRS** (e.g., Lambert 93, UTM): coordinates are Easting and Northing in meters on a flat map projection
+
+Surveyors frequently need to convert between these systems -- for example, when GNSS observations in WGS84 need to be expressed in a national grid for plans and construction.
+
+## Key concepts
+
+### EPSG codes
+
+Every CRS has a unique identifier in the EPSG registry. Common examples:
+
+| EPSG code | Name | Type | Use |
+|-----------|------|------|-----|
+| 4326 | WGS84 | Geographic | GPS, global reference |
+| 2154 | RGF93 / Lambert 93 | Projected | France national grid |
+| 32631 | WGS84 / UTM zone 31N | Projected | Europe, North Africa |
+| 3857 | Web Mercator | Projected | Web maps (Google, OSM) |
+
+When you select a CRS in Topo.ninja, you are choosing an EPSG code that fully defines the datum, ellipsoid, and projection parameters.
+
+### The PROJ library
+
+All transformations in Topo.ninja are performed by the [PROJ](https://proj.org/) library, the industry-standard open-source library for coordinate operations. PROJ handles:
+
+- Datum transformations (e.g., NTF to RGF93)
+- Map projections (e.g., Lambert Conformal Conic, Transverse Mercator)
+- Ellipsoid conversions
+- Grid-based corrections
+
+PROJ runs directly in your browser via a WebAssembly build. Your coordinates are never sent to a server.
+
+### Geoid grids and height conversion
+
+#### Ellipsoidal vs. orthometric heights
+
+GNSS receivers measure **ellipsoidal height** $h$ -- the distance above the mathematical ellipsoid (e.g., GRS80 or WGS84). But surveyors and engineers work with **orthometric height** $H$ -- the height above mean sea level (the geoid).
+
+The relationship between them is:
+
+$$
+H = h - N
+$$
+
+where $N$ is the **geoid undulation** -- the difference between the ellipsoid and the geoid at that location.
+
+#### Geoid grid files
+
+The geoid undulation $N$ varies from place to place and is provided by regional geoid models in grid files. Common examples:
+
+| Grid | Region | Provided by |
+|------|--------|-------------|
+| RAF20 | France | IGN |
+| EGM2008 | Global | NGA |
+| OSGM15 | UK | Ordnance Survey |
+
+When you enable a geoid grid in the Coordinate Converter, the tool applies the local $N$ value to convert between ellipsoidal and orthometric heights.
+
+<Warning>
+  Without a geoid grid, height conversions between ellipsoidal and orthometric systems can have errors of tens of meters. Always use the appropriate geoid grid when height accuracy matters.
+</Warning>
+
+### DMS parsing
+
+Geographic coordinates can be expressed in several formats:
+
+| Format | Example | Name |
+|--------|---------|------|
+| Decimal degrees | 48.856944 | DD |
+| Degrees and decimal minutes | 48° 51.4167' | DM |
+| Degrees, minutes, seconds | 48° 51' 24.5" | DMS |
+
+Topo.ninja automatically parses all these formats. The internal representation is always decimal degrees, and conversion between formats follows:
+
+$$
+\text{DD} = d + \frac{m}{60} + \frac{s}{3600}
+$$
+
+where $d$ is degrees, $m$ is minutes, and $s$ is seconds.
+
+The parser handles various notations: degree symbols (°), apostrophes ('), double quotes ("), cardinal suffixes (N, S, E, W), and spaces.
+
+## Common transformations
+
+### WGS84 to Lambert 93
+
+This is the most common conversion for surveyors working in France. It involves:
+
+1. **Datum alignment**: WGS84 and RGF93 are practically identical (sub-centimeter difference), so no datum shift is needed for most applications
+2. **Map projection**: Lambert Conformal Conic with two standard parallels (44°N and 49°N), centered on the Paris meridian
+
+$$
+\text{WGS84 (lat, lon)} \xrightarrow{\text{projection}} \text{Lambert 93 (E, N)}
+$$
+
+### Lambert 93 to UTM
+
+Both are projected CRS but use different projections:
+- Lambert 93: Lambert Conformal Conic, covers all of France in one zone
+- UTM: Transverse Mercator, 6-degree-wide zones
+
+The transformation goes through the geographic intermediate:
+
+$$
+\text{Lambert 93 (E, N)} \xrightarrow{\text{inverse}} \text{RGF93 (lat, lon)} \xrightarrow{\text{projection}} \text{UTM (E, N)}
+$$
+
+### Geographic to Web Mercator
+
+Web Mercator (EPSG:3857) is used by web maps (Google Maps, OpenStreetMap). It is a simplified Mercator projection that treats the Earth as a sphere:
+
+$$
+\text{WGS84 (lat, lon)} \xrightarrow{\text{spherical Mercator}} \text{EPSG:3857 (E, N)}
+$$
+
+<Info>
+  Web Mercator is not suitable for precise surveying due to its spherical approximation. Use it only for visualization purposes.
+</Info>
+
+## Implementation in Topo.ninja
+
+The Coordinate Converter:
+
+1. Loads the PROJ library (WebAssembly) in your browser
+2. Initializes the source and target CRS from EPSG definitions
+3. Optionally loads geoid grid files for height correction
+4. Applies the transformation pipeline to each input point
+5. Returns the converted coordinates
+
+The entire computation runs client-side. No data leaves your browser.
+
+## Interpreting results
+
+After conversion, verify your results make sense:
+
+- **Latitude/Longitude** should be in a reasonable range for your region (e.g., France: lat 41--51, lon -5--10)
+- **Lambert 93** Easting is typically 100,000--1,300,000 m; Northing is 6,000,000--7,200,000 m
+- **UTM** Easting is 100,000--900,000 m; Northing depends on the hemisphere
+
+<Tip>
+  If your converted coordinates look wildly wrong (e.g., negative easting, Northing of 0), double-check that you selected the correct source and target CRS. A common mistake is confusing EPSG codes for similar-sounding systems.
+</Tip>
+
+## See also
+
+- [Coordinate Converter](/en/tools/coordinate-converter) -- The tool that performs these transformations
+- [CSV Import/Export](/en/features/csv-import-export) -- Importing and exporting coordinates

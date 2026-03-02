@@ -1,0 +1,144 @@
+---
+title: "GDOP Quality Score"
+description: "The mathematics behind the Geometric Dilution of Precision score used in the 3D Resection Planner."
+icon: "calculator"
+---
+
+The GDOP (Geometric Dilution of Precision) quality score quantifies how the spatial distribution of reference points affects the positional accuracy of a resection. The [3D Resection Planner](/en/tools/3d-resection) computes this score for every candidate station position.
+
+## Context
+
+In a resection, a total station observes angular directions to known reference points and solves for its own position. The accuracy of that solution depends heavily on the **geometry**: reference points clustered in one direction give poor accuracy, while points spread evenly around the station give excellent accuracy.
+
+The GDOP score captures this geometric effect and expresses it as a quality number from 0 (unusable) to 100 (optimal).
+
+## Formula
+
+### Notation
+
+For a candidate station position $S$, consider $n$ visible reference points $R_i$ with coordinates $(x_i, y_i, z_i)$. Define the differences:
+
+$$
+\Delta x_i = x_i - x_S, \quad \Delta y_i = y_i - y_S, \quad \Delta z_i = z_i - z_S
+$$
+
+The horizontal distance and 3D distance from the station to each reference point:
+
+$$
+d_{2D,i} = \sqrt{\Delta x_i^2 + \Delta y_i^2}
+$$
+
+$$
+d_{3D,i} = \sqrt{\Delta x_i^2 + \Delta y_i^2 + \Delta z_i^2}
+$$
+
+### Design matrix (Jacobian)
+
+Each reference point contributes two rows to the design matrix $\mathbf{H}$, corresponding to the horizontal angle and zenith angle observations:
+
+**Horizontal angle row:**
+
+$$
+\mathbf{h}_{i,\text{hz}} = \begin{bmatrix} \displaystyle\frac{-\Delta y_i}{d_{2D,i}^2} & \displaystyle\frac{\Delta x_i}{d_{2D,i}^2} & 0 \end{bmatrix}
+$$
+
+**Zenith angle row:**
+
+$$
+\mathbf{h}_{i,\text{zen}} = \begin{bmatrix} \displaystyle\frac{\Delta x_i \, \Delta z_i}{d_{3D,i}^2 \, d_{2D,i}} & \displaystyle\frac{\Delta y_i \, \Delta z_i}{d_{3D,i}^2 \, d_{2D,i}} & \displaystyle\frac{-d_{2D,i}}{d_{3D,i}^2} \end{bmatrix}
+$$
+
+The full design matrix $\mathbf{H}$ is a $2n \times 3$ matrix stacking all horizontal and zenith rows:
+
+$$
+\mathbf{H} = \begin{bmatrix} \mathbf{h}_{1,\text{hz}} \\ \mathbf{h}_{1,\text{zen}} \\ \vdots \\ \mathbf{h}_{n,\text{hz}} \\ \mathbf{h}_{n,\text{zen}} \end{bmatrix}
+$$
+
+### Normal matrix and cofactor matrix
+
+The normal matrix is:
+
+$$
+\mathbf{N} = \mathbf{H}^T \mathbf{H}
+$$
+
+The cofactor matrix is the inverse of the normal matrix:
+
+$$
+\mathbf{Q} = \mathbf{N}^{-1} = (\mathbf{H}^T \mathbf{H})^{-1}
+$$
+
+If $\mathbf{N}$ is singular (e.g., all reference points are collinear), the resection is geometrically impossible and the position receives a score of 0.
+
+### Positional uncertainty
+
+The positional uncertainty (standard deviation of the 3D position) is:
+
+$$
+\sigma_{\text{pos}} = \sigma_\theta \cdot \sqrt{\text{trace}(\mathbf{Q})}
+$$
+
+where $\sigma_\theta$ is the angular precision of the instrument (in radians). The trace of $\mathbf{Q}$ captures the combined dilution in all three coordinate axes:
+
+$$
+\text{trace}(\mathbf{Q}) = Q_{xx} + Q_{yy} + Q_{zz}
+$$
+
+### Quality score
+
+The raw uncertainty is converted to a 0-100 quality score:
+
+$$
+\text{score}_{\text{raw}} = 100 \cdot \text{clamp}\!\left(1 - \frac{\sigma_{\text{pos}}}{\text{threshold}},\; 0,\; 1\right)
+$$
+
+where $\text{threshold}$ is the configurable linear tolerance (the maximum acceptable positional uncertainty).
+
+A redundancy factor rewards configurations with more than the minimum 3 reference points:
+
+$$
+f_{\text{redundancy}} = \min\!\left(\frac{n}{3},\; 1.5\right) \cdot \frac{1}{1.5}
+$$
+
+The final score is:
+
+$$
+\text{score} = \text{score}_{\text{raw}} \cdot f_{\text{redundancy}}
+$$
+
+clamped to the range $[0, 100]$.
+
+## Implementation in Topo.ninja
+
+The 3D Resection Planner evaluates this formula on a grid of candidate positions. For each grid cell:
+
+1. Determine which reference points are visible (3D visibility check)
+2. If fewer than 3 points are visible, score = 0
+3. Build the design matrix $\mathbf{H}$ from the visible points
+4. Compute $\mathbf{Q} = (\mathbf{H}^T \mathbf{H})^{-1}$
+5. Calculate $\sigma_{\text{pos}}$ and the final score
+
+The result is the color-coded heatmap displayed on the map.
+
+## Interpreting results
+
+| Score | Color | Meaning |
+|-------|-------|---------|
+| 80 -- 100 | Green | Excellent geometry, high confidence |
+| 50 -- 80 | Yellow | Acceptable geometry, moderate confidence |
+| 20 -- 50 | Orange | Marginal geometry, use with caution |
+| 0 -- 20 | Red | Poor geometry, not recommended |
+| 0 | Transparent | No valid resection (insufficient visibility or singular geometry) |
+
+<Tip>
+  A high score does not guarantee a good result on its own -- it means the **geometry** is favorable. Field conditions (atmospheric refraction, target centering, instrument leveling) also affect the final accuracy.
+</Tip>
+
+<Info>
+  The GDOP score depends on the angular precision parameter. A 1-second instrument produces better scores than a 5-second instrument for the same geometry. Set this parameter to match your actual instrument.
+</Info>
+
+## See also
+
+- [3D Resection Planner](/en/tools/3d-resection) -- The tool that uses this score
+- [3D Visibility](/en/formulas/3d-visibility) -- How the visibility check works

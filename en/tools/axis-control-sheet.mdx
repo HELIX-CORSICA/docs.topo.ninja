@@ -1,0 +1,94 @@
+---
+title: "Axis Control Sheet"
+description: "Generate control sheets organized by reference axes, with automatic orthogonal distance computation."
+icon: "ruler-combined"
+---
+
+The **Axis Control Sheet** generates control sheets where points are organized relative to reference axes. The tool automatically computes the orthogonal distance of each point from its axis, making alignment and offset checks on site straightforward.
+
+<Note>
+  **Available on:** Standard, Premium, Enterprise
+</Note>
+
+## What is this tool?
+
+On many job sites, stakeout control is performed relative to reference axes: road centerlines, building axes, gutter lines, utility corridors, and so on. Rather than listing absolute coordinates, you need to know each point's position **relative to the axis**: is it to the right, to the left, and by how much?
+
+The Axis Control Sheet addresses this by:
+- Letting you define one or more reference axes (each defined by two points)
+- Assigning your points to the corresponding axis
+- Automatically computing the orthogonal distance and distance along the axis
+- Generating a PDF organized by axis, with the computed distances
+
+It is the ideal tool for road alignment checks, facade alignment, buried utility control, or any linear stakeout.
+
+## How to use it
+
+<Steps>
+  <Step title="Define your reference axes">
+    An axis is defined by **two points** (start point and end point). Add one or more axes by entering the coordinates of their endpoints.
+
+    <Info>
+      The direction of the axis matters. The sign convention is as follows:
+      - **Positive** (+): the point is to the **right** when looking from start to end
+      - **Negative** (-): the point is to the **left** when looking from start to end
+    </Info>
+  </Step>
+
+  <Step title="Add your points">
+    Add your points manually or import them via CSV. Each point is defined by its name and X, Y, Z coordinates.
+  </Step>
+
+  <Step title="Assign points to axes">
+    Associate each point with the axis you want to compute distances against. A point can only be assigned to one axis.
+
+    <Tip>
+      If the same physical point needs to be checked against multiple axes, you can duplicate it and assign each copy to a different axis.
+    </Tip>
+  </Step>
+
+  <Step title="Review the computed distances">
+    The editor displays a spreadsheet-style table with the following columns:
+    - **Name**: point identifier
+    - **X, Y, Z**: point coordinates
+    - **Distance along axis**: projected position on the axis (chainage)
+    - **Orthogonal distance**: offset from the axis (with sign)
+
+    The distance columns are read-only: they are computed automatically from the coordinates and axis definition.
+  </Step>
+
+  <Step title="Generate the PDF">
+    The generated PDF is organized by axis. For each axis, you will find:
+    - The axis definition (coordinates of the two endpoints)
+    - The table of assigned points with their distances
+    - The project information
+  </Step>
+</Steps>
+
+## Features
+
+### Multiple axes
+
+You can define as many axes as needed within a single project. Each axis has a name and two defining points. The final PDF groups points by axis.
+
+### Spreadsheet-style editor
+
+The editor displays your points in an interactive table. You can edit coordinates directly in the table. Orthogonal distances are recalculated in real time.
+
+### Sign convention
+
+The convention is consistent and predictable:
+- Looking from the start point toward the end point of the axis
+- A point to the **right** has a **positive** orthogonal distance
+- A point to the **left** has a **negative** orthogonal distance
+- A point exactly on the axis has an orthogonal distance of **zero**
+
+### CSV import
+
+Just like the standard Control Sheet, you can import your points from a CSV file. After import, simply assign each point to its axis.
+
+## See also
+
+- [Control Sheet](/en/tools/control-sheet) -- Standard control sheet without axes
+- [Orthogonal Distances](/en/formulas/orthogonal-distances) -- Formulas for computing orthogonal distances
+- [CSV Import/Export](/en/features/csv-import-export) -- Details on supported CSV formats

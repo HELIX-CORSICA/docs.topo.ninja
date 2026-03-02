@@ -1,0 +1,124 @@
+---
+title: "Appairage automatique"
+description: "Associez automatiquement chaque point implante a son point projet correspondant, par nom ou par distance."
+icon: "link"
+---
+
+L'appairage automatique est l'etape qui suit l'assignation des roles. Une fois vos points repartis entre "Points Projet" et "Points Implantes", Topo.ninja peut les associer automatiquement pour calculer les ecarts entre positions theoriques et positions mesurees.
+
+<Note>
+  Disponible sur les plans **Standard**, **Premium** et **Enterprise**.
+</Note>
+
+## Comment ca fonctionne
+
+Chaque point implante (mesure sur le terrain) doit etre associe a son point projet (position theorique) pour que Topo.ninja calcule les ecarts. L'appairage automatique propose deux methodes complementaires.
+
+## Modes d'appairage
+
+<Tabs>
+  <Tab title="Par nom">
+    ### Appairage par nom
+
+    C'est la methode la plus fiable. L'algorithme extrait l'identifiant du point a partir de son nom en retirant les marqueurs d'implantation.
+
+    **Exemple concret :**
+
+    | Point implante | Marqueur retire | Candidat recherche | Point projet trouve |
+    |---------------|----------------|-------------------|-------------------|
+    | `BORNE_A_STKD` | `_STKD` | `BORNE_A` | `BORNE_A` |
+    | `IMP_PT12` | `IMP_` | `PT12` | `PT12` |
+    | `AXE5_stked` | `_stked` | `AXE5` | `AXE5` |
+
+    **Fonctionnement detaille :**
+    1. Le nom du point implante est decompose en segments
+    2. Les marqueurs connus (`stkd`, `stked`, `imp`, ou vos marqueurs personnalises) sont retires
+    3. Les segments restants forment des candidats : prefixe, suffixe, combinaisons
+    4. Chaque candidat est compare (insensible a la casse) aux noms des points projet
+    5. Le premier match est retenu comme appairage
+
+    <Tip>
+      L'appairage par nom fonctionne d'autant mieux que vos conventions de nommage sont coherentes. Si votre point projet s'appelle `BORNE_A`, nommez le point implante `BORNE_A_STKD` ou `IMP_BORNE_A`.
+    </Tip>
+  </Tab>
+  <Tab title="Par distance">
+    ### Appairage par distance
+
+    Methode de secours quand les noms ne correspondent pas. L'algorithme cherche le point projet le plus proche de chaque point implante.
+
+    **Deux modes de calcul :**
+
+    | Mode | Formule | Utilisation |
+    |------|---------|-------------|
+    | **Distance 2D** | `sqrt((x2-x1)^2 + (y2-y1)^2)` | Plan horizontal uniquement |
+    | **Distance 3D** | `sqrt((x2-x1)^2 + (y2-y1)^2 + (z2-z1)^2)` | Avec prise en compte de l'altitude |
+
+    **Parametres :**
+    - **Seuil de distance** : distance maximale (en metres) pour accepter un appairage. Au-dela de ce seuil, le point implante reste non appaire.
+    - **Mode 2D / 3D** : choisissez selon que l'altitude est pertinente ou non pour votre projet.
+
+    <Warning>
+      Si plusieurs points projet se trouvent dans le seuil de distance, c'est le **plus proche** qui est retenu. Reduisez le seuil si vous obtenez des appairages incorrects dans des zones denses.
+    </Warning>
+  </Tab>
+</Tabs>
+
+## Utilisation
+
+<Steps>
+  <Step title="Assigner les roles">
+    Assurez-vous que vos points sont correctement repartis entre "Points Projet" et "Points Implantes" grace a l'assignateur de roles.
+  </Step>
+  <Step title="Choisir le mode d'appairage">
+    Selectionnez **Par nom** ou **Par distance**. L'appairage par nom est recommande en premier.
+  </Step>
+  <Step title="Configurer les parametres">
+    - **Par nom** : verifiez les marqueurs detectes. Ajoutez des marqueurs personnalises si necessaire.
+    - **Par distance** : definissez le seuil en metres et choisissez le mode 2D ou 3D.
+  </Step>
+  <Step title="Lancer l'appairage">
+    Cliquez sur le bouton d'appairage. Les associations sont calculees instantanement.
+  </Step>
+  <Step title="Verifier les resultats">
+    Parcourez les paires trouvees. Les points non appaires sont signales pour un traitement manuel.
+  </Step>
+</Steps>
+
+## Strategies recommandees
+
+<AccordionGroup>
+  <Accordion title="Strategie 1 : Nom d'abord, distance ensuite">
+    La methode la plus sure. Lancez d'abord l'appairage par nom pour traiter les points bien nommes, puis utilisez l'appairage par distance uniquement pour les points restants non appaires.
+  </Accordion>
+  <Accordion title="Strategie 2 : Distance seule avec seuil serre">
+    Si vos noms de points ne suivent aucune convention, utilisez l'appairage par distance avec un seuil tres faible (par exemple 0.5 m). Cela ne fonctionne que si chaque point implante est proche de son point projet.
+  </Accordion>
+  <Accordion title="Strategie 3 : Appairage mixte">
+    Pour les grands projets, combinez les deux methodes : appairage par nom en premier (resolution de la majorite des points), puis verification manuelle et appairage par distance pour les cas restants.
+  </Accordion>
+</AccordionGroup>
+
+## Astuces
+
+<Tip>
+  **Nommage sur le terrain** : la meilleure facon de simplifier l'appairage est d'adopter une convention de nommage stricte des le lever. Par exemple : le point projet `A1` devient `A1_IMP` une fois implante.
+</Tip>
+
+<Tip>
+  **Points non appaires** : si des points restent non appaires, verifiez d'abord les noms (faute de frappe, majuscules/minuscules). L'appairage par nom est insensible a la casse, mais un caractere en trop peut empecher la detection.
+</Tip>
+
+<Tip>
+  **Seuil de distance** : commencez avec un seuil faible (0.1 a 0.5 m) et augmentez progressivement si necessaire. Un seuil trop large risque de creer des appairages errones, surtout dans les zones ou les points sont proches les uns des autres.
+</Tip>
+
+## Voir aussi
+
+<CardGroup cols={2}>
+  <Card title="Assignateur de roles" icon="arrows-left-right-to-line" href="/fr/fonctionnalites/assignateur-roles">
+    Etape precedente : classifier vos points
+  </Card>
+  <Card title="Fiche signaletique" icon="id-card" href="/fr/outils/fiche-signaletique">
+    L'outil qui exploite l'appairage pour generer le rapport
+  </Card>
+</CardGroup>

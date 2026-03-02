@@ -1,0 +1,118 @@
+---
+title: "Bulk Editor"
+description: "Edit your points in an integrated spreadsheet, just like in Excel or Google Sheets."
+icon: "table-cells-large"
+---
+
+The Bulk Editor gives you a spreadsheet experience directly inside Topo.ninja. Built on the Handsontable library, it lets you manipulate your data with the same fluidity as a traditional spreadsheet, without leaving the application.
+
+<Note>
+  **Available on:** Premium, Enterprise
+</Note>
+
+## How it works
+
+The Bulk Editor replaces traditional forms with a grid of editable cells. Each row represents a point or entry, and each column corresponds to a field (name, coordinates, axis, reference, etc.).
+
+You will find the Bulk Editor in the following tools:
+
+<CardGroup cols={3}>
+  <Card title="Signaletic Sheet" icon="magnifying-glass-chart" href="/en/tools/signaletic-sheet">
+    Project and implanted points
+  </Card>
+  <Card title="Axis Control Sheet" icon="ruler-combined" href="/en/tools/axis-control-sheet">
+    Axis points and profiles
+  </Card>
+  <Card title="3D Resection" icon="location-crosshairs" href="/en/tools/3d-resection">
+    Reference points and stations
+  </Card>
+</CardGroup>
+
+## How to use it
+
+<Steps>
+  <Step title="Open the editor">
+    Navigate to one of the compatible tools (Signaletic Sheet, Axis Control Sheet, or 3D Resection). The Bulk Editor appears automatically as a grid.
+  </Step>
+  <Step title="Enter or paste your data">
+    Click on a cell to edit it. You can also paste data directly from Excel or Google Sheets with **Ctrl+V**.
+  </Step>
+  <Step title="Navigate the grid">
+    Use **Tab** to move to the next cell, **Enter** to confirm and move down, or the **arrow keys** to move freely.
+  </Step>
+  <Step title="Manage rows">
+    Right-click to open the context menu: add or delete rows as needed.
+  </Step>
+  <Step title="Use the fill handle">
+    Click on the lower-right corner of a cell and drag down to copy its value to the cells below, just like in Excel.
+  </Step>
+</Steps>
+
+## Column types
+
+The editor offers different column types depending on the context:
+
+| Column type | Description | Example |
+|-------------|-------------|---------|
+| **Checkbox** | Toggle a row on or off | Include in computation |
+| **Text** | Free-form input | Point name, coordinates |
+| **Dropdown** | Choose from a list | Axis assignment, reference point |
+| **Read-only** | Auto-computed values | Deviations, distances |
+
+## Detailed features
+
+<AccordionGroup>
+  <Accordion title="Copy-paste from Excel">
+    Select your cells in Excel or Google Sheets, copy them with **Ctrl+C**, then paste into the editor with **Ctrl+V**. The row/column structure is preserved. This is the fastest way to transfer existing data.
+  </Accordion>
+  <Accordion title="Sort and filter">
+    Click on a column header to sort data in ascending or descending order. Use filters to display only the rows that match your criteria.
+  </Accordion>
+  <Accordion title="Resize columns and rows">
+    Drag the borders of column or row headers to adjust their size. Useful when point names are long or you want to see more data on screen.
+  </Accordion>
+  <Accordion title="Context menu (right-click)">
+    Right-clicking on the grid opens a menu with the following options:
+    - **Insert row above / below**
+    - **Delete row**
+    - **Copy / Paste**
+  </Accordion>
+</AccordionGroup>
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| **Tab** | Next cell |
+| **Shift + Tab** | Previous cell |
+| **Enter** | Confirm and move down |
+| **Escape** | Cancel edit |
+| **Ctrl + C** | Copy |
+| **Ctrl + V** | Paste |
+| **Ctrl + Z** | Undo |
+| **Arrow keys** | Navigate the grid |
+
+## Tips
+
+<Tip>
+  **Paste from Excel**: if you already have your points in a spreadsheet, select the range, copy, and paste directly into the editor. It is much faster than manual entry.
+</Tip>
+
+<Tip>
+  **Fill handle**: to repeat the same value across multiple rows (e.g., a reference axis), enter the value once, then drag the fill handle down.
+</Tip>
+
+<Tip>
+  **Read-only columns**: gray columns contain computed values (deviations, distances). They update automatically when you modify the source data.
+</Tip>
+
+## See also
+
+<CardGroup cols={2}>
+  <Card title="CSV Import/Export" icon="file-csv" href="/en/features/csv-import-export">
+    Import your data from a CSV file
+  </Card>
+  <Card title="Signaletic Sheet" icon="magnifying-glass-chart" href="/en/tools/signaletic-sheet">
+    The main tool using the Bulk Editor
+  </Card>
+</CardGroup>

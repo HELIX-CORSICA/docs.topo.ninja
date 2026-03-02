@@ -1,0 +1,84 @@
+---
+title: "Point Role Assignment"
+description: "Classify your survey points into Project (design) and Implanted (field-measured) categories using drag-and-drop."
+icon: "arrows-left-right-to-line"
+---
+
+The Role Assignment interface lets you classify your imported points into two categories: **Project** (design) and **Implanted** (field-measured). This classification is the first step before pairing and deviation analysis in the Signaletic Sheet.
+
+<Note>
+  **Available on:** Standard, Premium, Enterprise
+</Note>
+
+## What is this feature?
+
+When you import a batch of survey points, they arrive as an undifferentiated list. Before computing deviations, you need to tell Topo.ninja which points are from the design and which were measured in the field. The Role Assignment interface provides a visual, efficient way to do this.
+
+## How to use it
+
+<Steps>
+  <Step title="Import your points">
+    Import your CSV file or enter points manually. All points initially land in the **Center Pool** -- the unassigned area.
+  </Step>
+
+  <Step title="Classify points">
+    The interface displays three columns:
+
+    - **Project** (left): design/theoretical points
+    - **Center Pool** (center): unassigned points
+    - **Implanted** (right): field-measured points
+
+    Drag points from the Center Pool to the appropriate column. You can also use:
+    - **Multi-select**: hold **Ctrl** (or **Cmd** on Mac) and click to select multiple points, then drag them together
+    - **Lasso selection**: click and drag on the background to lasso-select a group of points
+    - **Sort and filter**: use the column header controls to sort alphabetically or filter by name
+
+    <Tip>
+      To quickly move all remaining points in the pool, use the bulk action buttons at the top of each column.
+    </Tip>
+  </Step>
+
+  <Step title="Let auto-detection help">
+    The tool can automatically classify points based on naming conventions. Point names containing specific tokens are detected:
+    - Tokens like **stkd**, **imp**, **implanted**, **staked** indicate field-measured points
+    - Remaining points are assumed to be project points
+
+    Auto-detection runs when you click the auto-assign button. You can review and adjust the results before proceeding.
+
+    <Info>
+      Auto-detection works best when your naming convention is consistent. For example, if project points are named "P1", "P2" and implanted points are named "P1_imp", "P2_imp", the tool will correctly classify them.
+    </Info>
+  </Step>
+
+  <Step title="Review and proceed">
+    Check that all points are correctly assigned. The counters at the top of each column show how many points are in each category. Once satisfied, proceed to the pairing step.
+  </Step>
+</Steps>
+
+## Features
+
+### Three-column drag-and-drop
+
+The visual layout makes it immediately clear which points are assigned and which are not. Drag and drop is intuitive even with large datasets.
+
+### Auto stakeout detection
+
+The auto-detection algorithm scans point names for common surveying tokens (stkd, imp, implanted, staked, etc.) and classifies accordingly. This can save significant time on large imports.
+
+### Multi-select and lasso
+
+Select multiple points at once by holding **Ctrl/Cmd** or by drawing a lasso rectangle. Then drag the entire selection to the target column.
+
+### Sort and filter
+
+Sort points alphabetically or by number. Filter by name substring to find specific points quickly.
+
+### Undo/Redo
+
+Made a mistake? Use **Ctrl+Z** to undo the last move and **Ctrl+Y** to redo.
+
+## See also
+
+- [Signaletic Sheet](/en/tools/signaletic-sheet) -- The tool that uses role assignment
+- [Automatic Pairing](/en/features/auto-pairing) -- The next step after role assignment
+- [CSV Import/Export](/en/features/csv-import-export) -- Importing your points

@@ -1,0 +1,144 @@
+---
+title: "Generateur de fiche signaletique"
+description: "Comparez vos points projet avec les points implantes sur le terrain. Appairage automatique, photos, editeur de masse et generation PDF."
+icon: "magnifying-glass-chart"
+---
+
+Le **Generateur de fiche signaletique** est l'outil le plus complet de Topo.ninja. Il vous permet de produire des fiches signaletiques de verification GNSS en comparant vos points theoriques (projet) avec les points effectivement implantes sur le terrain. Le PDF genere presente cote a cote les coordonnees projet et les coordonnees mesurees, avec les ecarts calcules.
+
+<Note>
+  **Disponible sur :** Standard, Premium, Enterprise
+</Note>
+
+## A quoi sert cet outil ?
+
+Apres une implantation, vous devez verifier que les points materialises correspondent bien au projet. La fiche signaletique est le document de reference pour cette verification :
+
+- Vous importez vos points **projet** (coordonnees theoriques)
+- Vous importez vos points **implantes** (coordonnees mesurees sur le terrain)
+- L'outil les appaire automatiquement
+- Le PDF montre la comparaison point par point avec les ecarts
+
+C'est le document que vous transmettez au maitre d'oeuvre pour attester de la conformite de l'implantation.
+
+## Comment l'utiliser
+
+<Steps>
+  <Step title="Configurer le projet">
+    Remplissez les informations du projet (client, chantier, operateur, date) et selectionnez le **systeme de coordonnees** utilise. Ce choix est important pour l'affichage cartographique et les calculs de distances.
+  </Step>
+
+  <Step title="Importer vos points par CSV">
+    Importez votre fichier CSV contenant l'ensemble de vos points. Lors de l'import, vous pouvez choisir le **format de precision** :
+    - **Decimetrique** : coordonnees arrondies au decimetre
+    - **Centimetrique** : coordonnees au centimetre
+
+    <Tip>
+      Vous pouvez importer tous vos points en une seule fois (projet et implantes melanges) puis les trier a l'etape suivante. Pas besoin de preparer deux fichiers separes.
+    </Tip>
+  </Step>
+
+  <Step title="Assigner les roles">
+    Apres l'import, tous les points se trouvent dans le **Pool central** (non assignes). Vous devez les repartir en deux categories :
+
+    - **Points Projet** : les coordonnees theoriques, issues du plan ou du projet
+    - **Points Implantes** : les coordonnees mesurees sur le terrain apres implantation
+
+    Glissez les points vers le pool correspondant ou utilisez l'assignation par lot.
+
+    <Info>
+      L'assignation est une etape cle. Un point mal classe faussera la comparaison. En cas de doute, verifiez les noms de vos points : les points implantes contiennent souvent un suffixe de type `stkd`, `imp` ou similaire.
+    </Info>
+  </Step>
+
+  <Step title="Appairer les points">
+    L'appairage consiste a mettre en correspondance chaque point implante avec son point projet de reference. Topo.ninja propose deux methodes d'appairage automatique :
+
+    **Appairage par nom** : l'outil extrait l'identifiant commun des noms de points en ignorant les prefixes et suffixes de type piquetage (`stkd`, `imp`, etc.). Par exemple, le point implante `P12_stkd` sera appaire au point projet `P12`.
+
+    **Appairage par distance** : l'outil associe chaque point implante au point projet le plus proche, dans un seuil de distance configurable. Vous pouvez choisir une distance 2D (planimetre) ou 3D.
+
+    <Warning>
+      Verifiez toujours le resultat de l'appairage automatique. Si des noms de points sont ambigus ou si plusieurs points sont proches les uns des autres, des erreurs d'appairage sont possibles. Vous pouvez corriger manuellement les associations.
+    </Warning>
+  </Step>
+
+  <Step title="Enrichir les points (optionnel)">
+    Pour chaque point ou paire de points, vous pouvez :
+    - Ajouter des **photos** (materialisation du point sur le terrain)
+    - Ajouter des **notes** (observations, remarques)
+    - Modifier les coordonnees via l'**editeur de masse** (modification en lot dans un tableau interactif)
+  </Step>
+
+  <Step title="Generer le PDF">
+    Le PDF signaletique genere contient, pour chaque paire de points :
+    - Les coordonnees du point projet
+    - Les coordonnees du point implante
+    - Les ecarts (DX, DY, DZ et distance)
+    - La photo du point (si fournie)
+    - Un apercu cartographique
+    - Les notes associees
+
+    Le document est formate pour etre directement transmis au maitre d'ouvrage ou archive dans votre dossier de chantier.
+  </Step>
+</Steps>
+
+## Fonctionnalites
+
+### Selection du systeme de coordonnees
+
+Lors de la configuration du projet, vous choisissez le systeme de coordonnees (CRS) de vos donnees. Ce choix conditionne l'affichage sur la carte et garantit que les apercu cartographiques sont corrects.
+
+### Import CSV avec format de precision
+
+L'import CSV vous permet de specifier le niveau de precision de vos coordonnees. Cela influence l'affichage des valeurs et le nombre de decimales dans le PDF final.
+
+### Assignation des roles
+
+Le systeme a trois pools :
+- **Pool central** : les points non encore assignes (apres import)
+- **Points Projet** : les coordonnees theoriques
+- **Points Implantes** : les coordonnees mesurees
+
+Vous deplacez les points entre ces pools pour les classer. L'interface est concue pour rendre cette operation rapide, meme avec un grand nombre de points.
+
+### Appairage automatique
+
+Deux algorithmes sont disponibles :
+
+<AccordionGroup>
+  <Accordion title="Appairage par nom">
+    L'algorithme analyse les noms de points et extrait un identifiant commun en ignorant les marqueurs d'implantation courants (`stkd`, `imp`, `stakeout`, etc.). Il fonctionne bien lorsque vos points projet et implantes suivent une convention de nommage coherente.
+
+    Exemple : `PT-001` (projet) sera appaire a `PT-001_stkd` (implante).
+  </Accordion>
+
+  <Accordion title="Appairage par distance">
+    L'algorithme calcule la distance entre chaque point implante et tous les points projet, puis associe les paires les plus proches. Vous definissez un seuil de distance maximale (en metres) au-dela duquel l'association est refusee. Le calcul peut etre fait en 2D (XY uniquement) ou en 3D (XYZ).
+
+    Cette methode est utile lorsque les noms de points ne correspondent pas ou lorsque les conventions de nommage varient.
+  </Accordion>
+</AccordionGroup>
+
+### Editeur de masse
+
+L'editeur de masse vous permet de modifier les coordonnees et les proprietes de plusieurs points simultanement dans un tableau interactif de type tableur. C'est particulierement utile pour :
+- Corriger des erreurs d'import
+- Ajouter des notes en lot
+- Verifier rapidement l'ensemble des donnees
+
+### Photos et notes
+
+Chaque point peut recevoir une ou plusieurs photos et des notes textuelles. Ces elements sont integres dans le PDF final, a cote des coordonnees et des ecarts.
+
+### Apercu cartographique
+
+Chaque point est localise sur un fond de carte. Dans le PDF, un apercu cartographique est inclus pour chaque paire de points, montrant la position du point projet et du point implante.
+
+## Voir aussi
+
+- [Assignation des roles](/fr/fonctionnalites/assignateur-roles) -- Detail du systeme d'assignation projet/implante
+- [Appairage automatique](/fr/fonctionnalites/appairage-automatique) -- Algorithmes d'appairage par nom et par distance
+- [Editeur de masse](/fr/fonctionnalites/editeur-masse) -- Modification en lot des points
+- [Photos de points](/fr/fonctionnalites/photos-points) -- Gestion des photos
+- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Formats CSV supportes

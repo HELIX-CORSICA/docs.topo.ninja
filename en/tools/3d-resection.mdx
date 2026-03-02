@@ -1,0 +1,129 @@
+---
+title: "3D Resection Planner"
+description: "Plan optimal total station positions by analyzing 3D visibility, GDOP quality, and angular constraints."
+icon: "location-crosshairs"
+---
+
+The **3D Resection Planner** helps you find the best position for your total station before going to the field. By modeling your reference points, obstacles, and terrain, it computes visibility, geometric quality (GDOP), and angular constraints across the site to show you where to set up.
+
+<Note>
+  **Available on:** Premium, Enterprise
+</Note>
+
+## What is this tool?
+
+Setting up a total station for a resection requires careful planning. You need clear lines of sight to at least three reference points, good geometric spread for accuracy, and no obstructions. Getting it wrong means wasted time repositioning on site.
+
+The 3D Resection Planner lets you:
+
+- Place reference points on an interactive map canvas
+- Model obstacles as polygons or walls
+- Analyze 3D visibility from any candidate position
+- Score positions using GDOP (Geometric Dilution of Precision)
+- Visualize quality as a heatmap across the site
+- Apply angular filtering and geometric constraints
+- Import and export data (CSV, DXF, GeoJSON)
+
+## How to use it
+
+<Steps>
+  <Step title="Set up the map canvas">
+    Open the 3D Resection Planner and configure your workspace. You can:
+    - Pan and zoom to your site area
+    - Import a site plan or georeferenced background
+    - Set the coordinate reference system
+  </Step>
+
+  <Step title="Add reference points">
+    Place your known reference points on the map. Two types are supported:
+
+    **Targets (oriented prisms)**: classic survey targets with a defined orientation. The tool checks whether the target face is visible from the candidate station (incidence angle check).
+
+    **Omnidirectional nails**: ground nails or markers visible from any direction. No orientation constraint.
+
+    For each reference point, enter the 3D coordinates (X, Y, Z).
+
+    <Info>
+      You need a minimum of three reference points for a resection. More points provide redundancy and improve reliability.
+    </Info>
+  </Step>
+
+  <Step title="Model obstacles">
+    Add obstacles that might block the line of sight between the station and reference points:
+
+    - **Polygons**: buildings, containers, stockpiles -- any area with a defined height
+    - **Walls**: fences, retaining walls -- linear obstacles with height
+
+    For each obstacle, define its footprint on the map and its height.
+  </Step>
+
+  <Step title="Configure instrument parameters">
+    Set the parameters that affect the computation:
+    - **Instrument height**: height of the total station above ground
+    - **Prism height**: height of the prism on the target pole
+    - **Angular precision**: the angular accuracy of your instrument (e.g., 1", 2", 5")
+    - **Linear tolerance**: acceptable positional uncertainty
+    - **Minimum angular separation**: smallest acceptable angle between reference point directions
+
+    <Tip>
+      Use your instrument's manufacturer specifications for angular precision. A Leica TS16 at 1" and a builder-grade instrument at 5" will produce very different quality maps.
+    </Tip>
+  </Step>
+
+  <Step title="Run the analysis">
+    The tool computes a grid of candidate positions across the site and evaluates each one:
+    - **Visibility**: can the station see enough reference points?
+    - **GDOP score**: how good is the geometric configuration? (0-100 scale)
+    - **Angular constraints**: are the angles between reference points sufficient?
+
+    Results are displayed as a color-coded heatmap overlaid on the map. Green = good positions, red = poor positions, transparent = no valid resection.
+  </Step>
+
+  <Step title="Select your station position">
+    Click on the heatmap to inspect individual positions. For each candidate, you see:
+    - Which reference points are visible
+    - The GDOP score and positional uncertainty
+    - The angles between reference points
+    - Any constraint violations
+
+    Choose the position that best balances quality, accessibility, and coverage of the points you need to survey.
+  </Step>
+</Steps>
+
+## Features
+
+### Heatmap visualization
+
+The quality heatmap gives you an instant overview of where to set up. Colors range from green (excellent geometry) through yellow (acceptable) to red (poor). Areas with no valid resection are transparent.
+
+### GDOP scoring
+
+The GDOP (Geometric Dilution of Precision) score quantifies the geometric quality of each candidate position on a 0 to 100 scale. It accounts for:
+- The spatial distribution of visible reference points
+- The angular separation between them
+- Redundancy (more than the minimum 3 points)
+
+### 3D visibility analysis
+
+True 3D ray-casting from the station to each reference point, accounting for:
+- Obstacle intersection (buildings, walls)
+- Height differences between station and targets
+- Grazing angles (rays that barely clear an obstacle)
+
+### Angular filtering
+
+The tool checks that the angle between any two reference point directions exceeds a configurable minimum. Small angles between reference points degrade resection accuracy.
+
+### Import and export
+
+| Format | Import | Export | Content |
+|--------|--------|--------|---------|
+| **CSV** | Yes | Yes | Reference points with coordinates |
+| **DXF** | Yes | Yes | Points, obstacles, site geometry |
+| **GeoJSON** | Yes | Yes | Georeferenced features |
+
+## See also
+
+- [GDOP Quality](/en/formulas/gdop-quality) -- The mathematics behind the GDOP score
+- [3D Visibility](/en/formulas/3d-visibility) -- How the visibility algorithm works
+- [Bulk Editor](/en/features/bulk-editor) -- Edit reference points in a spreadsheet

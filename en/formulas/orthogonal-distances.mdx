@@ -1,0 +1,113 @@
+---
+title: "Orthogonal Distances"
+description: "Formulas for computing orthogonal distances from a point to a reference axis, including sign convention."
+icon: "calculator"
+---
+
+The orthogonal distance calculation is used in the [Axis Control Sheet](/en/tools/axis-control-sheet) to determine how far each survey point lies from a reference axis, and on which side.
+
+## Context
+
+When checking a stakeout against a reference axis (road centerline, building alignment, utility corridor, etc.), you need two pieces of information for each point:
+
+1. **Where along the axis** the point projects (the chainage or abscissa)
+2. **How far from the axis** the point is, and on which side (the orthogonal distance with sign)
+
+The calculation takes a reference axis defined by two points and computes the projection and offset for any third point.
+
+## Formula
+
+### Setup
+
+Let the reference axis be defined by two points:
+
+$$
+A = (x_A, y_A) \quad \text{and} \quad B = (x_B, y_B)
+$$
+
+and let $P = (x_P, y_P)$ be the point to evaluate.
+
+The axis direction vector is:
+
+$$
+\vec{u} = B - A = (x_B - x_A, \; y_B - y_A)
+$$
+
+### Projection parameter
+
+The parameter $t$ gives the position of the orthogonal projection $H$ of point $P$ onto the axis line:
+
+$$
+t = \frac{\vec{AP} \cdot \vec{u}}{|\vec{u}|^2} = \frac{(x_P - x_A)(x_B - x_A) + (y_P - y_A)(y_B - y_A)}{(x_B - x_A)^2 + (y_B - y_A)^2}
+$$
+
+The projected point (foot of the perpendicular) is:
+
+$$
+H = A + t \cdot \vec{u} = \big(x_A + t(x_B - x_A), \; y_A + t(y_B - y_A)\big)
+$$
+
+### Distance along the axis
+
+The distance from the start of the axis ($A$) to the projection $H$ is:
+
+$$
+d_{\text{along}} = t \cdot |\vec{u}|
+$$
+
+where $|\vec{u}| = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$.
+
+If $t < 0$, the projection falls before the axis start point. If $t > 1$, the projection falls beyond the axis end point. The calculation remains valid in both cases.
+
+### Orthogonal distance with sign
+
+The unsigned orthogonal distance is:
+
+$$
+d_{\perp} = |P - H| = \sqrt{(x_P - x_H)^2 + (y_P - y_H)^2}
+$$
+
+To determine the sign (right or left of the axis), we use the 2D cross product of the axis vector and the vector $\vec{AP}$:
+
+$$
+C = (x_B - x_A)(y_P - y_A) - (y_B - y_A)(x_P - x_A)
+$$
+
+The signed orthogonal distance is:
+
+$$
+d_{\text{ortho}} = \text{sign}(C) \cdot d_{\perp}
+$$
+
+where:
+- $C > 0$ (positive): the point is to the **right** of the axis (looking from $A$ to $B$)
+- $C < 0$ (negative): the point is to the **left** of the axis
+- $C = 0$: the point is exactly on the axis
+
+## Implementation in Topo.ninja
+
+In the Axis Control Sheet, the calculation runs automatically whenever you assign a point to an axis or modify coordinates. The computed values appear in the read-only columns:
+
+- **Distance along axis**: the $d_{\text{along}}$ value (chainage)
+- **Orthogonal distance**: the $d_{\text{ortho}}$ value (signed offset)
+
+All calculations are performed in 2D using the planar coordinates of the points. If your points are in a projected coordinate system (e.g., Lambert 93, UTM), the distances are in meters.
+
+## Interpreting results
+
+| Orthogonal distance | Meaning |
+|---------------------|---------|
+| $d_{\text{ortho}} > 0$ | Point is to the **right** of the axis (looking A to B) |
+| $d_{\text{ortho}} < 0$ | Point is to the **left** of the axis |
+| $d_{\text{ortho}} = 0$ | Point is exactly **on** the axis |
+| $d_{\text{along}} < 0$ | Point projects **before** the axis start |
+| $0 \leq d_{\text{along}} \leq |\vec{u}|$ | Point projects **within** the axis segment |
+| $d_{\text{along}} > |\vec{u}|$ | Point projects **beyond** the axis end |
+
+<Tip>
+  The sign convention depends on the axis direction. If you reverse the axis (swap A and B), the sign of the orthogonal distance flips. Make sure the axis direction matches your field convention.
+</Tip>
+
+## See also
+
+- [Axis Control Sheet](/en/tools/axis-control-sheet) -- The tool that uses this formula

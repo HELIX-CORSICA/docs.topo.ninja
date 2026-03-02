@@ -1,0 +1,127 @@
+---
+title: "CSV Import/Export"
+description: "Import and export your survey data in CSV format in a few clicks."
+icon: "file-csv"
+---
+
+CSV import and export lets you easily exchange data between Topo.ninja and your other software (Excel, Leica Infinity, Trimble Business Center, Carlson, etc.). This feature is available on all plans.
+
+<Note>
+  **Available on:** All plans, including the Free plan.
+</Note>
+
+## How it works
+
+### Import
+
+Topo.ninja analyzes your CSV file and automatically detects:
+- The **delimiter** used (comma, semicolon, tab)
+- The **column headers** to propose an intelligent mapping
+- The **coordinate format** (decimal, DMS, etc.)
+
+You just drop your file, verify the proposed mapping, and confirm.
+
+### Export
+
+After processing your data, you can export results in several forms:
+- **Full CSV**: all project data
+- **Converted CSV**: coordinates transformed to the target system
+- **Merged CSV**: source data and results in a single file
+
+## How to use it
+
+<Steps>
+  <Step title="Prepare your CSV file">
+    Make sure your file has a **header row**. Common formats include:
+    ```
+    Name,X,Y,Z
+    Name,Latitude,Longitude,Altitude
+    Point,Easting,Northing,Elevation
+    ```
+  </Step>
+  <Step title="Import the file">
+    Two methods:
+    - **Drag and drop** the file directly onto the import zone
+    - **Click** the import button and select your file
+  </Step>
+  <Step title="Verify the column mapping">
+    Topo.ninja detects your columns automatically based on headers. Verify that each column is correctly mapped (Name, X, Y, Z) and adjust if needed.
+  </Step>
+  <Step title="Confirm the import">
+    Confirm the import. Your points appear in the active tool (Bulk Editor, Role Assignment, etc.).
+  </Step>
+</Steps>
+
+## Supported coordinate formats
+
+<AccordionGroup>
+  <Accordion title="Decimal coordinates">
+    The most common format. Coordinates are expressed as decimal numbers.
+    ```
+    BENCH_01,654321.123,6789012.456,125.78
+    ```
+  </Accordion>
+  <Accordion title="Degrees-Minutes-Seconds (DMS)">
+    Topo.ninja recognizes DMS strings and converts them automatically.
+    ```
+    POINT_A,48°51'24.5"N,2°21'07.0"E,35.2
+    ```
+  </Accordion>
+  <Accordion title="Various delimiters">
+    The delimiter is detected automatically:
+    - **Comma**: `POINT,1234.56,5678.90,100.0`
+    - **Semicolon**: `POINT;1234,56;5678,90;100,0`
+    - **Tab**: columns separated by tabs
+  </Accordion>
+</AccordionGroup>
+
+## Export options
+
+| Export type | Content | Use case |
+|-------------|---------|----------|
+| **Full CSV** | All project columns | Backup, archiving |
+| **Converted CSV** | Coordinates in target system | Import into another tool |
+| **Merged CSV** | Source data + results | Full report, verification |
+
+## Common issues
+
+<Warning>
+  **Decimal separator**: in some locales the decimal separator is a comma (1234,56) while the column separator is a semicolon. If your coordinates look incorrect after import, check that Topo.ninja correctly detected the delimiter.
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="My columns are not detected">
+    Verify that your file contains a **header row**. Headers should be descriptive: `Name`, `X`, `Y`, `Z`, `Easting`, `Northing`, `Latitude`, `Longitude`, etc. A file without headers cannot be automatically mapped.
+  </Accordion>
+  <Accordion title="Coordinates are swapped">
+    Some software exports coordinates in (Y, X) order instead of (X, Y). Use the column mapping to manually reassign the fields.
+  </Accordion>
+  <Accordion title="Special characters in names">
+    Accented and special characters in point names are supported. If you encounter display issues, check that your file is encoded in **UTF-8**.
+  </Accordion>
+</AccordionGroup>
+
+## Tips
+
+<Tip>
+  **From Excel**: to export as CSV from Excel, use "Save As" and choose "CSV UTF-8 (comma delimited)". This ensures optimal compatibility with Topo.ninja.
+</Tip>
+
+<Tip>
+  **Minimal format**: the simplest accepted format is `Name,X,Y,Z`. If you do not have elevation data, the Z column is optional.
+</Tip>
+
+<Tip>
+  **Large files**: the import runs entirely in your browser. Even with several thousand points, processing is nearly instant.
+</Tip>
+
+## See also
+
+<CardGroup cols={2}>
+  <Card title="Bulk Editor" icon="table-cells-large" href="/en/features/bulk-editor">
+    Edit your imported points in an integrated spreadsheet
+  </Card>
+  <Card title="Role Assignment" icon="arrows-left-right-to-line" href="/en/features/role-assignment">
+    Classify your points after import
+  </Card>
+</CardGroup>

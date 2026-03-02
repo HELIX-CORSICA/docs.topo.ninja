@@ -1,0 +1,108 @@
+---
+title: "Coordinate Converter"
+description: "Convert coordinates between different reference systems (Lambert 93, WGS84, UTM, etc.) using PROJ."
+icon: "arrow-right-arrow-left"
+---
+
+The **Coordinate Converter** transforms coordinates between different Coordinate Reference Systems (CRS) using the PROJ library. Whether you need to go from Lambert 93 to WGS84, between UTM zones, or apply geoid corrections, this tool handles it in bulk from your browser.
+
+<Note>
+  **Available on:** All plans (including the Free plan)
+</Note>
+
+## What is this tool?
+
+Surveyors routinely work with multiple coordinate systems. Your GNSS receiver outputs WGS84, your plans are in Lambert 93, and your client wants UTM. Converting between systems by hand is tedious and error-prone.
+
+The Coordinate Converter lets you:
+
+- Pick source and target CRS from the full EPSG registry
+- Convert single points or bulk batches via CSV
+- Apply geoid grid corrections for accurate height conversions
+- Handle DMS (Degrees-Minutes-Seconds) input natively
+- Export results in CSV format
+
+All conversions run entirely in your browser using the PROJ library -- your data never leaves your machine.
+
+## How to use it
+
+<Steps>
+  <Step title="Select source and target CRS">
+    Use the EPSG picker to choose your source and target coordinate reference systems. You can search by name or EPSG code.
+
+    Common choices:
+    - **EPSG:4326** -- WGS84 (geographic, lat/lon)
+    - **EPSG:2154** -- RGF93 / Lambert 93
+    - **EPSG:32631** -- WGS84 / UTM zone 31N
+    - **EPSG:3857** -- Web Mercator
+
+    <Tip>
+      If you are unsure of the EPSG code, type the system name (e.g., "Lambert 93") in the search box. The picker will show matching results.
+    </Tip>
+  </Step>
+
+  <Step title="Enter your coordinates">
+    You can enter coordinates in several ways:
+    - **Manual entry**: type coordinates directly into the input fields
+    - **CSV editor**: paste or import a table of points for bulk conversion
+    - **DMS input**: enter geographic coordinates in Degrees-Minutes-Seconds format (e.g., 48 51'24.5"N)
+
+    <Info>
+      The CSV editor supports copy-paste from Excel or any spreadsheet application. Just select your data and paste it in.
+    </Info>
+  </Step>
+
+  <Step title="Configure geoid grids (if needed)">
+    For accurate height conversions, you may need to apply a geoid grid. The tool supports standard geoid models and lets you select the appropriate grid for your region.
+
+    <Warning>
+      Without a geoid grid, height conversions between ellipsoidal and orthometric systems may have errors of tens of meters. Always use a geoid grid when converting heights.
+    </Warning>
+  </Step>
+
+  <Step title="Convert">
+    Click **Convert**. Results appear instantly in the output table. For each point, you see:
+    - The original coordinates in the source CRS
+    - The converted coordinates in the target CRS
+  </Step>
+
+  <Step title="Export results">
+    Export your converted coordinates as CSV for use in other software. Several export options are available:
+    - **Converted only**: just the output coordinates
+    - **Full**: source and converted coordinates side by side
+  </Step>
+</Steps>
+
+## Features
+
+### EPSG picker
+
+Search the full EPSG registry by name or code. The picker covers thousands of coordinate reference systems used worldwide.
+
+### Bulk conversion
+
+Convert hundreds or thousands of points in one go. The CSV editor handles large datasets efficiently, all within your browser.
+
+### DMS support
+
+Enter geographic coordinates in Degrees-Minutes-Seconds format. The tool parses and converts DMS strings automatically.
+
+### Geoid grid support
+
+Apply regional geoid models for accurate height conversions between ellipsoidal and orthometric heights.
+
+### Common conversions
+
+Here are the most frequently used conversions:
+
+| From | To | Use case |
+|------|----|----------|
+| WGS84 (4326) | Lambert 93 (2154) | GNSS to French national grid |
+| Lambert 93 (2154) | WGS84 (4326) | Plans to Google Maps / GPS |
+| WGS84 (4326) | UTM zone 31N (32631) | Geographic to metric (France) |
+| Lambert 93 (2154) | UTM zone 31N (32631) | Between French projected systems |
+
+## See also
+
+- [Coordinate Transformations](/en/formulas/coordinate-transformations) -- How CRS transformations work under the hood
+- [CSV Import/Export](/en/features/csv-import-export) -- Details on supported CSV formats

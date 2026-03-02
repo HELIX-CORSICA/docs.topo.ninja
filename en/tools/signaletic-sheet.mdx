@@ -1,0 +1,115 @@
+---
+title: "Signaletic Sheet Generator"
+description: "Compare project (design) and implanted (field-measured) points. Automatic pairing, photos, bulk editor, and PDF generation."
+icon: "magnifying-glass-chart"
+---
+
+The **Signaletic Sheet Generator** is the most feature-rich tool in Topo.ninja. It lets you compare your design points (project) with your field-measured points (implanted), compute deviations, attach photos and notes, and produce a comprehensive PDF report.
+
+<Note>
+  **Available on:** Standard, Premium, Enterprise
+</Note>
+
+## What is this tool?
+
+After a stakeout, you go back to the field to check what was actually built. You measure the as-built positions and need to compare them against the original design. The Signaletic Sheet Generator handles the full workflow:
+
+- Import or enter both project and implanted points
+- Classify points by role (Project vs. Implanted)
+- Automatically pair each implanted point with its project counterpart
+- Compute 2D and 3D deviations
+- Attach photos and notes
+- Generate a detailed PDF report
+
+The result is a clear, professional document showing point-by-point how the field matches the design.
+
+## How to use it
+
+<Steps>
+  <Step title="Import your points">
+    Start by importing or entering your points. You can:
+    - Import a CSV file containing both project and implanted points
+    - Enter points manually
+    - Import two separate CSV files (one for project, one for implanted)
+
+    <Tip>
+      If your CSV contains both sets of points, use the Role Assignment feature in the next step to classify them.
+    </Tip>
+  </Step>
+
+  <Step title="Assign roles">
+    Each point needs a role: **Project** (design) or **Implanted** (field-measured). The Role Assignment interface provides a three-column drag-and-drop layout:
+    - **Center Pool**: unassigned points
+    - **Project column**: design points
+    - **Implanted column**: field-measured points
+
+    The tool can auto-detect roles based on naming conventions (e.g., points containing "stkd" or "imp" tokens are automatically classified as implanted).
+  </Step>
+
+  <Step title="Pair points">
+    Once roles are assigned, pair each implanted point with its corresponding project point. Two pairing methods are available:
+
+    **Name-based pairing**: extracts common tokens from point names and matches them. For example, "P1_project" and "P1_implanted" will be paired based on the shared "P1" token.
+
+    **Distance-based pairing**: finds the nearest project point within a configurable threshold (2D or 3D distance). Useful when naming conventions are inconsistent.
+  </Step>
+
+  <Step title="Add photos and notes">
+    For each point or pair, you can:
+    - Attach one or more photos (auto-compressed for efficiency)
+    - Add a text note (field observation, condition of the marker, etc.)
+
+    Photos and notes are included in the final PDF alongside the deviation data.
+  </Step>
+
+  <Step title="Review deviations">
+    The tool computes and displays:
+    - **dX, dY, dZ**: differences per axis
+    - **2D distance**: horizontal deviation
+    - **3D distance**: total spatial deviation
+
+    Use the bulk editor (Premium/Enterprise) for a spreadsheet-like view with sorting and filtering.
+  </Step>
+
+  <Step title="Generate the PDF">
+    Click **Generate PDF** to produce a report containing:
+    - Project header information
+    - Point-by-point comparison table with deviations
+    - Photos and notes per point
+    - Summary statistics
+
+    The PDF is generated in your browser and downloaded automatically.
+  </Step>
+</Steps>
+
+## Features
+
+### Role assignment
+
+The three-column drag-and-drop interface makes it easy to classify large batches of points. Auto-detection based on naming tokens (e.g., "stkd", "imp", "project") speeds up the process. Multi-select, lasso selection, and keyboard shortcuts are supported.
+
+### Automatic pairing
+
+Two methods ensure you can pair points regardless of naming conventions:
+- **Name-based**: fast and reliable when names follow a pattern
+- **Distance-based**: works with any naming, matches by proximity
+
+### Bulk editor
+
+On Premium and Enterprise plans, the bulk editor provides a full spreadsheet experience with copy-paste from Excel, fill handle, sorting, filtering, and context menus.
+
+### Photos and notes
+
+Attach field photos and observations to any point. Photos are auto-compressed (max 1 MB / 1024 px) to keep file sizes manageable while maintaining quality for the PDF.
+
+### CSV import/export
+
+Import your points from any CSV format. Export the comparison results including deviations for use in other software.
+
+## See also
+
+- [Role Assignment](/en/features/role-assignment) -- Detailed guide to classifying points
+- [Automatic Pairing](/en/features/auto-pairing) -- How the pairing algorithms work
+- [Bulk Editor](/en/features/bulk-editor) -- Spreadsheet-style editing
+- [Point Photos](/en/features/point-photos) -- Managing photos and compression
+- [CSV Import/Export](/en/features/csv-import-export) -- Supported CSV formats

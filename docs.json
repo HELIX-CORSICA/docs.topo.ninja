@@ -1,102 +1,165 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "willow",
-  "name": "Mint Starter Kit",
+  "name": "Topo.ninja Docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#289e22",
+    "light": "#4ade80",
+    "dark": "#078b00"
   },
   "favicon": "/favicon.svg",
-  "navigation": {
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "icon": "book-open-cover",
-          "href": "https://mintlify.com/docs"
-        },
-        {
-          "anchor": "Blog",
-          "icon": "newspaper",
-          "href": "https://mintlify.com/blog"
-        }
-      ]
-    },
-    "tabs": [
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://topo.ninja"
+  },
+  "navbar": {
+    "links": [
       {
-        "tab": "Guides",
-        "groups": [
+        "label": "Support",
+        "href": "mailto:support@topo.ninja"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Ouvrir Topo.ninja",
+      "href": "https://topo.ninja"
+    }
+  },
+  "navigation": {
+    "languages": [
+      {
+        "language": "fr",
+        "default": true,
+        "tabs": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
+            "tab": "Guide",
+            "groups": [
+              {
+                "group": "Pour commencer",
+                "icon": "rocket",
+                "pages": [
+                  "fr/introduction",
+                  "fr/premiers-pas"
+                ]
+              },
+              {
+                "group": "Outils",
+                "icon": "toolbox",
+                "pages": [
+                  "fr/outils/fiche-controle",
+                  "fr/outils/fiche-axe",
+                  "fr/outils/fiche-signaletique",
+                  "fr/outils/convertisseur-coordonnees",
+                  "fr/outils/resection-3d"
+                ]
+              },
+              {
+                "group": "Fonctionnalites",
+                "icon": "puzzle-piece",
+                "pages": [
+                  "fr/fonctionnalites/editeur-masse",
+                  "fr/fonctionnalites/import-export-csv",
+                  "fr/fonctionnalites/assignateur-roles",
+                  "fr/fonctionnalites/appairage-automatique",
+                  "fr/fonctionnalites/photos-points"
+                ]
+              },
+              {
+                "group": "Formules et calculs",
+                "icon": "square-root-variable",
+                "pages": [
+                  "fr/formules/distances-orthogonales",
+                  "fr/formules/gdop-qualite",
+                  "fr/formules/visibilite-3d",
+                  "fr/formules/transformations-coordonnees"
+                ]
+              },
+              {
+                "group": "Abonnements",
+                "icon": "credit-card",
+                "pages": [
+                  "fr/abonnements"
+                ]
+              }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "language": "en",
+        "tabs": [
           {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+            "tab": "Guide",
+            "groups": [
+              {
+                "group": "Getting started",
+                "icon": "rocket",
+                "pages": [
+                  "en/introduction",
+                  "en/getting-started"
+                ]
+              },
+              {
+                "group": "Tools",
+                "icon": "toolbox",
+                "pages": [
+                  "en/tools/control-sheet",
+                  "en/tools/axis-control-sheet",
+                  "en/tools/signaletic-sheet",
+                  "en/tools/coordinate-converter",
+                  "en/tools/3d-resection"
+                ]
+              },
+              {
+                "group": "Features",
+                "icon": "puzzle-piece",
+                "pages": [
+                  "en/features/bulk-editor",
+                  "en/features/csv-import-export",
+                  "en/features/role-assignment",
+                  "en/features/auto-pairing",
+                  "en/features/point-photos"
+                ]
+              },
+              {
+                "group": "Formulas and calculations",
+                "icon": "square-root-variable",
+                "pages": [
+                  "en/formulas/orthogonal-distances",
+                  "en/formulas/gdop-quality",
+                  "en/formulas/3d-visibility",
+                  "en/formulas/coordinate-transformations"
+                ]
+              },
+              {
+                "group": "Subscriptions",
+                "icon": "credit-card",
+                "pages": [
+                  "en/subscriptions"
+                ]
+              }
             ]
           }
         ]
       }
     ]
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "website": "https://topo.ninja"
     }
   }
 }

@@ -1,0 +1,127 @@
+---
+title: "Import / Export CSV"
+description: "Importez et exportez vos donnees topographiques au format CSV en quelques clics."
+icon: "file-csv"
+---
+
+L'import et l'export CSV vous permettent d'echanger facilement vos donnees entre Topo.ninja et vos autres logiciels (Excel, Covadis, Leica Infinity, Trimble Business Center, etc.). Cette fonctionnalite est disponible sur tous les plans.
+
+<Note>
+  Disponible sur **tous les plans**, y compris le plan Gratuit.
+</Note>
+
+## Comment ca fonctionne
+
+### Import
+
+Topo.ninja analyse votre fichier CSV pour detecter automatiquement :
+- Le **delimiteur** utilise (virgule, point-virgule, tabulation)
+- Les **en-tetes de colonnes** pour proposer un mapping intelligent
+- Le **format des coordonnees** (decimales, DMS, etc.)
+
+Vous n'avez qu'a deposer votre fichier, verifier le mapping propose, et valider.
+
+### Export
+
+Apres traitement de vos donnees, vous pouvez exporter les resultats sous plusieurs formes :
+- **CSV complet** : toutes les donnees du projet
+- **CSV converti** : coordonnees transformees dans le systeme cible
+- **CSV fusionne** : donnees sources et resultats dans un seul fichier
+
+## Utilisation
+
+<Steps>
+  <Step title="Preparer votre fichier CSV">
+    Assurez-vous que votre fichier comporte une **ligne d'en-tete**. Les formats courants sont :
+    ```
+    Nom,X,Y,Z
+    Nom,Latitude,Longitude,Altitude
+    Point,Est,Nord,Elevation
+    ```
+  </Step>
+  <Step title="Importer le fichier">
+    Deux methodes possibles :
+    - **Glisser-deposer** le fichier directement sur la zone d'import
+    - **Cliquer** sur le bouton d'import et selectionner votre fichier
+  </Step>
+  <Step title="Verifier le mapping des colonnes">
+    Topo.ninja detecte automatiquement vos colonnes grace aux en-tetes. Verifiez que chaque colonne est correctement associee (Nom, X, Y, Z) et ajustez si necessaire.
+  </Step>
+  <Step title="Valider l'import">
+    Confirmez l'import. Vos points apparaissent dans l'outil en cours d'utilisation (editeur en masse, assignateur de roles, etc.).
+  </Step>
+</Steps>
+
+## Formats de coordonnees supportes
+
+<AccordionGroup>
+  <Accordion title="Coordonnees decimales">
+    Le format le plus courant. Les coordonnees sont exprimees en nombres decimaux.
+    ```
+    BORNE_01,654321.123,6789012.456,125.78
+    ```
+  </Accordion>
+  <Accordion title="Degres Minutes Secondes (DMS)">
+    Topo.ninja reconnait les chaines DMS et les convertit automatiquement.
+    ```
+    POINT_A,48°51'24.5"N,2°21'07.0"E,35.2
+    ```
+  </Accordion>
+  <Accordion title="Formats avec separateurs varies">
+    Le delimiteur est detecte automatiquement :
+    - **Virgule** : `POINT,1234.56,5678.90,100.0`
+    - **Point-virgule** : `POINT;1234,56;5678,90;100,0`
+    - **Tabulation** : colonnes separees par des tabulations
+  </Accordion>
+</AccordionGroup>
+
+## Options d'export
+
+| Type d'export | Contenu | Cas d'usage |
+|---------------|---------|-------------|
+| **CSV complet** | Toutes les colonnes du projet | Sauvegarde, archivage |
+| **CSV converti** | Coordonnees dans le systeme cible | Import dans un autre logiciel |
+| **CSV fusionne** | Donnees sources + resultats | Rapport complet, verification |
+
+## Problemes courants
+
+<Warning>
+  **Separateur decimal** : en France, le separateur decimal est souvent la virgule (1234,56) tandis que le separateur de colonnes est le point-virgule. Si vos coordonnees semblent incorrectes apres import, verifiez que Topo.ninja a bien detecte le bon delimiteur.
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="Mes colonnes ne sont pas detectees">
+    Verifiez que votre fichier contient bien une **premiere ligne d'en-tete**. Les en-tetes doivent etre descriptifs : `Nom`, `X`, `Y`, `Z`, `Est`, `Nord`, `Latitude`, `Longitude`, etc. Un fichier sans en-tete ne pourra pas etre mappe automatiquement.
+  </Accordion>
+  <Accordion title="Les coordonnees sont inversees">
+    Certains logiciels exportent les coordonnees en ordre (Y, X) au lieu de (X, Y). Utilisez le mapping de colonnes pour reassigner manuellement les champs.
+  </Accordion>
+  <Accordion title="Caracteres speciaux dans les noms">
+    Les accents et caracteres speciaux dans les noms de points sont supportes. Si vous rencontrez des problemes d'affichage, verifiez que votre fichier est encode en **UTF-8**.
+  </Accordion>
+</AccordionGroup>
+
+## Astuces
+
+<Tip>
+  **Depuis Excel** : pour exporter en CSV depuis Excel, utilisez "Enregistrer sous" et choisissez "CSV UTF-8 (delimite par des virgules)". Cela garantit une compatibilite optimale avec Topo.ninja.
+</Tip>
+
+<Tip>
+  **Format minimal** : le format le plus simple accepte est `Nom,X,Y,Z`. Si vous n'avez pas d'altitude, la colonne Z est optionnelle.
+</Tip>
+
+<Tip>
+  **Gros fichiers** : l'import fonctionne directement dans votre navigateur. Meme avec plusieurs milliers de points, le traitement est quasi instantane.
+</Tip>
+
+## Voir aussi
+
+<CardGroup cols={2}>
+  <Card title="Editeur en masse" icon="table-cells-large" href="/fr/fonctionnalites/editeur-masse">
+    Editez vos points importes dans un tableur integre
+  </Card>
+  <Card title="Assignateur de roles" icon="arrows-left-right-to-line" href="/fr/fonctionnalites/assignateur-roles">
+    Classifiez vos points apres import
+  </Card>
+</CardGroup>
