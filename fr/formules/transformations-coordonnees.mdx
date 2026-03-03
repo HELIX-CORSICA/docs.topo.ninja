@@ -8,7 +8,7 @@ icon: "calculator"
 
 En topographie, les coordonnées d'un même point s'expriment différemment selon le **système de référence** (CRS -- Coordinate Reference System) utilisé. Un géomètre peut recevoir des coordonnées GPS en WGS84 (degrés), travailler en Lambert 93 (mètres) et livrer un plan en coordonnées locales. La conversion entre ces systèmes est une opération quotidienne.
 
-Topo.ninja fournit un **convertisseur de coordonnées** qui s'appuie sur la bibliothèque PROJ, le standard industriel pour les transformations géodésiques.
+Topo.ninja fournit un **convertisseur de coordonnées** qui gère automatiquement ces transformations.
 
 <Note>
   Cette page documente les principes mathématiques derrière les conversions. Pour un guide pratique d'utilisation du convertisseur, consulter la page [Convertisseur de coordonnées](/fr/outils/convertisseur-coordonnees).
@@ -47,27 +47,17 @@ Un système de référence de coordonnées (CRS) définit **comment des nombres*
 
 ## Comment fonctionne la conversion
 
-### Pipeline de transformation
+### Étapes de la conversion
 
-Topo.ninja utilise la bibliothèque **PROJ** (via un endpoint backend) pour effectuer les transformations. PROJ détermine automatiquement le **pipeline de transformation** optimal entre le CRS source et le CRS cible.
-
-Un pipeline typique se décompose ainsi :
+Lors d'une transformation entre deux systèmes, le convertisseur suit ces étapes :
 
 $$
 \text{CRS source} \xrightarrow{\text{déprojection}} \text{géographique source} \xrightarrow{\text{changement de datum}} \text{géographique cible} \xrightarrow{\text{projection}} \text{CRS cible}
 $$
 
 <Info>
-  PROJ gère automatiquement les cas complexes : grilles de transformation (comme la grille NTF vers RGF93), transformations en 7 paramètres (Helmert), et conversions d'unités. Il suffit de spécifier les codes EPSG source et cible.
+  Les cas complexes sont gérés automatiquement : grilles de transformation (comme la grille NTF vers RGF93), transformations en 7 paramètres (Helmert), et conversions d'unités. Il suffit de spécifier les codes EPSG source et cible.
 </Info>
-
-### Processus dans Topo.ninja
-
-1. Saisir les coordonnées source et sélectionner le CRS source (code EPSG).
-2. Sélectionner le CRS cible (code EPSG).
-3. Les coordonnées sont envoyées au backend via l'endpoint `/api/pdf/cct`.
-4. PROJ calcule la transformation et retourne les coordonnées transformées.
-5. Les résultats sont affichés avec la précision appropriée.
 
 ## Transformations de hauteur et géoïde
 
@@ -180,7 +170,7 @@ Le signe est donné par la direction : N/S pour la latitude, E/W pour la longitu
     **CRS source** : EPSG:27561 à 27564 (NTF Lambert zones I à IV)
     **CRS cible** : EPSG:2154 (RGF93 / Lambert 93)
 
-    Conversion depuis l'ancien système français NTF vers le système actuel. PROJ utilise la grille de transformation NTF-RGF93 (gr3df97a) pour une précision centimétrique.
+    Conversion depuis l'ancien système français NTF vers le système actuel. La grille de transformation NTF-RGF93 (gr3df97a) est utilisée pour une précision centimétrique.
 
     <Warning>
       Les coordonnées NTF et RGF93 d'un même point diffèrent de plusieurs centaines de mètres. Une erreur de CRS peut avoir des conséquences graves sur le chantier. Toujours vérifier le système de référence des données source.
@@ -195,18 +185,8 @@ Le signe est donné par la direction : N/S pour la latitude, E/W pour la longitu
   </Tab>
 </Tabs>
 
-## Implémentation dans Topo.ninja
-
-Le convertisseur de coordonnées fonctionne ainsi :
-
-1. **Saisie** : les coordonnées source sont entrées manuellement ou collées depuis un tableur.
-2. **Sélection des CRS** : choisir les codes EPSG source et cible dans la liste avec recherche.
-3. **Géoïde (optionnel)** : une grille de géoïde peut être sélectionnée pour la transformation verticale.
-4. **Calcul** : les coordonnées sont envoyées au backend qui utilise PROJ pour la transformation.
-5. **Résultats** : les coordonnées transformées sont affichées et peuvent être copiées ou exportées.
-
 <Info>
-  La précision des transformations dépend de la qualité des données d'entrée et des grilles disponibles. PROJ utilise les meilleures grilles de transformation disponibles pour chaque couple de CRS. Pour les conversions courantes en France (RGF93/Lambert 93, WGS84, NTF), la précision est centimétrique ou meilleure.
+  La précision des transformations dépend de la qualité des données d'entrée et des grilles disponibles. Pour les conversions courantes en France (RGF93/Lambert 93, WGS84, NTF), la précision est centimétrique ou meilleure.
 </Info>
 
 ## Interprétation des résultats

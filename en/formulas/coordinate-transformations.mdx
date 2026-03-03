@@ -1,6 +1,6 @@
 ---
 title: "Coordinate Transformations"
-description: "How coordinate reference system transformations work in Topo.ninja, including PROJ, geoid grids, and DMS parsing."
+description: "How coordinate reference system transformations work in Topo.ninja, including geoid grids and DMS parsing."
 icon: "calculator"
 ---
 
@@ -29,17 +29,6 @@ Every CRS has a unique identifier in the EPSG registry. Common examples:
 | 3857 | Web Mercator | Projected | Web maps (Google, OSM) |
 
 When you select a CRS in Topo.ninja, you are choosing an EPSG code that fully defines the datum, ellipsoid, and projection parameters.
-
-### The PROJ library
-
-All transformations in Topo.ninja are performed by the [PROJ](https://proj.org/) library, the industry-standard open-source library for coordinate operations. PROJ handles:
-
-- Datum transformations (e.g., NTF to RGF93)
-- Map projections (e.g., Lambert Conformal Conic, Transverse Mercator)
-- Ellipsoid conversions
-- Grid-based corrections
-
-PROJ runs directly in your browser via a WebAssembly build. Your coordinates are never sent to a server.
 
 ### Geoid grids and height conversion
 
@@ -127,18 +116,6 @@ $$
 <Info>
   Web Mercator is not suitable for precise surveying due to its spherical approximation. Use it only for visualization purposes.
 </Info>
-
-## Implementation in Topo.ninja
-
-The Coordinate Converter:
-
-1. Loads the PROJ library (WebAssembly) in your browser
-2. Initializes the source and target CRS from EPSG definitions
-3. Optionally loads geoid grid files for height correction
-4. Applies the transformation pipeline to each input point
-5. Returns the converted coordinates
-
-The entire computation runs client-side. No data leaves your browser.
 
 ## Interpreting results
 
