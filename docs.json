@@ -164,5 +164,8 @@
   },
   "appearance": {
     "default": "light"
+  },
+  "seo": {
+    "indexing": "all"
   }
 }
