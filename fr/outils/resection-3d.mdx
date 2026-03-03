@@ -29,7 +29,7 @@ Tracer les obstacles sous forme de polygones sur la carte. Chaque obstacle a une
 Cliquer sur la carte pour positionner la station. L'outil calcule immédiatement les références visibles, le GDOP, les distances et les contraintes angulaires.
 
 **Étape 5 -- Analyser la heatmap**
-Activer la visualisation heatmap pour voir la qualité de résection sur toute la zone. Vert = GDOP faible (bonne géométrie), jaune = qualité moyenne, rouge = GDOP élevé (mauvaise géométrie), gris = position impossible (pas assez de références visibles).
+Activer la visualisation heatmap pour voir la qualité de résection sur toute la zone. L'échelle de couleur est absolue : un score donné produit toujours la même couleur, indépendamment des autres positions calculées. Les zones sans couleur correspondent à des positions impossibles (moins de 3 références visibles). Trois palettes de couleur sont disponibles (density, nature, thermal-pink).
 
 **Étape 6 -- Exporter**
 Exporter le projet en GeoJSON, JSON ou CSV. Partager via un lien.
@@ -65,6 +65,12 @@ Le GDOP dépend du nombre de références visibles, de leur répartition angulai
 |------|-------------|
 | Distance directe | Distance maximale fixe en mètres |
 | Distance dérivée | Portée maximale calculée à partir de la précision angulaire et de la tolérance linéaire. Plus la station est précise, plus la portée est grande |
+
+### Heatmap
+
+La heatmap utilise une échelle de couleur absolue basée sur le score de qualité (0 à 100). Le score est converti linéairement en position sur le gradient : un score de 0 correspond au bas de l'échelle, un score de 100 au sommet. Cette échelle est fixe et ne dépend pas des valeurs calculées dans la zone -- un score de 75 produit toujours la même couleur.
+
+Seules les positions avec 3 références visibles ou plus sont affichées. Chaque position est rendue sous forme de cercle à gradient radial pour un rendu lissé.
 
 ### Filtrage angulaire
 
