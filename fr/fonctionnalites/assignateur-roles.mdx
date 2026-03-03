@@ -1,10 +1,10 @@
 ---
 title: "Assignateur de rôles"
-description: "Classifiez vos points en points projet et points implantés grâce au glisser-déposer et à la détection automatique."
+description: "Classifiez les points en points projet et points implantés grâce au glisser-déposer et à la détection automatique."
 icon: "arrows-left-right-to-line"
 ---
 
-L'assignateur de rôles vous permet de trier vos points importés en deux catégories : les **points projet** (coordonnées théoriques / de conception) et les **points implantés** (coordonnées mesurées sur le terrain). Cette étape est essentielle pour la génération des fiches signalétiques.
+L'assignateur de rôles permet de trier les points importés en deux catégories : les **points projet** (coordonnées théoriques / de conception) et les **points implantés** (coordonnées mesurées sur le terrain). Cette étape est essentielle pour la génération des fiches signalétiques.
 
 <Note>
   Disponible sur les plans **Standard**, **Premium** et **Enterprise**.
@@ -12,7 +12,7 @@ L'assignateur de rôles vous permet de trier vos points importés en deux catég
 
 ## Comment ça fonctionne
 
-Après l'import de vos points, tous arrivent dans un **pool central** (colonne du milieu). Votre travail consiste à les répartir dans les deux colonnes latérales :
+Après l'import des points, tous arrivent dans un **pool central** (colonne du milieu). Le travail consiste à les répartir dans les deux colonnes latérales :
 
 <CardGroup cols={3}>
   <Card title="Points Projet" icon="compass-drafting">
@@ -29,19 +29,19 @@ Après l'import de vos points, tous arrivent dans un **pool central** (colonne d
 ## Utilisation
 
 <Steps>
-  <Step title="Importer vos points">
-    Importez vos points via CSV ou saisie manuelle. Tous les points apparaissent dans le pool central.
+  <Step title="Importer les points">
+    Importez les points via CSV ou saisie manuelle. Tous les points apparaissent dans le pool central.
   </Step>
   <Step title="Utiliser la détection automatique (recommandé)">
     Activez la détection automatique pour identifier les points implantés grâce à leurs marqueurs de nommage. Topo.ninja recherche des motifs comme :
     - `STKD`, `STKED` (stakeout / staked)
     - `IMP` (implanté)
-    - Ou tout préfixe/suffixe personnalisé que vous définissez
+    - Ou tout préfixe/suffixe personnalisé défini au préalable
 
     Par exemple, un point nommé `BORNE_A_STKD` sera automatiquement identifié comme point implanté.
   </Step>
   <Step title="Compléter manuellement par glisser-déposer">
-    Pour les points qui n'ont pas été détectés automatiquement, glissez-les du pool central vers la colonne appropriée.
+    Pour les points non détectés automatiquement, glissez-les du pool central vers la colonne appropriée.
   </Step>
   <Step title="Vérifier et valider">
     Vérifiez que chaque colonne contient les bons points, puis validez pour passer à l'étape suivante (appairage).
@@ -50,7 +50,7 @@ Après l'import de vos points, tous arrivent dans un **pool central** (colonne d
 
 ## Méthodes de sélection
 
-Vous disposez de plusieurs méthodes pour sélectionner des points dans chaque colonne :
+Plusieurs méthodes permettent de sélectionner des points dans chaque colonne :
 
 | Méthode | Geste | Description |
 |---------|-------|-------------|
@@ -72,7 +72,7 @@ La détection automatique analyse le nom de chaque point pour identifier les mar
     Exemples : `BORNE_A_STKD`, `IMP_POINT_12`, `PT05_stked`
   </Accordion>
   <Accordion title="Marqueurs personnalisés">
-    Vous pouvez définir vos propres préfixes ou suffixes pour correspondre aux conventions de nommage de votre équipe ou de votre logiciel de terrain. Par exemple :
+    Il est possible de définir des préfixes ou suffixes personnalisés pour correspondre aux conventions de nommage de l'équipe ou du logiciel de terrain. Par exemple :
     - Suffixe `_MES` pour "mesure"
     - Préfixe `R_` pour "relevé"
   </Accordion>
@@ -121,7 +121,7 @@ Un clic droit sur un ou plusieurs points sélectionnés ouvre un menu contextuel
 </Tip>
 
 <Tip>
-  **Import séparé** : si vos points projet et vos points implantés sont dans deux fichiers CSV distincts, importez-les en deux temps. Le premier import ira dans le pool, assignez-le à "Points Projet", puis importez le second fichier.
+  **Import séparé** : si les points projet et les points implantés sont dans deux fichiers CSV distincts, importez-les en deux temps. Le premier import ira dans le pool ; assignez-le à "Points Projet", puis importez le second fichier.
 </Tip>
 
 <Tip>

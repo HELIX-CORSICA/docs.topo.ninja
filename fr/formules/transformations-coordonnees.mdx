@@ -11,7 +11,7 @@ En topographie, les coordonnées d'un même point s'expriment différemment selo
 Topo.ninja fournit un **convertisseur de coordonnées** qui s'appuie sur la bibliothèque PROJ, le standard industriel pour les transformations géodésiques.
 
 <Note>
-  Cette page documente les principes mathématiques derrière les conversions. Pour un guide pratique d'utilisation du convertisseur, consultez la page [Convertisseur de coordonnées](/fr/outils/convertisseur-coordonnees).
+  Cette page documente les principes mathématiques derrière les conversions. Pour un guide pratique d'utilisation du convertisseur, consulter la page [Convertisseur de coordonnées](/fr/outils/convertisseur-coordonnees).
 </Note>
 
 ## Qu'est-ce qu'un CRS ?
@@ -58,13 +58,13 @@ $$
 $$
 
 <Info>
-  PROJ gère automatiquement les cas complexes : grilles de transformation (comme la grille NTF vers RGF93), transformations en 7 paramètres (Helmert), et conversions d'unités. L'utilisateur n'a qu'à spécifier les codes EPSG source et cible.
+  PROJ gère automatiquement les cas complexes : grilles de transformation (comme la grille NTF vers RGF93), transformations en 7 paramètres (Helmert), et conversions d'unités. Il suffit de spécifier les codes EPSG source et cible.
 </Info>
 
 ### Processus dans Topo.ninja
 
-1. L'utilisateur saisit les coordonnées source et sélectionne le CRS source (code EPSG).
-2. L'utilisateur sélectionne le CRS cible (code EPSG).
+1. Saisir les coordonnées source et sélectionner le CRS source (code EPSG).
+2. Sélectionner le CRS cible (code EPSG).
 3. Les coordonnées sont envoyées au backend via l'endpoint `/api/pdf/cct`.
 4. PROJ calcule la transformation et retourne les coordonnées transformées.
 5. Les résultats sont affichés avec la précision appropriée.
@@ -88,7 +88,7 @@ où $N$ est l'**ondulation du géoïde** (différence entre l'ellipsoïde et le 
 
 ### Représentation géométrique
 
-Imaginez trois surfaces empilées :
+Trois surfaces empilées à visualiser :
 
 1. **Le sol** : la surface physique réelle (terrain naturel).
 2. **Le géoïde** : une surface gravitationnelle théorique, proche du niveau moyen des mers. Ses ondulations par rapport à l'ellipsoïde peuvent atteindre +/- 100 m selon les régions du globe. En France métropolitaine, $N$ varie entre environ 43 m et 54 m.
@@ -98,7 +98,7 @@ La hauteur GPS ($h$) est mesurée depuis l'ellipsoïde. La hauteur du terrain ($
 
 ### Grilles de géoïde
 
-Pour convertir entre ces deux systèmes de hauteur, on utilise une **grille de géoïde** qui donne la valeur de $N$ en tout point.
+Pour convertir entre ces deux systèmes de hauteur, une **grille de géoïde** donnant la valeur de $N$ en tout point est utilisée.
 
 | Grille | Zone | Système vertical |
 |--------|------|-----------------|
@@ -107,7 +107,7 @@ Pour convertir entre ces deux systèmes de hauteur, on utilise une **grille de g
 | **RAC09** | Corse | IGN78 |
 
 <Warning>
-  Si vous ne sélectionnez pas de grille de géoïde dans le convertisseur, les hauteurs seront transformées comme des hauteurs ellipsoïdales. Pour obtenir des altitudes IGN69 à partir de coordonnées GPS, vous **devez** sélectionner la grille RAF20 (ou RAF18).
+  Sans grille de géoïde sélectionnée dans le convertisseur, les hauteurs seront transformées comme des hauteurs ellipsoïdales. Pour obtenir des altitudes IGN69 à partir de coordonnées GPS, sélectionner impérativement la grille RAF20 (ou RAF18).
 </Warning>
 
 ### Exemple concret
@@ -166,7 +166,7 @@ Le signe est donné par la direction : N/S pour la latitude, E/W pour la longitu
     C'est la conversion la plus courante. Lambert 93 est le système officiel français ; WGS84 est le système GPS. La transformation est quasi directe car RGF93 et WGS84 sont très proches.
 
     <Tip>
-      Pour une conversion avec altitudes IGN69, ajoutez la grille RAF20. Sans elle, vous obtiendrez des hauteurs ellipsoïdales (décalées d'environ 50 m en France métropolitaine).
+      Pour une conversion avec altitudes IGN69, ajouter la grille RAF20. Sans elle, les résultats contiendront des hauteurs ellipsoïdales (décalées d'environ 50 m en France métropolitaine).
     </Tip>
   </Tab>
   <Tab title="Coniques Conformes (CC42-CC50)">
@@ -183,15 +183,15 @@ Le signe est donné par la direction : N/S pour la latitude, E/W pour la longitu
     Conversion depuis l'ancien système français NTF vers le système actuel. PROJ utilise la grille de transformation NTF-RGF93 (gr3df97a) pour une précision centimétrique.
 
     <Warning>
-      Les coordonnées NTF et RGF93 d'un même point diffèrent de plusieurs centaines de mètres. Une erreur de CRS peut avoir des conséquences graves sur le chantier. Vérifiez toujours le système de référence de vos données source.
+      Les coordonnées NTF et RGF93 d'un même point diffèrent de plusieurs centaines de mètres. Une erreur de CRS peut avoir des conséquences graves sur le chantier. Toujours vérifier le système de référence des données source.
     </Warning>
   </Tab>
   <Tab title="Altitudes ellipsoïdales <-> IGN69">
     **Avec grille** : RAF20
 
-    Pour convertir des hauteurs GPS (ellipsoïdales) en altitudes pratiques (IGN69), sélectionnez la grille de géoïde RAF20 dans le convertisseur. La transformation applique la correction $H = h - N$ point par point.
+    Pour convertir des hauteurs GPS (ellipsoïdales) en altitudes pratiques (IGN69), sélectionner la grille de géoïde RAF20 dans le convertisseur. La transformation applique la correction $H = h - N$ point par point.
 
-    Cette conversion est indépendante de la projection horizontale : vous pouvez l'appliquer en même temps qu'une conversion Lambert 93 vers WGS84, par exemple.
+    Cette conversion est indépendante de la projection horizontale : elle peut être appliquée en même temps qu'une conversion Lambert 93 vers WGS84, par exemple.
   </Tab>
 </Tabs>
 
@@ -200,7 +200,7 @@ Le signe est donné par la direction : N/S pour la latitude, E/W pour la longitu
 Le convertisseur de coordonnées fonctionne ainsi :
 
 1. **Saisie** : les coordonnées source sont entrées manuellement ou collées depuis un tableur.
-2. **Sélection des CRS** : l'utilisateur choisit les codes EPSG source et cible dans une liste avec recherche.
+2. **Sélection des CRS** : choisir les codes EPSG source et cible dans la liste avec recherche.
 3. **Géoïde (optionnel)** : une grille de géoïde peut être sélectionnée pour la transformation verticale.
 4. **Calcul** : les coordonnées sont envoyées au backend qui utilise PROJ pour la transformation.
 5. **Résultats** : les coordonnées transformées sont affichées et peuvent être copiées ou exportées.
@@ -213,13 +213,13 @@ Le convertisseur de coordonnées fonctionne ainsi :
 
 | Situation | Ce qu'il faut vérifier |
 |-----------|----------------------|
-| Coordonnées inattendues (décalage de centaines de mètres) | Vérifiez que le CRS source est correct. Une confusion NTF/RGF93 est la cause la plus fréquente. |
-| Altitude aberrante (décalage de ~50 m) | Vous comparez probablement une hauteur ellipsoïdale avec une altitude IGN69. Activez la grille de géoïde RAF20. |
+| Coordonnées inattendues (décalage de centaines de mètres) | Vérifier que le CRS source est correct. Une confusion NTF/RGF93 est la cause la plus fréquente. |
+| Altitude aberrante (décalage de ~50 m) | Il s'agit probablement d'une confusion entre hauteur ellipsoïdale et altitude IGN69. Activer la grille de géoïde RAF20. |
 | Résultat "hors zone" | Le CRS cible a une zone de validité limitée (par exemple, CC43 ne couvre que la bande 42 deg -- 44 deg N). |
 | Différences sub-métriques entre WGS84 et RGF93 | C'est normal. Les deux datums diffèrent de quelques centimètres. Pour la plupart des travaux topographiques, ils sont interchangeables. |
 
 <Tip>
-  En cas de doute sur le CRS de vos données, convertissez un point connu (borne géodésique, repère IGN) et comparez avec les coordonnées officielles. La fiche signalétique de la borne donne ses coordonnées dans tous les systèmes courants.
+  En cas de doute sur le CRS des données, convertir un point connu (borne géodésique, repère IGN) et comparer avec les coordonnées officielles. La fiche signalétique de la borne donne ses coordonnées dans tous les systèmes courants.
 </Tip>
 
 ## Voir aussi

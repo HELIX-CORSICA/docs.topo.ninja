@@ -4,7 +4,7 @@ description: "Comparez vos points projet avec les points implantés sur le terra
 icon: "magnifying-glass-chart"
 ---
 
-Le **Générateur de fiche signalétique** est l'outil le plus complet de Topo.ninja. Il vous permet de produire des fiches signalétiques de vérification GNSS en comparant vos points théoriques (projet) avec les points effectivement implantés sur le terrain. Le PDF généré présente côte à côte les coordonnées projet et les coordonnées mesurées, avec les écarts calculés.
+Le **Générateur de fiche signalétique** est l'outil le plus complet de Topo.ninja. Il permet de produire des fiches signalétiques de vérification GNSS en comparant les points théoriques (projet) avec les points effectivement implantés sur le terrain. Le PDF généré présente côte à côte les coordonnées projet et les coordonnées mesurées, avec les écarts calculés.
 
 <Note>
   **Disponible sur :** Standard, Premium, Enterprise
@@ -12,14 +12,14 @@ Le **Générateur de fiche signalétique** est l'outil le plus complet de Topo.n
 
 ## À quoi sert cet outil ?
 
-Après une implantation, vous devez vérifier que les points matérialisés correspondent bien au projet. La fiche signalétique est le document de référence pour cette vérification :
+Après une implantation, il faut vérifier que les points matérialisés correspondent bien au projet. La fiche signalétique est le document de référence pour cette vérification :
 
-- Vous importez vos points **projet** (coordonnées théoriques)
-- Vous importez vos points **implantés** (coordonnées mesurées sur le terrain)
+- Importez les points **projet** (coordonnées théoriques)
+- Importez les points **implantés** (coordonnées mesurées sur le terrain)
 - L'outil les appaire automatiquement
 - Le PDF montre la comparaison point par point avec les écarts
 
-C'est le document que vous transmettez au maître d'oeuvre pour attester de la conformité de l'implantation.
+Ce document se transmet au maître d'oeuvre pour attester de la conformité de l'implantation.
 
 ## Comment l'utiliser
 
@@ -28,18 +28,18 @@ C'est le document que vous transmettez au maître d'oeuvre pour attester de la c
     Remplissez les informations du projet (client, chantier, opérateur, date) et sélectionnez le **système de coordonnées** utilisé. Ce choix est important pour l'affichage cartographique et les calculs de distances.
   </Step>
 
-  <Step title="Importer vos points par CSV">
-    Importez votre fichier CSV contenant l'ensemble de vos points. Lors de l'import, vous pouvez choisir le **format de précision** :
+  <Step title="Importer les points par CSV">
+    Importez le fichier CSV contenant l'ensemble des points. Lors de l'import, choisissez le **format de précision** :
     - **Décimétrique** : coordonnées arrondies au décimètre
     - **Centimétrique** : coordonnées au centimètre
 
     <Tip>
-      Vous pouvez importer tous vos points en une seule fois (projet et implantés mélangés) puis les trier à l'étape suivante. Pas besoin de préparer deux fichiers séparés.
+      Il est possible d'importer tous les points en une seule fois (projet et implantés mélangés) puis de les trier à l'étape suivante. Pas besoin de préparer deux fichiers séparés.
     </Tip>
   </Step>
 
   <Step title="Assigner les rôles">
-    Après l'import, tous les points se trouvent dans le **Pool central** (non assignés). Vous devez les répartir en deux catégories :
+    Après l'import, tous les points se trouvent dans le **Pool central** (non assignés). Répartissez-les en deux catégories :
 
     - **Points Projet** : les coordonnées théoriques, issues du plan ou du projet
     - **Points Implantés** : les coordonnées mesurées sur le terrain après implantation
@@ -47,7 +47,7 @@ C'est le document que vous transmettez au maître d'oeuvre pour attester de la c
     Glissez les points vers le pool correspondant ou utilisez l'assignation par lot.
 
     <Info>
-      L'assignation est une étape clé. Un point mal classé faussera la comparaison. En cas de doute, vérifiez les noms de vos points : les points implantés contiennent souvent un suffixe de type `stkd`, `imp` ou similaire.
+      L'assignation est une étape clé. Un point mal classé faussera la comparaison. En cas de doute, vérifiez les noms des points : les points implantés contiennent souvent un suffixe de type `stkd`, `imp` ou similaire.
     </Info>
   </Step>
 
@@ -56,15 +56,15 @@ C'est le document que vous transmettez au maître d'oeuvre pour attester de la c
 
     **Appairage par nom** : l'outil extrait l'identifiant commun des noms de points en ignorant les préfixes et suffixes de type piquetage (`stkd`, `imp`, etc.). Par exemple, le point implanté `P12_stkd` sera appairé au point projet `P12`.
 
-    **Appairage par distance** : l'outil associe chaque point implanté au point projet le plus proche, dans un seuil de distance configurable. Vous pouvez choisir une distance 2D (planimétrique) ou 3D.
+    **Appairage par distance** : l'outil associe chaque point implanté au point projet le plus proche, dans un seuil de distance configurable. Le calcul peut se faire en distance 2D (planimétrique) ou 3D.
 
     <Warning>
-      Vérifiez toujours le résultat de l'appairage automatique. Si des noms de points sont ambigus ou si plusieurs points sont proches les uns des autres, des erreurs d'appairage sont possibles. Vous pouvez corriger manuellement les associations.
+      Vérifiez toujours le résultat de l'appairage automatique. Si des noms de points sont ambigus ou si plusieurs points sont proches les uns des autres, des erreurs d'appairage sont possibles. Corrigez manuellement les associations si nécessaire.
     </Warning>
   </Step>
 
   <Step title="Enrichir les points (optionnel)">
-    Pour chaque point ou paire de points, vous pouvez :
+    Pour chaque point ou paire de points, il est possible de :
     - Ajouter des **photos** (matérialisation du point sur le terrain)
     - Ajouter des **notes** (observations, remarques)
     - Modifier les coordonnées via l'**éditeur de masse** (modification en lot dans un tableau interactif)
@@ -79,7 +79,7 @@ C'est le document que vous transmettez au maître d'oeuvre pour attester de la c
     - Un aperçu cartographique
     - Les notes associées
 
-    Le document est formaté pour être directement transmis au maître d'ouvrage ou archivé dans votre dossier de chantier.
+    Le document est formaté pour être directement transmis au maître d'ouvrage ou archivé dans le dossier de chantier.
   </Step>
 </Steps>
 
@@ -87,20 +87,20 @@ C'est le document que vous transmettez au maître d'oeuvre pour attester de la c
 
 ### Sélection du système de coordonnées
 
-Lors de la configuration du projet, vous choisissez le système de coordonnées (CRS) de vos données. Ce choix conditionne l'affichage sur la carte et garantit que les aperçus cartographiques sont corrects.
+Lors de la configuration du projet, sélectionnez le système de coordonnées (CRS) des données. Ce choix conditionne l'affichage sur la carte et garantit que les aperçus cartographiques sont corrects.
 
 ### Import CSV avec format de précision
 
-L'import CSV vous permet de spécifier le niveau de précision de vos coordonnées. Cela influence l'affichage des valeurs et le nombre de décimales dans le PDF final.
+L'import CSV permet de spécifier le niveau de précision des coordonnées. Cela influence l'affichage des valeurs et le nombre de décimales dans le PDF final.
 
 ### Assignation des rôles
 
-Le système a trois pools :
+Le système comporte trois pools :
 - **Pool central** : les points non encore assignés (après import)
 - **Points Projet** : les coordonnées théoriques
 - **Points Implantés** : les coordonnées mesurées
 
-Vous déplacez les points entre ces pools pour les classer. L'interface est conçue pour rendre cette opération rapide, même avec un grand nombre de points.
+Déplacez les points entre ces pools pour les classer. L'interface est conçue pour rendre cette opération rapide, même avec un grand nombre de points.
 
 ### Appairage automatique
 
@@ -108,13 +108,13 @@ Deux algorithmes sont disponibles :
 
 <AccordionGroup>
   <Accordion title="Appairage par nom">
-    L'algorithme analyse les noms de points et extrait un identifiant commun en ignorant les marqueurs d'implantation courants (`stkd`, `imp`, `stakeout`, etc.). Il fonctionne bien lorsque vos points projet et implantés suivent une convention de nommage cohérente.
+    L'algorithme analyse les noms de points et extrait un identifiant commun en ignorant les marqueurs d'implantation courants (`stkd`, `imp`, `stakeout`, etc.). Il fonctionne bien lorsque les points projet et implantés suivent une convention de nommage cohérente.
 
     Exemple : `PT-001` (projet) sera appairé à `PT-001_stkd` (implanté).
   </Accordion>
 
   <Accordion title="Appairage par distance">
-    L'algorithme calcule la distance entre chaque point implanté et tous les points projet, puis associe les paires les plus proches. Vous définissez un seuil de distance maximale (en mètres) au-delà duquel l'association est refusée. Le calcul peut être fait en 2D (XY uniquement) ou en 3D (XYZ).
+    L'algorithme calcule la distance entre chaque point implanté et tous les points projet, puis associe les paires les plus proches. Définissez un seuil de distance maximale (en mètres) au-delà duquel l'association est refusée. Le calcul peut être fait en 2D (XY uniquement) ou en 3D (XYZ).
 
     Cette méthode est utile lorsque les noms de points ne correspondent pas ou lorsque les conventions de nommage varient.
   </Accordion>
@@ -122,7 +122,7 @@ Deux algorithmes sont disponibles :
 
 ### Éditeur de masse
 
-L'éditeur de masse vous permet de modifier les coordonnées et les propriétés de plusieurs points simultanément dans un tableau interactif de type tableur. C'est particulièrement utile pour :
+L'éditeur de masse permet de modifier les coordonnées et les propriétés de plusieurs points simultanément dans un tableau interactif de type tableur. C'est particulièrement utile pour :
 - Corriger des erreurs d'import
 - Ajouter des notes en lot
 - Vérifier rapidement l'ensemble des données

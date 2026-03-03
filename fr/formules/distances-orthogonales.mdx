@@ -6,7 +6,7 @@ icon: "calculator"
 
 ## Contexte
 
-Lors du contrôle d'implantation par axe, chaque point est décrit par sa position relative à un axe de référence. Plutôt que de donner des coordonnées absolues (X, Y), on exprime :
+Lors du contrôle d'implantation par axe, chaque point est décrit par sa position relative à un axe de référence. Plutôt que de donner des coordonnées absolues (X, Y), la position s'exprime par :
 
 - la **distance le long de l'axe** (où se situe la projection du point sur l'axe) ;
 - la **distance orthogonale** (l'écart latéral par rapport à l'axe, avec un signe indiquant le côté).
@@ -64,7 +64,7 @@ $$
 
 ### Étape 5 -- Produit vectoriel 2D (déterminant)
 
-Pour déterminer de quel côté de l'axe se trouve le point $P$, on calcule le produit vectoriel 2D (composante $z$ du produit vectoriel 3D) :
+Pour déterminer de quel côté de l'axe se trouve le point $P$, le produit vectoriel 2D (composante $z$ du produit vectoriel 3D) est calculé :
 
 $$
 C = V_x \cdot (y_P - y_A) - V_y \cdot (x_P - x_A)
@@ -94,7 +94,7 @@ $$
 $$
 
 <Warning>
-  La convention de signe dépend du sens de l'axe. Si vous inversez $A$ et $B$, les signes des distances orthogonales s'inversent. Assurez-vous que le sens de l'axe correspond à la convention souhaitée sur le chantier.
+  La convention de signe dépend du sens de l'axe. Inverser $A$ et $B$ inverse les signes des distances orthogonales. Vérifier que le sens de l'axe correspond à la convention souhaitée sur le chantier.
 </Warning>
 
 ### Étape 7 -- Distances le long de l'axe
@@ -113,20 +113,20 @@ On a la relation : $d_A + d_B = |AB|$ lorsque $H$ est entre $A$ et $B$ (c'est-à
 
 ## Représentation géométrique
 
-Imaginez-vous debout au point $A$, regardant vers le point $B$ :
+En se plaçant au point $A$ et en regardant vers le point $B$ :
 
-- L'**axe** est la ligne droite qui passe sous vos pieds et s'étend vers $B$.
+- L'**axe** est la ligne droite qui passe sous les pieds de l'observateur et s'étend vers $B$.
 - La **projection** $H$ est le point sur l'axe le plus proche de $P$ : c'est l'endroit où une perpendiculaire abaissée de $P$ rencontre l'axe.
-- La **distance le long de l'axe** $d_A$ vous dit à quelle distance devant vous (le long de l'axe) se trouve cette perpendiculaire.
-- La **distance orthogonale** $d_\perp$ vous dit à quelle distance latérale se trouve le point $P$ par rapport à l'axe :
-  - valeur **positive** = le point est à votre **droite** ;
-  - valeur **négative** = le point est à votre **gauche**.
+- La **distance le long de l'axe** $d_A$ indique à quelle distance devant (le long de l'axe) se trouve cette perpendiculaire.
+- La **distance orthogonale** $d_\perp$ indique à quelle distance latérale se trouve le point $P$ par rapport à l'axe :
+  - valeur **positive** = le point est à **droite** ;
+  - valeur **négative** = le point est à **gauche**.
 
 ## Implémentation dans Topo.ninja
 
 Dans l'outil **Fiche de contrôle par axe**, le calcul est appliqué automatiquement :
 
-1. L'utilisateur définit un ou plusieurs axes en spécifiant deux points chacun (ou en sélectionnant des points existants).
+1. Définir un ou plusieurs axes en spécifiant deux points chacun (ou en sélectionnant des points existants).
 2. Chaque point de la fiche est associé à un axe.
 3. L'application calcule la projection orthogonale et affiche :
    - la distance le long de l'axe depuis le point $A$ ;

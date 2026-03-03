@@ -12,11 +12,11 @@ La **Fiche de contrôle par axe** permet de générer des fiches de contrôle o�
 
 ## À quoi sert cet outil ?
 
-Sur de nombreux chantiers, le contrôle d'implantation se fait par rapport à des axes de référence : axe de voirie, axe de bâtiment, fil d'eau, etc. Plutôt que de simplement lister des coordonnées absolues, vous avez besoin de connaître la position de chaque point **par rapport à l'axe** : est-il à droite, à gauche, de combien ?
+Sur de nombreux chantiers, le contrôle d'implantation se fait par rapport à des axes de référence : axe de voirie, axe de bâtiment, fil d'eau, etc. Plutôt que de simplement lister des coordonnées absolues, il est nécessaire de connaître la position de chaque point **par rapport à l'axe** : est-il à droite, à gauche, de combien ?
 
 La fiche par axe répond à ce besoin en :
-- Vous permettant de définir un ou plusieurs axes de référence (chacun défini par deux points)
-- Assignant vos points à l'axe correspondant
+- Permettant de définir un ou plusieurs axes de référence (chacun défini par deux points)
+- Assignant les points à l'axe correspondant
 - Calculant automatiquement la distance orthogonale et la distance le long de l'axe
 - Générant un PDF organisé par axe, avec les distances calculées
 
@@ -25,7 +25,7 @@ C'est l'outil idéal pour les contrôles de voirie, d'alignement de façades, de
 ## Comment l'utiliser
 
 <Steps>
-  <Step title="Définir vos axes de référence">
+  <Step title="Définir les axes de référence">
     Un axe est défini par **deux points** (point de départ et point d'arrivée). Ajoutez un ou plusieurs axes en renseignant les coordonnées de leurs extrémités.
 
     <Info>
@@ -35,15 +35,15 @@ C'est l'outil idéal pour les contrôles de voirie, d'alignement de façades, de
     </Info>
   </Step>
 
-  <Step title="Ajouter vos points">
-    Ajoutez vos points manuellement ou importez-les par CSV. Chaque point est défini par son nom et ses coordonnées X, Y, Z.
+  <Step title="Ajouter les points">
+    Ajoutez les points manuellement ou importez-les par CSV. Chaque point est défini par son nom et ses coordonnées X, Y, Z.
   </Step>
 
   <Step title="Assigner les points aux axes">
-    Associez chaque point à l'axe par rapport auquel vous souhaitez calculer les distances. Un point ne peut être assigné qu'à un seul axe.
+    Associez chaque point à l'axe par rapport auquel les distances doivent être calculées. Un point ne peut être assigné qu'à un seul axe.
 
     <Tip>
-      Si un même point physique doit être contrôlé par rapport à plusieurs axes, vous pouvez le dupliquer et assigner chaque copie à un axe différent.
+      Si un même point physique doit être contrôlé par rapport à plusieurs axes, dupliquez-le et assignez chaque copie à un axe différent.
     </Tip>
   </Step>
 
@@ -58,7 +58,7 @@ C'est l'outil idéal pour les contrôles de voirie, d'alignement de façades, de
   </Step>
 
   <Step title="Générer le PDF">
-    Le PDF généré est organisé par axe. Pour chaque axe, vous retrouvez :
+    Le PDF généré est organisé par axe. Pour chaque axe, le document présente :
     - La définition de l'axe (coordonnées des deux points)
     - Le tableau des points assignés avec leurs distances
     - Les informations du projet
@@ -69,11 +69,11 @@ C'est l'outil idéal pour les contrôles de voirie, d'alignement de façades, de
 
 ### Axes multiples
 
-Vous pouvez définir autant d'axes que nécessaire dans un même projet. Chaque axe possède un nom et deux points de définition. Le PDF final regroupera les points par axe.
+Il est possible de définir autant d'axes que nécessaire dans un même projet. Chaque axe possède un nom et deux points de définition. Le PDF final regroupera les points par axe.
 
 ### Éditeur de type tableur
 
-L'éditeur affiche vos points dans un tableau interactif. Vous pouvez modifier les coordonnées directement dans le tableau. Les distances orthogonales sont recalculées en temps réel.
+L'éditeur affiche les points dans un tableau interactif. Les coordonnées peuvent être modifiées directement dans le tableau. Les distances orthogonales sont recalculées en temps réel.
 
 ### Convention de signe
 
@@ -85,7 +85,7 @@ La convention est cohérente et prévisible :
 
 ### Import CSV
 
-Comme pour la fiche de contrôle classique, vous pouvez importer vos points depuis un fichier CSV. Après l'import, il vous suffit d'assigner chaque point à son axe.
+Comme pour la fiche de contrôle classique, les points peuvent être importés depuis un fichier CSV. Après l'import, il suffit d'assigner chaque point à son axe.
 
 ## Voir aussi
 

@@ -6,7 +6,7 @@ icon: "calculator"
 
 ## Contexte
 
-Lorsqu'on installe une station totale sur un chantier, la précision de la position calculée dépend non seulement de la précision angulaire de l'instrument, mais aussi de la **disposition géométrique** des points de référence utilisés pour la résection.
+Lors de l'installation d'une station totale sur un chantier, la précision de la position calculée dépend non seulement de la précision angulaire de l'instrument, mais aussi de la **disposition géométrique** des points de référence utilisés pour la résection.
 
 Le **GDOP** (Geometric Dilution of Precision) quantifie cet effet géométrique. Deux configurations avec le même instrument peuvent donner des précisions très différentes :
 
@@ -23,7 +23,7 @@ Le calcul se décompose en cinq étapes : construction de la matrice de design, 
 
 ### Étape 1 -- Matrice de design $H$ (Jacobienne)
 
-Pour chaque point de référence $i$ situé en $(x_i, y_i, z_i)$, observé depuis la station $(s_x, s_y, s_z)$, on calcule d'abord les différences de coordonnées :
+Pour chaque point de référence $i$ situé en $(x_i, y_i, z_i)$, observé depuis la station $(s_x, s_y, s_z)$, les différences de coordonnées sont d'abord calculées :
 
 $$
 \Delta x_i = x_i - s_x \qquad \Delta y_i = y_i - s_y \qquad \Delta z_i = z_i - s_z
@@ -97,7 +97,7 @@ L'inversion de $N$ donne la matrice cofacteur $Q = N^{-1}$, qui décrit l'incert
 
 <Tabs>
   <Tab title="Cas 3D (géométrie verticale suffisante)">
-    Lorsque $N_{33} > 10^{-12}$ (les observations apportent de l'information verticale), on utilise l'inversion 3D complète.
+    Lorsque $N_{33} > 10^{-12}$ (les observations apportent de l'information verticale), l'inversion 3D complète est utilisée.
 
     **Cofacteurs de la matrice des cofacteurs** (comatrice) :
 
@@ -180,7 +180,7 @@ $$
 \text{score}_{\text{brut}} = 100 \times \text{clamp}\!\left(1 - \frac{\sigma_{\text{pos}}}{\text{seuil}},\ 0,\ 1\right)
 $$
 
-où $\text{seuil}$ est la tolérance linéaire définie dans les préférences utilisateur (par défaut, la tolérance de l'outil de résection).
+où $\text{seuil}$ est la tolérance linéaire définie dans les préférences (par défaut, la tolérance de l'outil de résection).
 
 **2. Facteur de redondance** :
 
@@ -206,18 +206,18 @@ $$
 
 Dans l'outil **Résection 3D**, le score de qualité est calculé en temps réel :
 
-1. L'utilisateur place sa station et ses points de référence sur la carte.
+1. La station et les points de référence sont placés sur la carte.
 2. L'application calcule le GDOP pour la géométrie courante.
 3. La précision angulaire $\sigma_\theta$ est lue depuis les préférences (précision de l'instrument).
 4. Le seuil est la tolérance linéaire configurée dans les préférences de l'outil.
 5. Le score est affiché sous forme d'une jauge colorée à côté de chaque station.
 
 <Tip>
-  Pour améliorer le score, vous pouvez :
-  - **ajouter des références** pour augmenter la redondance ;
-  - **répartir les références** autour de la station (éviter qu'elles soient toutes du même côté) ;
-  - **varier les distances** aux références (pas toutes à la même distance) ;
-  - **varier les dénivelés** pour renforcer la géométrie verticale.
+  Pour améliorer le score :
+  - **Ajouter des références** pour augmenter la redondance ;
+  - **Répartir les références** autour de la station (éviter qu'elles soient toutes du même côté) ;
+  - **Varier les distances** aux références (pas toutes à la même distance) ;
+  - **Varier les dénivelés** pour renforcer la géométrie verticale.
 </Tip>
 
 ## Interprétation des résultats
@@ -226,8 +226,8 @@ Dans l'outil **Résection 3D**, le score de qualité est calculé en temps réel
 |-------|---------|----------------|
 | **80 -- 100** | Excellente | La géométrie est très favorable. La position de la station est bien déterminée. |
 | **60 -- 79** | Bonne | Acceptable pour la plupart des travaux courants. |
-| **40 -- 59** | Moyenne | La géométrie est limite. Envisagez d'ajouter des références ou de modifier leur disposition. |
-| **0 -- 39** | Insuffisante | La géométrie est inadéquate. La position de la station sera mal déterminée. Il faut revoir la configuration. |
+| **40 -- 59** | Moyenne | La géométrie est limite. Envisager d'ajouter des références ou de modifier leur disposition. |
+| **0 -- 39** | Insuffisante | La géométrie est inadéquate. La position de la station sera mal déterminée. Revoir la configuration. |
 
 <Warning>
   Un score élevé ne garantit pas l'absence d'erreurs grossières sur les coordonnées des références. Le GDOP mesure uniquement l'effet de la géométrie, en supposant que les coordonnées des références sont correctes et que les erreurs d'observation sont aléatoires.
@@ -238,7 +238,7 @@ Dans l'outil **Résection 3D**, le score de qualité est calculé en temps réel
     Chaque ligne de $H$ représente la dérivée partielle d'une observation angulaire par rapport aux coordonnées de la station. La direction horizontale (azimut) est l'arctangente de $\Delta x / \Delta y$, et sa dérivée par rapport à $s_x$ et $s_y$ donne les termes en $1/d_{2D}^2$. L'angle vertical dépend du rapport $\Delta z / d_{2D}$, ce qui produit les termes plus complexes de la deuxième ligne.
   </Accordion>
   <Accordion title="Quelle différence avec le GDOP GPS ?">
-    En GPS, le GDOP est basé sur des mesures de **distance** (pseudo-distances aux satellites). Ici, le GDOP est basé sur des mesures **angulaires** (directions horizontales et angles verticaux). La matrice de design est donc différente, mais le principe est le même : on propage les incertitudes des observations vers les inconnues de position via la matrice cofacteur.
+    En GPS, le GDOP est basé sur des mesures de **distance** (pseudo-distances aux satellites). Ici, le GDOP est basé sur des mesures **angulaires** (directions horizontales et angles verticaux). La matrice de design est donc différente, mais le principe reste le même : les incertitudes des observations sont propagées vers les inconnues de position via la matrice cofacteur.
   </Accordion>
   <Accordion title="Que se passe-t-il avec des références alignées ?">
     Si toutes les références sont alignées (sur une même droite), la matrice $N$ devient singulière ou presque singulière. Son déterminant tend vers zéro, la trace de $Q$ explose, et le score chute vers zéro. Cela reflète une réalité physique : des références alignées ne permettent pas de déterminer la position de la station dans la direction perpendiculaire à cet alignement.

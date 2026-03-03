@@ -23,7 +23,7 @@ L'algorithme de visibilité 3D de Topo.ninja résout ce problème en simulant le
 
 ### Étape 1 -- Construction du rayon
 
-On lance un rayon depuis la station vers chaque point de référence.
+Un rayon est lancé depuis la station vers chaque point de référence.
 
 **Origine du rayon** (position de l'oculaire de la station) :
 
@@ -31,7 +31,7 @@ $$
 O = (s_x,\ s_y,\ s_z + h_{\text{instrument}})
 $$
 
-où $h_{\text{instrument}}$ est la hauteur d'instrument saisie par l'utilisateur.
+où $h_{\text{instrument}}$ est la hauteur d'instrument saisie dans les préférences.
 
 **Extrémité du rayon** (position du point visé) :
 
@@ -80,7 +80,7 @@ Pour chaque obstacle (polygone ou mur) du projet, l'algorithme vérifie si le ra
 
 <AccordionGroup>
   <Accordion title="3a -- Intersection 2D (rayon vs arêtes de l'obstacle)">
-    Le rayon et chaque arête de l'obstacle sont projetés dans le plan horizontal $(x, y)$. On cherche un paramètre $t$ tel que :
+    Le rayon et chaque arête de l'obstacle sont projetés dans le plan horizontal $(x, y)$. L'algorithme cherche un paramètre $t$ tel que :
 
     $$
     0 < t < 1
@@ -91,7 +91,7 @@ Pour chaque obstacle (polygone ou mur) du projet, l'algorithme vérifie si le ra
     Ce test utilise l'algorithme classique d'intersection de deux segments en 2D.
   </Accordion>
   <Accordion title="3b -- Vérification de la hauteur au point d'intersection">
-    Si une intersection 2D est trouvée au paramètre $t$, on calcule la hauteur du rayon à ce point :
+    Si une intersection 2D est trouvée au paramètre $t$, la hauteur du rayon à ce point est calculée :
 
     $$
     h_{\text{rayon}}(t) = s_z + h_{\text{instrument}} + \Delta z \times t
@@ -124,7 +124,7 @@ Pour chaque obstacle (polygone ou mur) du projet, l'algorithme vérifie si le ra
 
 ### Étape 4 -- Qualité de visibilité des cibles (angle d'incidence)
 
-Pour les **cibles directionnelles** (peintes ou collées sur une surface), la visibilité seule ne suffit pas. Il faut aussi vérifier que l'angle sous lequel la cible est vue est acceptable.
+Pour les **cibles directionnelles** (peintes ou collées sur une surface), la visibilité seule ne suffit pas. Il faut aussi vérifier que l'angle sous lequel la cible est vue reste acceptable.
 
 **Angle d'incidence** : c'est l'angle entre le rayon de visée et la **normale à la surface** de la cible (son orientation).
 
@@ -132,7 +132,7 @@ $$
 \alpha_{\text{incidence}} = \arccos\!\left(\frac{|\vec{R} \cdot \vec{n}|}{|\vec{R}| \cdot |\vec{n}|}\right)
 $$
 
-où $\vec{n}$ est le vecteur normal à la surface de la cible (défini par l'orientation saisie par l'utilisateur).
+où $\vec{n}$ est le vecteur normal à la surface de la cible (défini par l'orientation saisie dans les préférences).
 
 **Classification de la qualité** :
 
@@ -170,7 +170,7 @@ $$
 
 où $G_{\text{min}}$ est la séparation angulaire minimum (configurable), l'une des deux est rétrogradée en référence **optionnelle** (non comptée dans le score GDOP principal).
 
-**Règles de priorité** pour choisir laquelle rester principale :
+**Règles de priorité** pour choisir laquelle reste principale :
 
 | Critère | Priorité |
 |---------|----------|
@@ -186,9 +186,9 @@ où $G_{\text{min}}$ est la séparation angulaire minimum (configurable), l'une 
 
 Dans l'outil **Résection 3D** :
 
-1. L'utilisateur place les obstacles (murs, bâtiments) sur la carte avec leur altitude.
+1. Les obstacles (murs, bâtiments) sont placés sur la carte avec leur altitude.
 2. Les points de référence (clous et cibles) sont positionnés avec leurs coordonnées 3D.
-3. La station est placée et l'utilisateur renseigne la hauteur d'instrument.
+3. La station est placée et la hauteur d'instrument est renseignée.
 4. À chaque modification, l'algorithme recalcule la visibilité de toutes les références.
 5. L'affichage indique pour chaque référence :
    - **Visible** ou **masquée** (et par quel obstacle) ;
@@ -212,13 +212,13 @@ Les paramètres de l'algorithme sont configurables dans les préférences de l'o
     La ligne de visée est dégagée et l'angle d'observation est favorable. Cette référence sera pleinement exploitée dans le calcul de résection.
   </Accordion>
   <Accordion title="Référence visible, qualité acceptable">
-    La ligne de visée est dégagée mais l'angle d'incidence est élevé. La mesure sera possible mais avec une précision réduite. Si d'autres références de meilleure qualité sont disponibles, privilégiez-les.
+    La ligne de visée est dégagée mais l'angle d'incidence est élevé. La mesure sera possible mais avec une précision réduite. Si d'autres références de meilleure qualité sont disponibles, privilégier celles-ci.
   </Accordion>
   <Accordion title="Référence visible, qualité mauvaise">
     La cible est vue sous un angle trop rasant. La mesure sera peu fiable. Cette référence est déconseillée pour la résection.
   </Accordion>
   <Accordion title="Référence masquée">
-    Un obstacle bloque la ligne de visée. Cette référence ne peut pas être utilisée depuis cette position de station. Déplacez la station ou utilisez d'autres références.
+    Un obstacle bloque la ligne de visée. Cette référence ne peut pas être utilisée depuis cette position de station. Déplacer la station ou utiliser d'autres références.
   </Accordion>
   <Accordion title="Référence optionnelle (filtrage angulaire)">
     Cette référence est visible mais trop proche angulairement d'une autre référence principale. Elle est conservée comme option de secours mais n'est pas comptée dans le score de qualité principal. Si la référence principale associée devient inaccessible sur le terrain, celle-ci peut prendre le relais.
@@ -226,7 +226,7 @@ Les paramètres de l'algorithme sont configurables dans les préférences de l'o
 </AccordionGroup>
 
 <Tip>
-  Pour optimiser la visibilité, essayez de placer la station en position surélevée (si possible) et de répartir les références à des gisements bien espacés. Un espacement angulaire régulier (par exemple 4 références à environ 90 deg d'écart) donne généralement les meilleurs résultats en termes de visibilité et de GDOP.
+  Pour optimiser la visibilité, placer la station en position surélevée (si possible) et répartir les références à des gisements bien espacés. Un espacement angulaire régulier (par exemple 4 références à environ 90 deg d'écart) donne généralement les meilleurs résultats en termes de visibilité et de GDOP.
 </Tip>
 
 ## Voir aussi

@@ -4,7 +4,7 @@ description: "Associez automatiquement chaque point implanté à son point proje
 icon: "link"
 ---
 
-L'appairage automatique est l'étape qui suit l'assignation des rôles. Une fois vos points répartis entre "Points Projet" et "Points Implantés", Topo.ninja peut les associer automatiquement pour calculer les écarts entre positions théoriques et positions mesurées.
+L'appairage automatique est l'étape qui suit l'assignation des rôles. Une fois les points répartis entre "Points Projet" et "Points Implantés", Topo.ninja peut les associer automatiquement pour calculer les écarts entre positions théoriques et positions mesurées.
 
 <Note>
   Disponible sur les plans **Standard**, **Premium** et **Enterprise**.
@@ -32,13 +32,13 @@ Chaque point implanté (mesuré sur le terrain) doit être associé à son point
 
     **Fonctionnement détaillé :**
     1. Le nom du point implanté est décomposé en segments
-    2. Les marqueurs connus (`stkd`, `stked`, `imp`, ou vos marqueurs personnalisés) sont retirés
+    2. Les marqueurs connus (`stkd`, `stked`, `imp`, ou les marqueurs personnalisés) sont retirés
     3. Les segments restants forment des candidats : préfixe, suffixe, combinaisons
     4. Chaque candidat est comparé (insensible à la casse) aux noms des points projet
     5. Le premier match est retenu comme appairage
 
     <Tip>
-      L'appairage par nom fonctionne d'autant mieux que vos conventions de nommage sont cohérentes. Si votre point projet s'appelle `BORNE_A`, nommez le point implanté `BORNE_A_STKD` ou `IMP_BORNE_A`.
+      L'appairage par nom fonctionne d'autant mieux que les conventions de nommage sont cohérentes. Si le point projet s'appelle `BORNE_A`, nommez le point implanté `BORNE_A_STKD` ou `IMP_BORNE_A`.
     </Tip>
   </Tab>
   <Tab title="Par distance">
@@ -55,10 +55,10 @@ Chaque point implanté (mesuré sur le terrain) doit être associé à son point
 
     **Paramètres :**
     - **Seuil de distance** : distance maximale (en mètres) pour accepter un appairage. Au-delà de ce seuil, le point implanté reste non appairé.
-    - **Mode 2D / 3D** : choisissez selon que l'altitude est pertinente ou non pour votre projet.
+    - **Mode 2D / 3D** : choisissez selon que l'altitude est pertinente ou non pour le projet.
 
     <Warning>
-      Si plusieurs points projet se trouvent dans le seuil de distance, c'est le **plus proche** qui est retenu. Réduisez le seuil si vous obtenez des appairages incorrects dans des zones denses.
+      Si plusieurs points projet se trouvent dans le seuil de distance, c'est le **plus proche** qui est retenu. Réduisez le seuil en cas d'appairages incorrects dans des zones denses.
     </Warning>
   </Tab>
 </Tabs>
@@ -67,7 +67,7 @@ Chaque point implanté (mesuré sur le terrain) doit être associé à son point
 
 <Steps>
   <Step title="Assigner les rôles">
-    Assurez-vous que vos points sont correctement répartis entre "Points Projet" et "Points Implantés" grâce à l'assignateur de rôles.
+    Assurez-vous que les points sont correctement répartis entre "Points Projet" et "Points Implantés" grâce à l'assignateur de rôles.
   </Step>
   <Step title="Choisir le mode d'appairage">
     Sélectionnez **Par nom** ou **Par distance**. L'appairage par nom est recommandé en premier.
@@ -91,7 +91,7 @@ Chaque point implanté (mesuré sur le terrain) doit être associé à son point
     La méthode la plus sûre. Lancez d'abord l'appairage par nom pour traiter les points bien nommés, puis utilisez l'appairage par distance uniquement pour les points restants non appairés.
   </Accordion>
   <Accordion title="Stratégie 2 : Distance seule avec seuil serré">
-    Si vos noms de points ne suivent aucune convention, utilisez l'appairage par distance avec un seuil très faible (par exemple 0.5 m). Cela ne fonctionne que si chaque point implanté est proche de son point projet.
+    Si les noms de points ne suivent aucune convention, utilisez l'appairage par distance avec un seuil très faible (par exemple 0.5 m). Cela ne fonctionne que si chaque point implanté est proche de son point projet.
   </Accordion>
   <Accordion title="Stratégie 3 : Appairage mixte">
     Pour les grands projets, combinez les deux méthodes : appairage par nom en premier (résolution de la majorité des points), puis vérification manuelle et appairage par distance pour les cas restants.
@@ -116,7 +116,7 @@ Chaque point implanté (mesuré sur le terrain) doit être associé à son point
 
 <CardGroup cols={2}>
   <Card title="Assignateur de rôles" icon="arrows-left-right-to-line" href="/fr/fonctionnalites/assignateur-roles">
-    Étape précédente : classifier vos points
+    Étape précédente : classifier les points
   </Card>
   <Card title="Fiche signalétique" icon="id-card" href="/fr/outils/fiche-signaletique">
     L'outil qui exploite l'appairage pour générer le rapport

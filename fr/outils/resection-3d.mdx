@@ -4,7 +4,7 @@ description: "Planifiez la position optimale de votre station totale en analysan
 icon: "location-crosshairs"
 ---
 
-L'outil de **Planification de résection 3D** vous aide à trouver la position optimale pour installer votre station totale avant de vous rendre sur le terrain. En combinant l'analyse de visibilité 3D, le calcul de qualité géométrique (GDOP) et la détection de contraintes angulaires, il vous permet de préparer vos stationnements en amont et de gagner du temps sur le chantier.
+L'outil de **Planification de résection 3D** aide à trouver la position optimale pour installer une station totale avant de se rendre sur le terrain. En combinant l'analyse de visibilité 3D, le calcul de qualité géométrique (GDOP) et la détection de contraintes angulaires, il permet de préparer les stationnements en amont et de gagner du temps sur le chantier.
 
 <Note>
   **Disponible sur :** Premium, Enterprise
@@ -12,20 +12,20 @@ L'outil de **Planification de résection 3D** vous aide à trouver la position o
 
 ## À quoi sert cet outil ?
 
-Quand vous arrivez sur un chantier pour effectuer une résection, vous devez trouver un emplacement de station qui :
+En arrivant sur un chantier pour effectuer une résection, il faut trouver un emplacement de station qui :
 
 1. **Voit suffisamment de points de référence** (cibles et clous)
 2. **Offre une bonne géométrie** (les références ne sont pas alignées)
-3. **Respecte les distances maximales** de votre instrument
+3. **Respecte les distances maximales** de l'instrument
 4. **Évite les obstacles** (bâtiments, murs, talus)
 
-En planifiant à l'avance, vous évitez les allers-retours inutiles et les stationnements sous-optimaux. L'outil vous montre exactement où vous placer pour obtenir la meilleure qualité de résection.
+En planifiant à l'avance, les allers-retours inutiles et les stationnements sous-optimaux sont évités. L'outil montre exactement où se placer pour obtenir la meilleure qualité de résection.
 
 ## Comment l'utiliser
 
 <Steps>
   <Step title="Configurer les préférences">
-    Avant de commencer, définissez les paramètres de votre instrument et de votre configuration :
+    Avant de commencer, définissez les paramètres de l'instrument et de la configuration :
     - **Précision angulaire** de la station totale (en secondes d'arc)
     - **Tolérance linéaire** acceptée (en millimètres)
     - **Hauteur d'instrument** et **hauteur de prisme**
@@ -33,28 +33,28 @@ En planifiant à l'avance, vous évitez les allers-retours inutiles et les stati
     - **Mode de distance** : distance directe maximale OU distance dérivée de la précision angulaire et de la tolérance linéaire
 
     <Tip>
-      Le mode de distance dérivé est plus réaliste : il calcule la portée maximale en fonction de la précision de votre station et de la tolérance que vous acceptez. Plus votre station est précise, plus vous pouvez vous éloigner.
+      Le mode de distance dérivé est plus réaliste : il calcule la portée maximale en fonction de la précision de la station et de la tolérance acceptée. Plus la station est précise, plus il est possible de s'éloigner.
     </Tip>
   </Step>
 
   <Step title="Ajouter les points de référence">
-    Placez vos points de référence sur la carte interactive. Deux types de références sont disponibles :
+    Placez les points de référence sur la carte interactive. Deux types de références sont disponibles :
 
     **Cibles (directionnelles)** : marqueurs avec une orientation. L'angle d'incidence entre la station et la cible est pris en compte. Si la station est trop désaxée par rapport à la face de la cible, la visée est dégradée.
 
     **Clous (omnidirectionnels)** : prismes observables depuis n'importe quelle direction. Aucune contrainte d'incidence.
 
-    Vous pouvez ajouter des points manuellement sur la carte ou les importer depuis un fichier (CSV, DXF, GeoJSON).
+    Il est possible d'ajouter des points manuellement sur la carte ou de les importer depuis un fichier (CSV, DXF, GeoJSON).
   </Step>
 
   <Step title="Dessiner les obstacles">
     Ajoutez les obstacles qui bloquent la visibilité : bâtiments, murs, talus, etc. Les obstacles sont dessinés sous forme de polygones sur la carte et peuvent avoir une **élévation** (hauteur).
 
-    L'outil prend en compte ces obstacles en 3D lors de l'analyse de visibilité : un rayon visuel qui passe au-dessus d'un mur bas n'est pas bloqué, même si le mur est entre la station et la référence.
+    L'outil prend en compte ces obstacles en 3D lors de l'analyse de visibilité : un rayon visuel qui passe au-dessus d'un mur bas n'est pas bloqué, même si le mur se trouve entre la station et la référence.
   </Step>
 
   <Step title="Placer la station">
-    Cliquez sur la carte pour placer votre station à l'emplacement envisagé. L'outil calcule immédiatement :
+    Cliquez sur la carte pour placer la station à l'emplacement envisagé. L'outil calcule immédiatement :
     - Quelles références sont **visibles** depuis cette position
     - La **qualité géométrique** (GDOP) de la résection
     - Les **contraintes angulaires** (détection des références alignées)
@@ -72,17 +72,17 @@ En planifiant à l'avance, vous évitez les allers-retours inutiles et les stati
     - **Rouge** : mauvaise qualité (GDOP élevé)
     - **Gris** : position impossible (pas assez de références visibles)
 
-    Déplacez votre station dans les zones vertes pour obtenir la meilleure résection.
+    Déplacez la station dans les zones vertes pour obtenir la meilleure résection.
   </Step>
 
   <Step title="Ajuster et exporter">
-    Une fois la position optimale trouvée, vous pouvez :
+    Une fois la position optimale trouvée, il est possible de :
     - **Exporter** le projet en GeoJSON, JSON ou CSV pour l'utiliser dans un autre logiciel
     - **Partager** le projet via un lien
     - Sauvegarder pour y revenir plus tard
 
     <Tip>
-      L'export GeoJSON est compatible avec QGIS, AutoCAD et la plupart des logiciels SIG. Vous pouvez ainsi superposer votre planification de station sur le plan de chantier.
+      L'export GeoJSON est compatible avec QGIS, AutoCAD et la plupart des logiciels SIG. Il permet ainsi de superposer la planification de station sur le plan de chantier.
     </Tip>
   </Step>
 </Steps>
@@ -91,7 +91,7 @@ En planifiant à l'avance, vous évitez les allers-retours inutiles et les stati
 
 ### Carte interactive
 
-Le canvas de planification est une carte interactive avec fond de tuiles terrain. Vous pouvez zoomer, déplacer la vue et interagir avec tous les éléments (station, références, obstacles) directement sur la carte.
+Le canvas de planification est une carte interactive avec fond de tuiles terrain. Il est possible de zoomer, déplacer la vue et interagir avec tous les éléments (station, références, obstacles) directement sur la carte.
 
 ### Types de références
 
@@ -123,17 +123,17 @@ Un GDOP faible (proche de 1) indique une configuration optimale. Un GDOP élevé
 
 ### Filtrage angulaire
 
-L'outil détecte automatiquement les configurations où les références sont quasi-alignées. Des références alignées dégradent la qualité de la résection car elles n'apportent pas d'information géométrique indépendante. Vous définissez la séparation angulaire minimale dans les préférences.
+L'outil détecte automatiquement les configurations où les références sont quasi-alignées. Des références alignées dégradent la qualité de la résection car elles n'apportent pas d'information géométrique indépendante. Définissez la séparation angulaire minimale dans les préférences.
 
 ### Points de contrainte
 
-Vous pouvez marquer certaines références comme **obligatoires**. L'analyse ne considérera alors que les positions de station depuis lesquelles ces références sont visibles. C'est utile lorsque vous devez absolument viser certains points connus.
+Il est possible de marquer certaines références comme **obligatoires**. L'analyse ne considérera alors que les positions de station depuis lesquelles ces références sont visibles. C'est utile lorsqu'il faut absolument viser certains points connus.
 
 ### Mode de distance
 
 Deux modes sont disponibles :
-- **Distance directe** : vous définissez une distance maximale en mètres
-- **Distance dérivée** : la distance maximale est calculée à partir de votre précision angulaire et de la tolérance linéaire acceptée. Plus votre station est précise, plus la portée est grande.
+- **Distance directe** : définir une distance maximale en mètres
+- **Distance dérivée** : la distance maximale est calculée à partir de la précision angulaire et de la tolérance linéaire acceptée. Plus la station est précise, plus la portée est grande.
 
 ### Import et export
 
@@ -153,11 +153,11 @@ Deux modes sont disponibles :
 
 ### Partage par lien
 
-Générez un lien de partage pour permettre à un collègue de visualiser votre planification. Le lien contient toutes les données du projet (références, obstacles, station, préférences).
+Générez un lien de partage pour permettre à un collègue de visualiser la planification. Le lien contient toutes les données du projet (références, obstacles, station, préférences).
 
 ### Annuler / Rétablir
 
-Toutes les actions sont enregistrées. Utilisez les raccourcis Annuler/Rétablir pour revenir en arrière sans perdre votre travail.
+Toutes les actions sont enregistrées. Utilisez les raccourcis Annuler/Rétablir pour revenir en arrière sans perdre le travail en cours.
 
 ## Voir aussi
 

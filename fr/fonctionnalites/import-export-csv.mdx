@@ -1,10 +1,10 @@
 ---
 title: "Import / Export CSV"
-description: "Importez et exportez vos données topographiques au format CSV en quelques clics."
+description: "Importez et exportez des données topographiques au format CSV en quelques clics."
 icon: "file-csv"
 ---
 
-L'import et l'export CSV vous permettent d'échanger facilement vos données entre Topo.ninja et vos autres logiciels (Excel, Covadis, Leica Infinity, Trimble Business Center, etc.). Cette fonctionnalité est disponible sur tous les plans.
+L'import et l'export CSV permettent d'échanger facilement des données entre Topo.ninja et d'autres logiciels (Excel, Covadis, Leica Infinity, Trimble Business Center, etc.). Cette fonctionnalité est disponible sur tous les plans.
 
 <Note>
   Disponible sur **tous les plans**.
@@ -14,16 +14,16 @@ L'import et l'export CSV vous permettent d'échanger facilement vos données ent
 
 ### Import
 
-Topo.ninja analyse votre fichier CSV pour détecter automatiquement :
+Topo.ninja analyse le fichier CSV pour détecter automatiquement :
 - Le **délimiteur** utilisé (virgule, point-virgule, tabulation)
 - Les **en-têtes de colonnes** pour proposer un mapping intelligent
 - Le **format des coordonnées** (décimales, DMS, etc.)
 
-Vous n'avez qu'à déposer votre fichier, vérifier le mapping proposé, et valider.
+Il suffit de déposer le fichier, vérifier le mapping proposé, et valider.
 
 ### Export
 
-Après traitement de vos données, vous pouvez exporter les résultats sous plusieurs formes :
+Après traitement des données, il est possible d'exporter les résultats sous plusieurs formes :
 - **CSV complet** : toutes les données du projet
 - **CSV converti** : coordonnées transformées dans le système cible
 - **CSV fusionné** : données sources et résultats dans un seul fichier
@@ -31,8 +31,8 @@ Après traitement de vos données, vous pouvez exporter les résultats sous plus
 ## Utilisation
 
 <Steps>
-  <Step title="Préparer votre fichier CSV">
-    Assurez-vous que votre fichier comporte une **ligne d'en-tête**. Les formats courants sont :
+  <Step title="Préparer le fichier CSV">
+    Assurez-vous que le fichier comporte une **ligne d'en-tête**. Les formats courants sont :
     ```
     Nom,X,Y,Z
     Nom,Latitude,Longitude,Altitude
@@ -42,13 +42,13 @@ Après traitement de vos données, vous pouvez exporter les résultats sous plus
   <Step title="Importer le fichier">
     Deux méthodes possibles :
     - **Glisser-déposer** le fichier directement sur la zone d'import
-    - **Cliquer** sur le bouton d'import et sélectionner votre fichier
+    - **Cliquer** sur le bouton d'import et sélectionner le fichier
   </Step>
   <Step title="Vérifier le mapping des colonnes">
-    Topo.ninja détecte automatiquement vos colonnes grâce aux en-têtes. Vérifiez que chaque colonne est correctement associée (Nom, X, Y, Z) et ajustez si nécessaire.
+    Topo.ninja détecte automatiquement les colonnes grâce aux en-têtes. Vérifiez que chaque colonne est correctement associée (Nom, X, Y, Z) et ajustez si nécessaire.
   </Step>
   <Step title="Valider l'import">
-    Confirmez l'import. Vos points apparaissent dans l'outil en cours d'utilisation (éditeur en masse, assignateur de rôles, etc.).
+    Confirmez l'import. Les points apparaissent dans l'outil en cours d'utilisation (éditeur en masse, assignateur de rôles, etc.).
   </Step>
 </Steps>
 
@@ -86,18 +86,18 @@ Après traitement de vos données, vous pouvez exporter les résultats sous plus
 ## Problèmes courants
 
 <Warning>
-  **Séparateur décimal** : en France, le séparateur décimal est souvent la virgule (1234,56) tandis que le séparateur de colonnes est le point-virgule. Si vos coordonnées semblent incorrectes après import, vérifiez que Topo.ninja a bien détecté le bon délimiteur.
+  **Séparateur décimal** : en France, le séparateur décimal est souvent la virgule (1234,56) tandis que le séparateur de colonnes est le point-virgule. Si les coordonnées semblent incorrectes après import, vérifiez que Topo.ninja a bien détecté le bon délimiteur.
 </Warning>
 
 <AccordionGroup>
-  <Accordion title="Mes colonnes ne sont pas détectées">
-    Vérifiez que votre fichier contient bien une **première ligne d'en-tête**. Les en-têtes doivent être descriptifs : `Nom`, `X`, `Y`, `Z`, `Est`, `Nord`, `Latitude`, `Longitude`, etc. Un fichier sans en-tête ne pourra pas être mappé automatiquement.
+  <Accordion title="Les colonnes ne sont pas détectées">
+    Vérifiez que le fichier contient bien une **première ligne d'en-tête**. Les en-têtes doivent être descriptifs : `Nom`, `X`, `Y`, `Z`, `Est`, `Nord`, `Latitude`, `Longitude`, etc. Un fichier sans en-tête ne pourra pas être mappé automatiquement.
   </Accordion>
   <Accordion title="Les coordonnées sont inversées">
     Certains logiciels exportent les coordonnées en ordre (Y, X) au lieu de (X, Y). Utilisez le mapping de colonnes pour réassigner manuellement les champs.
   </Accordion>
   <Accordion title="Caractères spéciaux dans les noms">
-    Les accents et caractères spéciaux dans les noms de points sont supportés. Si vous rencontrez des problèmes d'affichage, vérifiez que votre fichier est encodé en **UTF-8**.
+    Les accents et caractères spéciaux dans les noms de points sont supportés. En cas de problème d'affichage, vérifiez que le fichier est encodé en **UTF-8**.
   </Accordion>
 </AccordionGroup>
 
@@ -108,20 +108,20 @@ Après traitement de vos données, vous pouvez exporter les résultats sous plus
 </Tip>
 
 <Tip>
-  **Format minimal** : le format le plus simple accepté est `Nom,X,Y,Z`. Si vous n'avez pas d'altitude, la colonne Z est optionnelle.
+  **Format minimal** : le format le plus simple accepté est `Nom,X,Y,Z`. Sans altitude, la colonne Z est optionnelle.
 </Tip>
 
 <Tip>
-  **Gros fichiers** : l'import fonctionne directement dans votre navigateur. Même avec plusieurs milliers de points, le traitement est quasi instantané.
+  **Gros fichiers** : l'import fonctionne directement dans le navigateur. Même avec plusieurs milliers de points, le traitement est quasi instantané.
 </Tip>
 
 ## Voir aussi
 
 <CardGroup cols={2}>
   <Card title="Éditeur en masse" icon="table-cells-large" href="/fr/fonctionnalites/editeur-masse">
-    Éditez vos points importés dans un tableur intégré
+    Éditez les points importés dans un tableur intégré
   </Card>
   <Card title="Assignateur de rôles" icon="arrows-left-right-to-line" href="/fr/fonctionnalites/assignateur-roles">
-    Classifiez vos points après import
+    Classifiez les points après import
   </Card>
 </CardGroup>
