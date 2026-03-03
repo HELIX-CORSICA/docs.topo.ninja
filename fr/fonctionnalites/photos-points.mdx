@@ -1,64 +1,39 @@
 ---
 title: "Photos de points"
-description: "Ajoutez des photos aux points topographiques pour documenter les levers et enrichir les rapports PDF."
+description: "Associe des photos aux points topographiques avec compression automatique côté client et intégration dans les PDF."
 icon: "camera"
 ---
 
-La fonctionnalité de photos de points permet d'associer des images à chacun des points topographiques. Ces photos sont ensuite intégrées dans les rapports PDF générés, offrant un contexte visuel précieux pour la vérification et la traçabilité des travaux.
+## Résumé
 
-<Note>
-  Disponible dans les outils **Fiche signalétique** et **Fiche axe**, sur tous les plans.
-</Note>
+Associe des photos aux points topographiques. Les images sont compressées automatiquement côté client (pas d'envoi serveur) et intégrées dans les PDF générés.
 
-## Comment ça fonctionne
+## Principe
 
-Chaque point du projet peut recevoir une ou plusieurs photos. Les images sont automatiquement compressées dans le navigateur avant d'être intégrées au projet. Aucune image n'est envoyée vers un serveur : tout reste local dans le navigateur.
+Chaque point peut recevoir une ou plusieurs photos. Les images sont compressées dans le navigateur avant d'être stockées en Base64 dans les données du projet. Lors de la génération du PDF, les photos sont automatiquement incluses à côté des données du point correspondant. Aucune image n'est envoyée vers un serveur.
 
-**Compression automatique :**
-- Taille maximale : **1 Mo** par image après compression
-- Dimension maximale : **1024 px** (le côté le plus long)
-- Format : les images sont converties et optimisées automatiquement
+La fonctionnalité est disponible dans : Fiche signalétique, Fiche de contrôle, Fiche axe.
 
-## Utilisation
+## Étapes d'utilisation
 
-<Steps>
-  <Step title="Sélectionner un point">
-    Dans la fiche signalétique ou la fiche axe, cliquez sur le point auquel ajouter une photo.
-  </Step>
-  <Step title="Ajouter une photo">
-    Deux méthodes :
-    - **Glisser-déposer** : faites glisser l'image directement sur la zone de dépôt
-    - **Sélecteur de fichier** : cliquez sur le bouton d'ajout de photo et choisissez le fichier
-  </Step>
-  <Step title="Vérifier la compression">
-    L'image est automatiquement compressée. Le résultat est visible directement dans l'interface. Si la photo est trop lourde, la compression est appliquée automatiquement pour respecter les limites.
-  </Step>
-  <Step title="Ajouter d'autres photos (optionnel)">
-    Répétez l'opération pour ajouter plusieurs photos au même point. Il n'y a pas de limite stricte au nombre de photos par point.
-  </Step>
-  <Step title="Générer le PDF">
-    Lors de la génération du rapport PDF, les photos sont automatiquement intégrées à côté des données du point correspondant.
-  </Step>
-</Steps>
+**Étape 1 -- Sélectionner un point**
+Dans l'un des outils compatibles, cliquer sur le point auquel ajouter une photo.
 
-## Bonnes pratiques sur le terrain
+**Étape 2 -- Ajouter une photo**
+Glisser-déposer l'image sur la zone de dépôt ou utiliser le sélecteur de fichier.
 
-<AccordionGroup>
-  <Accordion title="Cadrage de la photo">
-    Centrez le marqueur ou le clou topographique dans la photo. Incluez suffisamment d'environnement pour que le point soit facilement identifiable sur le terrain lors d'une visite ultérieure.
-  </Accordion>
-  <Accordion title="Éclairage">
-    Évitez les contre-jours et les ombres fortes sur le marqueur. En extérieur, le temps couvert offre un éclairage homogène idéal.
-  </Accordion>
-  <Accordion title="Informations complémentaires">
-    Prenez une photo rapprochée du marqueur, puis une photo de contexte montrant l'environnement autour du point. Les deux types sont utiles pour les rapports.
-  </Accordion>
-  <Accordion title="Organisation">
-    Nommez les photos avec le nom du point correspondant avant l'import. Cela facilite l'association et la traçabilité.
-  </Accordion>
-</AccordionGroup>
+**Étape 3 -- Vérifier la compression**
+L'image est compressée automatiquement. Le résultat est visible dans l'interface.
 
-## Spécifications techniques
+**Étape 4 -- Ajouter d'autres photos (optionnel)**
+Répéter l'opération pour ajouter plusieurs photos au même point.
+
+**Étape 5 -- Générer le PDF**
+Les photos sont automatiquement intégrées dans le PDF à côté des données du point correspondant.
+
+## Détails techniques
+
+### Spécifications
 
 | Paramètre | Valeur |
 |-----------|--------|
@@ -69,31 +44,14 @@ Chaque point du projet peut recevoir une ou plusieurs photos. Les images sont au
 | Compression | Automatique, côté client |
 | Inclusion PDF | Automatique à la génération |
 
-<Info>
-  Les photos sont stockées dans les données du projet en Base64. Elles sont sauvegardées avec le projet et restaurées automatiquement à la réouverture. Aucun téléchargement vers un serveur n'est nécessaire.
-</Info>
+### Outils compatibles
 
-## Astuces
+| Outil | Support photos |
+|-------|---------------|
+| Fiche signalétique | Par point et par paire |
+| Fiche de contrôle | Par point |
+| Fiche axe | Par point |
 
-<Tip>
-  **Photographier sur le terrain** : l'idéal est de photographier chaque point au moment du lever ou de l'implantation. Cela évite de devoir retourner sur site pour documenter les points.
-</Tip>
+### Stockage
 
-<Tip>
-  **Pas besoin de redimensionner** : ne perdez pas de temps à redimensionner les photos avant l'import. La compression automatique s'en charge. Importez directement depuis le téléphone ou l'appareil photo.
-</Tip>
-
-<Tip>
-  **Plusieurs photos par point** : n'hésitez pas à ajouter une vue rapprochée et une vue d'ensemble. Dans le PDF, les deux photos apparaîtront et faciliteront l'identification du point.
-</Tip>
-
-## Voir aussi
-
-<CardGroup cols={2}>
-  <Card title="Fiche signalétique" icon="id-card" href="/fr/outils/fiche-signaletique">
-    Outil principal pour les photos de points
-  </Card>
-  <Card title="Fiche axe" icon="road" href="/fr/outils/fiche-axe">
-    Ajoutez aussi des photos dans les fiches par axe
-  </Card>
-</CardGroup>
+Les photos sont stockées dans les données du projet en Base64. Elles sont sauvegardées avec le projet et restaurées à la réouverture. Aucun téléchargement vers un serveur.

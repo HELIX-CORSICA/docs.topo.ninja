@@ -1,140 +1,66 @@
 ---
 title: "Assignateur de rôles"
-description: "Classifiez les points en points projet et points implantés grâce au glisser-déposer et à la détection automatique."
+description: "Classe les points importés en points projet et points implantés via glisser-déposer ou détection automatique de marqueurs."
 icon: "arrows-left-right-to-line"
 ---
 
-L'assignateur de rôles permet de trier les points importés en deux catégories : les **points projet** (coordonnées théoriques / de conception) et les **points implantés** (coordonnées mesurées sur le terrain). Cette étape est essentielle pour la génération des fiches signalétiques.
+## Résumé
 
-<Note>
-  Disponible sur les plans **Standard**, **Premium** et **Enterprise**.
-</Note>
+Classe les points importés en deux catégories (projet et implantés) via glisser-déposer ou détection automatique de marqueurs dans les noms de points. Interface à trois colonnes : projet, pool central, implantés.
 
-## Comment ça fonctionne
+## Principe
 
-Après l'import des points, tous arrivent dans un **pool central** (colonne du milieu). Le travail consiste à les répartir dans les deux colonnes latérales :
+Après l'import CSV, tous les points arrivent dans le pool central (colonne du milieu). L'objectif est de les répartir dans les deux colonnes latérales : points projet (coordonnées théoriques) à gauche, points implantés (coordonnées mesurées) à droite. La détection automatique identifie les marqueurs d'implantation dans les noms de points. Les points restants sont déplacés manuellement par glisser-déposer.
 
-<CardGroup cols={3}>
-  <Card title="Points Projet" icon="compass-drafting">
-    Coordonnées théoriques issues du plan ou du projet. Ce sont les positions **attendues**.
-  </Card>
-  <Card title="Pool central" icon="layer-group">
-    Tous les points non assignés. C'est le point de départ après chaque import.
-  </Card>
-  <Card title="Points Implantés" icon="location-crosshairs">
-    Coordonnées relevées sur le terrain. Ce sont les positions **réelles** mesurées.
-  </Card>
-</CardGroup>
+## Étapes d'utilisation
 
-## Utilisation
+**Étape 1 -- Importer les points**
+Importer les points via CSV ou saisie manuelle. Tous les points apparaissent dans le pool central.
 
-<Steps>
-  <Step title="Importer les points">
-    Importez les points via CSV ou saisie manuelle. Tous les points apparaissent dans le pool central.
-  </Step>
-  <Step title="Utiliser la détection automatique (recommandé)">
-    Activez la détection automatique pour identifier les points implantés grâce à leurs marqueurs de nommage. Topo.ninja recherche des motifs comme :
-    - `STKD`, `STKED` (stakeout / staked)
-    - `IMP` (implanté)
-    - Ou tout préfixe/suffixe personnalisé défini au préalable
+**Étape 2 -- Lancer la détection automatique**
+Activer la détection automatique. L'algorithme analyse les noms de points et identifie ceux contenant des marqueurs d'implantation (stkd, stked, imp). Ces points sont déplacés vers la colonne "Points Implantés".
 
-    Par exemple, un point nommé `BORNE_A_STKD` sera automatiquement identifié comme point implanté.
-  </Step>
-  <Step title="Compléter manuellement par glisser-déposer">
-    Pour les points non détectés automatiquement, glissez-les du pool central vers la colonne appropriée.
-  </Step>
-  <Step title="Vérifier et valider">
-    Vérifiez que chaque colonne contient les bons points, puis validez pour passer à l'étape suivante (appairage).
-  </Step>
-</Steps>
+**Étape 3 -- Compléter manuellement**
+Pour les points non détectés automatiquement, les sélectionner et les glisser vers la colonne correspondante.
 
-## Méthodes de sélection
+**Étape 4 -- Valider**
+Vérifier que chaque colonne contient les bons points, puis valider pour passer à l'appairage.
 
-Plusieurs méthodes permettent de sélectionner des points dans chaque colonne :
+## Détails techniques
+
+### Méthodes de sélection
 
 | Méthode | Geste | Description |
 |---------|-------|-------------|
-| **Sélection simple** | Clic | Sélectionne un seul point |
-| **Multi-sélection** | Ctrl + Clic | Ajoute ou retire des points un par un |
-| **Sélection par plage** | Shift + Clic | Sélectionne tous les points entre le premier et le dernier clic |
-| **Lasso / Rectangle** | Clic + glisser | Dessinez une zone de sélection sur les points |
+| Sélection simple | Clic | Sélectionne un seul point |
+| Multi-sélection | Ctrl + Clic | Ajoute ou retire des points un par un |
+| Sélection par plage | Shift + Clic | Sélectionne tous les points entre le premier et le dernier clic |
+| Lasso | Clic + glisser | Dessine une zone de sélection rectangulaire |
 
-## Détection automatique
+### Marqueurs détectés par défaut
 
-La détection automatique analyse le nom de chaque point pour identifier les marqueurs d'implantation :
+Les marqueurs suivants sont recherchés dans les noms de points (insensible à la casse) :
 
-<AccordionGroup>
-  <Accordion title="Marqueurs reconnus par défaut">
-    Les tokens suivants sont recherchés dans les noms de points (insensible à la casse) :
-    - `stkd` ou `stked` (stakeout / staked)
-    - `imp` (implanté)
+| Marqueur | Origine |
+|----------|---------|
+| stkd | stakeout / staked |
+| stked | staked |
+| imp | implanté |
 
-    Exemples : `BORNE_A_STKD`, `IMP_POINT_12`, `PT05_stked`
-  </Accordion>
-  <Accordion title="Marqueurs personnalisés">
-    Il est possible de définir des préfixes ou suffixes personnalisés pour correspondre aux conventions de nommage de l'équipe ou du logiciel de terrain. Par exemple :
-    - Suffixe `_MES` pour "mesure"
-    - Préfixe `R_` pour "relevé"
-  </Accordion>
-  <Accordion title="Comment ça détecte">
-    L'algorithme découpe le nom du point en segments (séparateurs : underscore, tiret, espace) et cherche si l'un des segments correspond à un marqueur connu. Si oui, le point est classé comme implanté.
-  </Accordion>
-</AccordionGroup>
+### Marqueurs personnalisés
 
-## Tri, filtrage et recherche
+Il est possible de définir des préfixes ou suffixes personnalisés pour correspondre aux conventions de nommage utilisées (ex : `_MES` pour "mesure", `R_` pour "relevé").
 
-<Tabs>
-  <Tab title="Tri">
-    Cliquez sur l'en-tête d'une colonne (Nom, X, Y, Z) pour trier les points par ordre croissant ou décroissant. Pratique pour regrouper visuellement les points par zone géographique.
-  </Tab>
-  <Tab title="Filtrage par coordonnées">
-    Filtrez les points selon des critères sur les coordonnées :
-    - **Égal à** : valeur exacte
-    - **Supérieur à** / **Inférieur à** : une borne
-    - **Entre** : plage de valeurs (min et max)
+### Algorithme de segmentation
 
-    Utile pour isoler les points d'une zone spécifique.
-  </Tab>
-  <Tab title="Recherche par nom">
-    Utilisez la barre de recherche pour trouver rapidement un point par son nom. La recherche est instantanée et filtre les trois colonnes simultanément.
-  </Tab>
-</Tabs>
+L'algorithme découpe le nom du point en segments (séparateurs : underscore `_`, tiret `-`, espace). Si l'un des segments correspond à un marqueur connu, le point est classé comme implanté.
 
-## Annuler / Refaire
+Exemple : `BORNE_A_STKD` → segments [`BORNE`, `A`, `STKD`] → `STKD` est un marqueur → point classé implanté.
 
-L'assignateur conserve un historique de **10 niveaux** d'annulation. Utilisez :
-- **Ctrl + Z** pour annuler la dernière action
-- **Ctrl + Y** pour refaire une action annulée
+### Tri, filtrage et recherche
 
-<Info>
-  L'historique couvre toutes les opérations : glisser-déposer, détection automatique, suppressions, etc.
-</Info>
+Les points peuvent être triés par colonne (Nom, X, Y, Z), filtrés par coordonnées (égal à, supérieur à, inférieur à, entre deux valeurs) et recherchés par nom via la barre de recherche.
 
-## Menu contextuel
+### Historique d'annulation
 
-Un clic droit sur un ou plusieurs points sélectionnés ouvre un menu contextuel avec des actions rapides : déplacer vers une colonne, supprimer, etc.
-
-## Astuces
-
-<Tip>
-  **Conventions de nommage** : adoptez une convention cohérente sur le terrain (par exemple, ajoutez toujours `_IMP` aux points implantés). La détection automatique fonctionnera alors parfaitement à chaque import.
-</Tip>
-
-<Tip>
-  **Import séparé** : si les points projet et les points implantés sont dans deux fichiers CSV distincts, importez-les en deux temps. Le premier import ira dans le pool ; assignez-le à "Points Projet", puis importez le second fichier.
-</Tip>
-
-<Tip>
-  **Sélection rapide** : pour déplacer un grand nombre de points, utilisez la sélection par lasso plutôt que Ctrl+Clic un par un.
-</Tip>
-
-## Voir aussi
-
-<CardGroup cols={2}>
-  <Card title="Appairage automatique" icon="link" href="/fr/fonctionnalites/appairage-automatique">
-    Étape suivante : associer chaque point implanté à son point projet
-  </Card>
-  <Card title="Fiche signalétique" icon="id-card" href="/fr/outils/fiche-signaletique">
-    Outil qui utilise l'assignateur de rôles
-  </Card>
-</CardGroup>
+L'assignateur conserve un historique de 10 niveaux. Ctrl + Z pour annuler, Ctrl + Y pour rétablir. L'historique couvre toutes les opérations : glisser-déposer, détection automatique, suppressions.

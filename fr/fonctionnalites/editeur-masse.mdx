@@ -1,118 +1,61 @@
 ---
 title: "Éditeur en masse"
-description: "Éditez vos points dans un tableur intégré, comme dans Excel ou Google Sheets."
+description: "Tableur intégré (Handsontable) pour éditer les points en masse dans les outils Fiche signalétique, Fiche axe et Résection 3D."
 icon: "table-cells-large"
 ---
 
-L'éditeur en masse offre une expérience de tableur directement dans Topo.ninja. Basé sur la librairie Handsontable, il permet de manipuler les données avec la même fluidité qu'un tableur classique, sans quitter l'application.
+## Résumé
 
-<Note>
-  Disponible sur les plans **Premium** et **Enterprise**.
-</Note>
+Tableur intégré basé sur Handsontable, permettant d'éditer les points en masse. Chaque ligne représente un point, chaque colonne un champ. Supporte le copier-coller depuis Excel/Sheets, la poignée de remplissage, le tri, le filtrage et le menu contextuel.
 
-## Comment ça fonctionne
+## Principe
 
-L'éditeur en masse remplace les formulaires traditionnels par une grille de cellules modifiables. Chaque ligne représente un point ou une entrée, et chaque colonne correspond à un champ (nom, coordonnées, axe, référence, etc.).
+L'éditeur en masse remplace la saisie par formulaire par une grille de cellules modifiables. Les données peuvent être saisies directement, collées depuis un tableur externe (Excel, Google Sheets) ou modifiées cellule par cellule. Les colonnes calculées (distances, écarts) sont en lecture seule et se mettent à jour automatiquement.
 
-L'éditeur se retrouve dans les outils suivants :
+L'éditeur est disponible dans : Fiche signalétique, Fiche axe, Résection 3D.
 
-<CardGroup cols={3}>
-  <Card title="Fiche signalétique" icon="id-card" href="/fr/outils/fiche-signaletique">
-    Points projet et points implantés
-  </Card>
-  <Card title="Fiche axe" icon="road" href="/fr/outils/fiche-axe">
-    Points d'axe et profils
-  </Card>
-  <Card title="Résection 3D" icon="cube" href="/fr/outils/resection-3d">
-    Points de référence et stations
-  </Card>
-</CardGroup>
+## Étapes d'utilisation
 
-## Utilisation
+**Étape 1 -- Ouvrir l'outil**
+Accéder à l'un des outils compatibles (Fiche signalétique, Fiche axe ou Résection 3D). L'éditeur en masse s'affiche sous forme de grille.
 
-<Steps>
-  <Step title="Ouvrir l'éditeur">
-    Accédez à l'un des outils compatibles (Fiche signalétique, Fiche axe ou Résection 3D). L'éditeur en masse s'affiche automatiquement sous forme de grille.
-  </Step>
-  <Step title="Saisir ou coller des données">
-    Cliquez sur une cellule pour la modifier. Il est aussi possible de coller des données directement depuis Excel ou Google Sheets avec **Ctrl+V**.
-  </Step>
-  <Step title="Naviguer dans la grille">
-    Utilisez **Tab** pour passer à la cellule suivante, **Entrée** pour valider et descendre, ou les **flèches directionnelles** pour se déplacer librement.
-  </Step>
-  <Step title="Manipuler les lignes">
-    Faites un clic droit pour ouvrir le menu contextuel : ajoutez ou supprimez des lignes selon les besoins.
-  </Step>
-  <Step title="Utiliser la poignée de remplissage">
-    Cliquez sur le coin inférieur droit d'une cellule et faites glisser vers le bas pour copier sa valeur dans les cellules suivantes, exactement comme dans Excel.
-  </Step>
-</Steps>
+**Étape 2 -- Saisir ou coller des données**
+Cliquer sur une cellule pour la modifier. Pour coller depuis Excel ou Google Sheets : sélectionner les cellules dans le tableur externe, copier (Ctrl+C), puis coller dans l'éditeur (Ctrl+V). La structure lignes/colonnes est conservée.
 
-## Types de colonnes
+**Étape 3 -- Utiliser la poignée de remplissage**
+Cliquer sur le coin inférieur droit d'une cellule et glisser vers le bas pour propager la valeur dans les cellules suivantes.
 
-L'éditeur propose différents types de colonnes selon le contexte :
+**Étape 4 -- Manipuler les lignes**
+Clic droit pour ouvrir le menu contextuel : insérer une ligne au-dessus/en-dessous, supprimer la ligne, copier, coller.
 
-| Type de colonne | Description | Exemple |
-|-----------------|-------------|---------|
-| **Case à cocher** | Active ou désactive une ligne | Inclusion dans le calcul |
-| **Texte** | Saisie libre | Nom du point, coordonnées |
-| **Liste déroulante** | Choix parmi des options | Assignation d'axe, point de référence |
-| **Lecture seule** | Valeurs calculées automatiquement | Écarts, distances |
+## Détails techniques
 
-## Fonctionnalités détaillées
+### Types de colonnes
 
-<AccordionGroup>
-  <Accordion title="Copier-coller depuis Excel">
-    Sélectionnez les cellules dans Excel ou Google Sheets, copiez-les avec **Ctrl+C**, puis collez-les dans l'éditeur avec **Ctrl+V**. La structure lignes/colonnes est conservée. C'est la méthode la plus rapide pour transférer des données existantes.
-  </Accordion>
-  <Accordion title="Tri et filtrage">
-    Cliquez sur l'en-tête d'une colonne pour trier les données par ordre croissant ou décroissant. Utilisez les filtres pour afficher uniquement les lignes correspondant aux critères souhaités.
-  </Accordion>
-  <Accordion title="Redimensionnement">
-    Faites glisser les bordures des en-têtes de colonnes ou de lignes pour ajuster leur taille. Pratique quand les noms de points sont longs ou qu'il faut afficher plus de données à l'écran.
-  </Accordion>
-  <Accordion title="Menu contextuel (clic droit)">
-    Un clic droit sur la grille ouvre un menu avec les options suivantes :
-    - **Insérer une ligne au-dessus / en-dessous**
-    - **Supprimer la ligne**
-    - **Copier / Coller**
-  </Accordion>
-</AccordionGroup>
+| Type | Description | Exemple |
+|------|-------------|---------|
+| Case à cocher | Active ou désactive une ligne | Inclusion dans le calcul |
+| Texte | Saisie libre | Nom du point, coordonnées |
+| Liste déroulante | Choix parmi des options prédéfinies | Assignation d'axe, type de référence |
+| Lecture seule | Valeurs calculées automatiquement (colonnes grises) | Écarts, distances orthogonales |
 
-## Raccourcis clavier
+### Raccourcis clavier
 
 | Raccourci | Action |
 |-----------|--------|
-| **Tab** | Cellule suivante |
-| **Shift + Tab** | Cellule précédente |
-| **Entrée** | Valider et descendre |
-| **Échap** | Annuler la modification |
-| **Ctrl + C** | Copier |
-| **Ctrl + V** | Coller |
-| **Ctrl + Z** | Annuler |
-| **Flèches** | Navigation dans la grille |
+| Tab | Cellule suivante |
+| Shift + Tab | Cellule précédente |
+| Entrée | Valider et descendre |
+| Échap | Annuler la modification |
+| Ctrl + C | Copier |
+| Ctrl + V | Coller |
+| Ctrl + Z | Annuler |
+| Flèches | Navigation dans la grille |
 
-## Astuces
+### Outils compatibles
 
-<Tip>
-  **Coller depuis Excel** : pour des points déjà présents dans un tableur, sélectionnez la plage de cellules, copiez, puis collez directement dans l'éditeur. C'est beaucoup plus rapide que la saisie manuelle.
-</Tip>
-
-<Tip>
-  **Poignée de remplissage** : pour répéter une même valeur sur plusieurs lignes (par exemple un axe de référence), saisissez la valeur une fois puis faites glisser la poignée vers le bas.
-</Tip>
-
-<Tip>
-  **Colonnes en lecture seule** : les colonnes grises contiennent des valeurs calculées (écarts, distances). Elles se mettent à jour automatiquement lors de la modification des données sources.
-</Tip>
-
-## Voir aussi
-
-<CardGroup cols={2}>
-  <Card title="Import / Export CSV" icon="file-csv" href="/fr/fonctionnalites/import-export-csv">
-    Importez des données depuis un fichier CSV
-  </Card>
-  <Card title="Fiche signalétique" icon="id-card" href="/fr/outils/fiche-signaletique">
-    Outil principal utilisant l'éditeur en masse
-  </Card>
-</CardGroup>
+| Outil | Colonnes éditables |
+|-------|-------------------|
+| Fiche signalétique | Nom, X, Y, Z, notes, photos, rôle |
+| Fiche axe | Nom, X, Y, Z, assignation d'axe |
+| Résection 3D | Nom, X, Y, Z, type de référence |
