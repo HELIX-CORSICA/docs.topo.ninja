@@ -7,7 +7,7 @@
     "light": "#4ade80",
     "dark": "#078b00"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/logo/light.svg",
   "logo": {
     "light": "/logo/topo-ninja.png",
     "dark": "/logo/topo-ninja.png",
@@ -161,5 +161,8 @@
     "socials": {
       "website": "https://topo.ninja"
     }
+  },
+  "appearance": {
+    "default": "light"
   }
 }
