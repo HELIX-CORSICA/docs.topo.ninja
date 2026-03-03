@@ -1,140 +1,73 @@
 ---
 title: "Convertisseur de coordonnées"
-description: "Convertissez vos coordonnées entre différents systèmes de référence (Lambert 93, WGS84, UTM, etc.) avec ou sans géoïde."
+description: "Convertit des coordonnées entre systèmes de référence (CRS) via codes EPSG, avec option de transformation altimétrique par géoïde."
 icon: "arrow-right-arrow-left"
 ---
 
-Le **Convertisseur de coordonnées** permet de transformer des coordonnées d'un système de référence (CRS) vers un autre. Il prend en charge les projections courantes en topographie française et internationale, et propose une variante avec géoïde pour les transformations altimétriques.
+## Résumé
 
-<Note>
-  **Disponible sur :** Tous les plans
-</Note>
+Convertit des coordonnées d'un système de référence (CRS) vers un autre en utilisant les codes EPSG. Deux variantes : conversion standard (CRS vers CRS) et conversion avec grille de géoïde pour la transformation altimétrique.
 
-## À quoi sert cet outil ?
+## Principe
 
-En topographie, il est courant de jongler entre plusieurs systèmes de coordonnées. Les points GNSS sont en WGS84, le plan est en Lambert 93, et le client demande des coordonnées UTM. Le convertisseur élimine les conversions manuelles et les risques d'erreur :
+L'outil accepte des points en entrée (CSV ou saisie manuelle) avec leurs coordonnées dans un CRS source, et les transforme vers un CRS cible. La variante standard traite les conversions planimétriques (Lambert 93 vers WGS84, UTM vers Lambert, etc.). La variante avec géoïde ajoute la transformation verticale via une grille de géoïde (RAF20, RAF18) pour passer d'une altitude ellipsoïdale à une altitude normale.
 
-- Conversion entre n'importe quels CRS définis par un code EPSG
-- Conversion par lot de plusieurs points en une seule opération
-- Support des coordonnées en degrés-minutes-secondes (DMS)
-- Transformation altimétrique avec grille de géoïde
+Les méthodes de transformation utilisées sont détaillées dans [Transformations de coordonnées](/fr/formules/transformations-coordonnees).
 
-## Deux variantes
+## Étapes d'utilisation
 
-<Tabs>
-  <Tab title="Convertisseur standard">
-    Le convertisseur standard effectue une transformation CRS vers CRS. Choisissez le système source et le système cible via leurs codes EPSG, et l'outil convertit toutes les coordonnées.
+**Étape 1 -- Sélectionner les CRS source et cible**
+Choisir le CRS source (système actuel des coordonnées) et le CRS cible (système de destination) via leur code EPSG. Le sélecteur permet de rechercher par nom ou par code. Pour la variante avec géoïde, charger la grille correspondante.
 
-    C'est la variante à utiliser pour les conversions planimétriques courantes (Lambert 93 vers WGS84, UTM vers Lambert, etc.).
-  </Tab>
-  <Tab title="Convertisseur avec géoïde">
-    La variante avec géoïde ajoute la prise en charge d'une **grille de géoïde** pour la transformation verticale. Elle permet de passer d'une altitude ellipsoïdale à une altitude sur le géoïde (et inversement).
+**Étape 2 -- Saisir ou importer les points**
+Ajouter les points manuellement (nom, X, Y, Z) ou importer un fichier CSV. Les coordonnées en degrés-minutes-secondes (DMS) sont acceptées et converties automatiquement en degrés décimaux.
 
-    Utilisez cette variante pour convertir des altitudes entre le système ellipsoïdal WGS84 et le système altimétrique français (RAF20, RAF18, etc.) ou tout autre géoïde.
-  </Tab>
-</Tabs>
+**Étape 3 -- Convertir**
+Lancer la conversion. Les coordonnées transformées apparaissent dans le tableau de résultats. Si le géoïde est activé, les altitudes transformées sont également affichées.
 
-## Comment l'utiliser
+**Étape 4 -- Exporter les résultats**
+Exporter en CSV fusionné (coordonnées originales + converties) ou en CSV converti (coordonnées cible uniquement).
 
-<Steps>
-  <Step title="Choisir les systèmes de coordonnées">
-    Sélectionnez le **CRS source** (le système dans lequel se trouvent les coordonnées actuelles) et le **CRS cible** (le système vers lequel convertir).
+## Détails techniques
 
-    Utilisez le sélecteur de code EPSG pour trouver le système recherché. Les codes les plus courants en France :
+### Codes EPSG courants
 
-    | Système | Code EPSG |
-    |---------|-----------|
-    | Lambert 93 | 2154 |
-    | WGS84 géographique | 4326 |
-    | UTM zone 31N | 32631 |
-    | UTM zone 32N | 32632 |
-    | RGF93 v2 / Lambert-93 | 9794 |
-    | CC42 à CC50 | 3942 à 3950 |
+| Système | Code EPSG |
+|---------|-----------|
+| Lambert 93 | 2154 |
+| WGS84 géographique | 4326 |
+| UTM zone 31N | 32631 |
+| UTM zone 32N | 32632 |
+| RGF93 v2 / Lambert-93 | 9794 |
+| CC42 | 3942 |
+| CC43 | 3943 |
+| CC44 | 3944 |
+| CC45 | 3945 |
+| CC46 | 3946 |
+| CC47 | 3947 |
+| CC48 | 3948 |
+| CC49 | 3949 |
+| CC50 | 3950 |
 
-    <Tip>
-      En cas de doute sur le code EPSG, tapez le nom du système dans le champ de recherche. Le sélecteur filtre les résultats en temps réel.
-    </Tip>
-  </Step>
+### Coordonnées DMS
 
-  <Step title="Saisir ou importer les points">
-    Ajoutez les points dans l'éditeur CSV intégré :
-    - **Saisie manuelle** : renseignez le nom, X, Y et Z de chaque point
-    - **Import CSV** : chargez un fichier CSV avec les points à convertir
+Le convertisseur accepte les coordonnées géographiques en degrés-minutes-secondes (ex : `48°51'24.5"N`). Elles sont converties en degrés décimaux avant la transformation.
 
-    Pour les coordonnées géographiques (latitude/longitude), il est possible de saisir les valeurs en **degrés-minutes-secondes** (DMS). L'outil les convertira automatiquement en degrés décimaux avant la transformation.
-  </Step>
+### Grilles de géoïde
 
-  <Step title="Lancer la conversion">
-    Cliquez sur **Convertir**. Les coordonnées converties apparaissent dans le tableau de résultats. Si l'option géoïde est activée, les altitudes transformées sont également affichées.
-
-    <Info>
-      Les résultats sont fiables et conformes aux standards internationaux en matière de transformations géodésiques.
-    </Info>
-  </Step>
-
-  <Step title="Exporter les résultats">
-    Deux options d'export sont disponibles :
-    - **CSV fusionné** : un fichier contenant les coordonnées originales ET les coordonnées converties côte à côte
-    - **CSV converti uniquement** : un fichier contenant uniquement les coordonnées dans le système cible
-
-    Choisissez le format qui correspond à l'usage souhaité.
-  </Step>
-</Steps>
-
-## Fonctionnalités
-
-### Sélecteur EPSG
-
-Le sélecteur de code EPSG donne accès à des milliers de systèmes de coordonnées. Tapez un nom ou un code pour filtrer la liste. Les systèmes les plus utilisés en topographie française sont disponibles.
-
-### Conversion par lot
-
-Il est possible de convertir des dizaines ou des centaines de points en une seule opération. L'import CSV est la méthode la plus rapide pour les gros volumes de données.
-
-### Support DMS
-
-Pour les coordonnées géographiques, le convertisseur accepte les valeurs en degrés-minutes-secondes. C'est pratique pour les coordonnées issues de GPS de poche ou de fiches existantes.
-
-### Grille de géoïde
-
-La variante avec géoïde permet de charger un fichier de grille de géoïde (RAF20, RAF18, etc.) pour effectuer des transformations altimétriques précises. La grille est utilisée pour calculer l'ondulation du géoïde à chaque point et convertir entre altitude ellipsoïdale et altitude normale.
+La variante avec géoïde charge un fichier de grille (RAF20, RAF18, etc.) pour calculer l'ondulation du géoïde à chaque point. Cela permet la conversion entre altitude ellipsoïdale (GPS) et altitude normale (NGF/IGN69).
 
 <Warning>
-  La précision de la transformation altimétrique dépend de la grille de géoïde utilisée. Veillez à utiliser la grille adaptée à la zone de travail et à l'époque des mesures.
+La précision de la transformation altimétrique dépend de la grille de géoïde utilisée. Utiliser la grille adaptée à la zone de travail et à l'époque des mesures.
 </Warning>
 
-### Cas d'usage courants
+### Formats d'export
 
-<AccordionGroup>
-  <Accordion title="Lambert 93 vers WGS84">
-    Conversion classique pour obtenir des coordonnées géographiques (latitude/longitude) à partir de coordonnées en projection Lambert 93. Utile pour la localisation sur Google Maps ou pour des applications SIG.
+| Type d'export | Contenu |
+|---------------|---------|
+| CSV fusionné | Coordonnées originales + coordonnées converties côte à côte |
+| CSV converti | Coordonnées dans le système cible uniquement |
 
-    - Source : EPSG 2154 (Lambert 93)
-    - Cible : EPSG 4326 (WGS84)
-  </Accordion>
+### Séparateur décimal
 
-  <Accordion title="WGS84 vers Lambert 93">
-    L'opération inverse : transformer des coordonnées GPS (WGS84) en coordonnées Lambert 93 pour les intégrer au plan de projet.
-
-    - Source : EPSG 4326 (WGS84)
-    - Cible : EPSG 2154 (Lambert 93)
-  </Accordion>
-
-  <Accordion title="Conversion entre zones UTM">
-    Lorsqu'un chantier est à cheval sur deux zones UTM, il faut convertir les points d'une zone à l'autre pour travailler dans un système unique.
-
-    - Source : EPSG 32631 (UTM 31N)
-    - Cible : EPSG 32632 (UTM 32N)
-  </Accordion>
-
-  <Accordion title="Transformation altimétrique avec géoïde">
-    Passage d'altitudes ellipsoïdales (GPS) en altitudes normales (NGF/IGN69) à l'aide d'une grille de géoïde RAF20.
-
-    Utilisez la variante avec géoïde et chargez le fichier de grille correspondant.
-  </Accordion>
-</AccordionGroup>
-
-## Voir aussi
-
-- [Transformations de coordonnées](/fr/formules/transformations-coordonnees) -- Formules et méthodes de transformation utilisées
-- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Détails sur les formats CSV supportés
+En cas de séparateur décimal virgule (format français : `1234,56`), le délimiteur de colonnes doit être le point-virgule. L'outil détecte automatiquement le délimiteur.

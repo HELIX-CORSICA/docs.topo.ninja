@@ -1,166 +1,84 @@
 ---
 title: "Planification de résection 3D"
-description: "Planifiez la position optimale de votre station totale en analysant la visibilité 3D, la qualité géométrique (GDOP) et les contraintes angulaires."
+description: "Planifie le placement d'une station totale en analysant la visibilité 3D, la qualité géométrique (GDOP) et les contraintes angulaires."
 icon: "location-crosshairs"
 ---
 
-L'outil de **Planification de résection 3D** aide à trouver la position optimale pour installer une station totale avant de se rendre sur le terrain. En combinant l'analyse de visibilité 3D, le calcul de qualité géométrique (GDOP) et la détection de contraintes angulaires, il permet de préparer les stationnements en amont et de gagner du temps sur le chantier.
+## Résumé
 
-<Note>
-  **Disponible sur :** Premium, Enterprise
-</Note>
+Planifie la position d'une station totale en analysant la visibilité 3D vers les points de référence, la qualité géométrique de la résection (GDOP) et les contraintes angulaires. Les références et obstacles sont placés sur une carte interactive, et une heatmap affiche la qualité de résection sur l'ensemble de la zone.
 
-## À quoi sert cet outil ?
+## Principe
 
-En arrivant sur un chantier pour effectuer une résection, il faut trouver un emplacement de station qui :
+L'outil prend en entrée des points de référence (cibles ou clous), des obstacles (polygones 3D) et les paramètres de l'instrument. Pour chaque position de station envisagée, il calcule : quelles références sont visibles (en tenant compte des obstacles en 3D), la qualité géométrique de la configuration (GDOP), les distances aux références et la séparation angulaire entre les références. Une heatmap permet de visualiser la qualité de résection sur toute la zone.
 
-1. **Voit suffisamment de points de référence** (cibles et clous)
-2. **Offre une bonne géométrie** (les références ne sont pas alignées)
-3. **Respecte les distances maximales** de l'instrument
-4. **Évite les obstacles** (bâtiments, murs, talus)
+Les formules de calcul sont détaillées dans [GDOP et qualité de résection](/fr/formules/gdop-qualite) et [Visibilité 3D](/fr/formules/visibilite-3d).
 
-En planifiant à l'avance, les allers-retours inutiles et les stationnements sous-optimaux sont évités. L'outil montre exactement où se placer pour obtenir la meilleure qualité de résection.
+## Étapes d'utilisation
 
-## Comment l'utiliser
+**Étape 1 -- Configurer les paramètres de l'instrument**
+Définir : précision angulaire (secondes d'arc), tolérance linéaire (mm), hauteur d'instrument, hauteur de prisme, séparation angulaire minimale entre références, mode de distance (directe ou dérivée).
 
-<Steps>
-  <Step title="Configurer les préférences">
-    Avant de commencer, définissez les paramètres de l'instrument et de la configuration :
-    - **Précision angulaire** de la station totale (en secondes d'arc)
-    - **Tolérance linéaire** acceptée (en millimètres)
-    - **Hauteur d'instrument** et **hauteur de prisme**
-    - **Séparation angulaire minimale** entre les références (pour éviter les références quasi-alignées)
-    - **Mode de distance** : distance directe maximale OU distance dérivée de la précision angulaire et de la tolérance linéaire
+**Étape 2 -- Ajouter les points de référence**
+Placer les références sur la carte. Deux types disponibles : cibles (directionnelles, avec angle d'incidence) et clous (omnidirectionnels). Les points peuvent être ajoutés manuellement ou importés (CSV, DXF, GeoJSON). Chaque référence a des coordonnées X, Y, Z et éventuellement une photo.
 
-    <Tip>
-      Le mode de distance dérivé est plus réaliste : il calcule la portée maximale en fonction de la précision de la station et de la tolérance acceptée. Plus la station est précise, plus il est possible de s'éloigner.
-    </Tip>
-  </Step>
+**Étape 3 -- Dessiner les obstacles**
+Tracer les obstacles sous forme de polygones sur la carte. Chaque obstacle a une élévation (hauteur). L'analyse de visibilité calcule l'intersection entre le rayon visuel et les obstacles en 3D.
 
-  <Step title="Ajouter les points de référence">
-    Placez les points de référence sur la carte interactive. Deux types de références sont disponibles :
+**Étape 4 -- Placer la station**
+Cliquer sur la carte pour positionner la station. L'outil calcule immédiatement les références visibles, le GDOP, les distances et les contraintes angulaires.
 
-    **Cibles (directionnelles)** : marqueurs avec une orientation. L'angle d'incidence entre la station et la cible est pris en compte. Si la station est trop désaxée par rapport à la face de la cible, la visée est dégradée.
+**Étape 5 -- Analyser la heatmap**
+Activer la visualisation heatmap pour voir la qualité de résection sur toute la zone. Vert = GDOP faible (bonne géométrie), jaune = qualité moyenne, rouge = GDOP élevé (mauvaise géométrie), gris = position impossible (pas assez de références visibles).
 
-    **Clous (omnidirectionnels)** : prismes observables depuis n'importe quelle direction. Aucune contrainte d'incidence.
+**Étape 6 -- Exporter**
+Exporter le projet en GeoJSON, JSON ou CSV. Partager via un lien.
 
-    Il est possible d'ajouter des points manuellement sur la carte ou de les importer depuis un fichier (CSV, DXF, GeoJSON).
-  </Step>
-
-  <Step title="Dessiner les obstacles">
-    Ajoutez les obstacles qui bloquent la visibilité : bâtiments, murs, talus, etc. Les obstacles sont dessinés sous forme de polygones sur la carte et peuvent avoir une **élévation** (hauteur).
-
-    L'outil prend en compte ces obstacles en 3D lors de l'analyse de visibilité : un rayon visuel qui passe au-dessus d'un mur bas n'est pas bloqué, même si le mur se trouve entre la station et la référence.
-  </Step>
-
-  <Step title="Placer la station">
-    Cliquez sur la carte pour placer la station à l'emplacement envisagé. L'outil calcule immédiatement :
-    - Quelles références sont **visibles** depuis cette position
-    - La **qualité géométrique** (GDOP) de la résection
-    - Les **contraintes angulaires** (détection des références alignées)
-    - Les **distances** aux références
-
-    <Info>
-      Un GDOP faible indique une bonne géométrie. Un GDOP élevé signifie que les références sont mal réparties (trop alignées, trop proches les unes des autres) et que la résection sera de mauvaise qualité.
-    </Info>
-  </Step>
-
-  <Step title="Analyser la carte de qualité">
-    Activez la **visualisation heatmap** pour voir la qualité de résection sur l'ensemble de la zone. La carte de chaleur colore la zone selon la valeur du GDOP :
-    - **Vert** : bonne qualité (GDOP faible)
-    - **Jaune** : qualité moyenne
-    - **Rouge** : mauvaise qualité (GDOP élevé)
-    - **Gris** : position impossible (pas assez de références visibles)
-
-    Déplacez la station dans les zones vertes pour obtenir la meilleure résection.
-  </Step>
-
-  <Step title="Ajuster et exporter">
-    Une fois la position optimale trouvée, il est possible de :
-    - **Exporter** le projet en GeoJSON, JSON ou CSV pour l'utiliser dans un autre logiciel
-    - **Partager** le projet via un lien
-    - Sauvegarder pour y revenir plus tard
-
-    <Tip>
-      L'export GeoJSON est compatible avec QGIS, AutoCAD et la plupart des logiciels SIG. Il permet ainsi de superposer la planification de station sur le plan de chantier.
-    </Tip>
-  </Step>
-</Steps>
-
-## Fonctionnalités
-
-### Carte interactive
-
-Le canvas de planification est une carte interactive avec fond de tuiles terrain. Il est possible de zoomer, déplacer la vue et interagir avec tous les éléments (station, références, obstacles) directement sur la carte.
+## Détails techniques
 
 ### Types de références
 
-<Tabs>
-  <Tab title="Cibles">
-    Les cibles sont des points de référence directionnels. Elles ont une **orientation** : l'angle sous lequel la station voit la cible influence la qualité de la mesure. Si la station est trop désaxée (angle d'incidence trop faible), la visée est considérée comme dégradée ou impossible.
+| Type | Comportement | Usage |
+|------|-------------|-------|
+| Cible | Directionnelle. L'angle d'incidence entre la station et la face de la cible est pris en compte. Une station trop désaxée dégrade la visée. | Prismes fixes montés sur supports orientés |
+| Clou | Omnidirectionnel. Observable depuis n'importe quelle direction. | Prismes 360°, mini-prismes |
 
-    Utilisez les cibles pour les prismes fixes montés sur des supports orientés.
-  </Tab>
-  <Tab title="Clous">
-    Les clous sont des prismes omnidirectionnels : ils peuvent être observés depuis n'importe quelle direction. Aucune contrainte d'incidence ne s'applique.
+### Modélisation des obstacles
 
-    Utilisez les clous pour les prismes 360 degrés ou les mini-prismes.
-  </Tab>
-</Tabs>
+Les obstacles sont des polygones 3D avec une élévation. L'analyse de visibilité calcule l'intersection entre le rayon visuel (station → référence) et chaque obstacle. Un obstacle bas peut être survolé si la différence d'altitude le permet.
 
-### Obstacles 3D
+### Interprétation du GDOP
 
-Les obstacles sont dessinés sous forme de polygones avec une élévation. L'analyse de visibilité calcule l'intersection entre le rayon visuel (station vers référence) et les obstacles en 3D. Un obstacle bas peut être "survolé" si la différence d'altitude le permet.
+Le GDOP (Geometric Dilution of Precision) quantifie la qualité géométrique de la configuration.
 
-### GDOP (Geometric Dilution of Precision)
+| Valeur GDOP | Interprétation |
+|-------------|---------------|
+| Proche de 1 | Configuration optimale |
+| 2 à 5 | Acceptable |
+| Supérieur à 5-10 | Mauvaise géométrie, références mal réparties |
 
-Le GDOP quantifie la qualité géométrique de la configuration de résection. Il dépend de :
-- Le nombre de références visibles
-- La répartition angulaire des références autour de la station
-- Les distances aux références
+Le GDOP dépend du nombre de références visibles, de leur répartition angulaire autour de la station et des distances.
 
-Un GDOP faible (proche de 1) indique une configuration optimale. Un GDOP élevé (supérieur à 5-10) indique une mauvaise géométrie.
+### Modes de distance
+
+| Mode | Description |
+|------|-------------|
+| Distance directe | Distance maximale fixe en mètres |
+| Distance dérivée | Portée maximale calculée à partir de la précision angulaire et de la tolérance linéaire. Plus la station est précise, plus la portée est grande |
 
 ### Filtrage angulaire
 
-L'outil détecte automatiquement les configurations où les références sont quasi-alignées. Des références alignées dégradent la qualité de la résection car elles n'apportent pas d'information géométrique indépendante. Définissez la séparation angulaire minimale dans les préférences.
+L'outil détecte les configurations où les références sont quasi-alignées. La séparation angulaire minimale (définie dans les paramètres) filtre les références qui n'apportent pas d'information géométrique indépendante.
 
 ### Points de contrainte
 
-Il est possible de marquer certaines références comme **obligatoires**. L'analyse ne considérera alors que les positions de station depuis lesquelles ces références sont visibles. C'est utile lorsqu'il faut absolument viser certains points connus.
+Certaines références peuvent être marquées comme obligatoires. L'analyse ne considère alors que les positions de station depuis lesquelles ces références sont visibles.
 
-### Mode de distance
+### Formats d'import et d'export
 
-Deux modes sont disponibles :
-- **Distance directe** : définir une distance maximale en mètres
-- **Distance dérivée** : la distance maximale est calculée à partir de la précision angulaire et de la tolérance linéaire acceptée. Plus la station est précise, plus la portée est grande.
-
-### Import et export
-
-<AccordionGroup>
-  <Accordion title="Formats d'import">
-    - **CSV** : nom, X, Y, Z (et optionnellement le type de référence)
-    - **DXF** : import de points depuis un fichier AutoCAD
-    - **GeoJSON** : import de points et de polygones (obstacles)
-  </Accordion>
-
-  <Accordion title="Formats d'export">
-    - **GeoJSON** : compatible QGIS, AutoCAD, et la plupart des SIG
-    - **JSON** : format natif du projet (inclut tous les paramètres)
-    - **CSV** : tableau des points et de leurs propriétés
-  </Accordion>
-</AccordionGroup>
-
-### Partage par lien
-
-Générez un lien de partage pour permettre à un collègue de visualiser la planification. Le lien contient toutes les données du projet (références, obstacles, station, préférences).
-
-### Annuler / Rétablir
-
-Toutes les actions sont enregistrées. Utilisez les raccourcis Annuler/Rétablir pour revenir en arrière sans perdre le travail en cours.
-
-## Voir aussi
-
-- [GDOP et qualité de résection](/fr/formules/gdop-qualite) -- Formule du GDOP et interprétation
-- [Visibilité 3D](/fr/formules/visibilite-3d) -- Algorithme d'intersection rayon-obstacle
-- [Premiers pas](/fr/premiers-pas) -- Créez votre compte et découvrez l'interface
+| Format | Import | Export | Contenu |
+|--------|--------|--------|---------|
+| CSV | Oui | Oui | Nom, X, Y, Z (+ type de référence optionnel) |
+| DXF | Oui | Non | Points depuis un fichier AutoCAD |
+| GeoJSON | Oui | Oui | Points et polygones (obstacles). Compatible QGIS, AutoCAD |
+| JSON | Non | Oui | Format natif du projet (inclut tous les paramètres) |

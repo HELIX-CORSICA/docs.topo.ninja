@@ -1,144 +1,67 @@
 ---
 title: "Générateur de fiche signalétique"
-description: "Comparez vos points projet avec les points implantés sur le terrain. Appairage automatique, photos, éditeur de masse et génération PDF."
+description: "Compare les points projet avec les points implantés et génère un PDF de vérification GNSS avec écarts calculés."
 icon: "magnifying-glass-chart"
 ---
 
-Le **Générateur de fiche signalétique** est l'outil le plus complet de Topo.ninja. Il permet de produire des fiches signalétiques de vérification GNSS en comparant les points théoriques (projet) avec les points effectivement implantés sur le terrain. Le PDF généré présente côte à côte les coordonnées projet et les coordonnées mesurées, avec les écarts calculés.
+## Résumé
 
-<Note>
-  **Disponible sur :** Standard, Premium, Enterprise
-</Note>
+Génère des fiches signalétiques de vérification GNSS en comparant les coordonnées projet (théoriques) avec les coordonnées implantées (mesurées). Le PDF présente chaque paire de points avec les écarts DX, DY, DZ, la photo et l'aperçu cartographique.
 
-## À quoi sert cet outil ?
+## Principe
 
-Après une implantation, il faut vérifier que les points matérialisés correspondent bien au projet. La fiche signalétique est le document de référence pour cette vérification :
+L'outil prend en entrée un ensemble de points (projet et implantés, importés par CSV ou saisis manuellement). Les points sont classés par rôle (projet ou implanté) via l'assignateur de rôles, puis appairés automatiquement ou manuellement. Pour chaque paire, l'outil calcule les écarts en X, Y, Z et la distance. Le PDF final présente la comparaison point par point.
 
-- Importez les points **projet** (coordonnées théoriques)
-- Importez les points **implantés** (coordonnées mesurées sur le terrain)
-- L'outil les appaire automatiquement
-- Le PDF montre la comparaison point par point avec les écarts
+Le flux de travail suit les étapes : import, assignation des rôles, appairage, enrichissement (photos/notes), génération PDF.
 
-Ce document se transmet au maître d'oeuvre pour attester de la conformité de l'implantation.
+## Étapes d'utilisation
 
-## Comment l'utiliser
+**Étape 1 -- Configurer le projet et le CRS**
+Remplir les informations du projet (client, chantier, opérateur, date) et sélectionner le système de coordonnées (CRS). Le choix du CRS conditionne l'affichage cartographique.
 
-<Steps>
-  <Step title="Configurer le projet">
-    Remplissez les informations du projet (client, chantier, opérateur, date) et sélectionnez le **système de coordonnées** utilisé. Ce choix est important pour l'affichage cartographique et les calculs de distances.
-  </Step>
+**Étape 2 -- Importer les points par CSV**
+Importer le fichier CSV contenant les points. Choisir le format de précision (décimétrique ou centimétrique). Tous les points peuvent être dans un même fichier -- le tri se fait à l'étape suivante.
 
-  <Step title="Importer les points par CSV">
-    Importez le fichier CSV contenant l'ensemble des points. Lors de l'import, choisissez le **format de précision** :
-    - **Décimétrique** : coordonnées arrondies au décimètre
-    - **Centimétrique** : coordonnées au centimètre
+**Étape 3 -- Assigner les rôles**
+Les points arrivent dans le pool central (non assignés). Les répartir en deux catégories : points projet et points implantés. La détection automatique identifie les marqueurs d'implantation (stkd, imp, etc.). Voir [Assignateur de rôles](/fr/fonctionnalites/assignateur-roles).
 
-    <Tip>
-      Il est possible d'importer tous les points en une seule fois (projet et implantés mélangés) puis de les trier à l'étape suivante. Pas besoin de préparer deux fichiers séparés.
-    </Tip>
-  </Step>
+**Étape 4 -- Appairer les points**
+Associer chaque point implanté à son point projet. Deux modes : par nom (extraction de marqueurs) ou par distance (seuil configurable, 2D ou 3D). Voir [Appairage automatique](/fr/fonctionnalites/appairage-automatique).
 
-  <Step title="Assigner les rôles">
-    Après l'import, tous les points se trouvent dans le **Pool central** (non assignés). Répartissez-les en deux catégories :
+<Warning>
+Vérifier le résultat de l'appairage automatique. Des noms ambigus ou des points proches peuvent produire des associations incorrectes. Corriger manuellement si nécessaire.
+</Warning>
 
-    - **Points Projet** : les coordonnées théoriques, issues du plan ou du projet
-    - **Points Implantés** : les coordonnées mesurées sur le terrain après implantation
+**Étape 5 -- Enrichir les points (optionnel)**
+Ajouter des photos et des notes à chaque point ou paire de points. Modifier les coordonnées via l'éditeur en masse si nécessaire. Voir [Éditeur en masse](/fr/fonctionnalites/editeur-masse).
 
-    Glissez les points vers le pool correspondant ou utilisez l'assignation par lot.
+**Étape 6 -- Générer le PDF**
+Le PDF contient, pour chaque paire : coordonnées projet, coordonnées implantées, écarts (DX, DY, DZ, distance), photo du point, aperçu cartographique, notes.
 
-    <Info>
-      L'assignation est une étape clé. Un point mal classé faussera la comparaison. En cas de doute, vérifiez les noms des points : les points implantés contiennent souvent un suffixe de type `stkd`, `imp` ou similaire.
-    </Info>
-  </Step>
+## Détails techniques
 
-  <Step title="Appairer les points">
-    L'appairage consiste à mettre en correspondance chaque point implanté avec son point projet de référence. Topo.ninja propose deux méthodes d'appairage automatique :
+### Système à trois pools
 
-    **Appairage par nom** : l'outil extrait l'identifiant commun des noms de points en ignorant les préfixes et suffixes de type piquetage (`stkd`, `imp`, etc.). Par exemple, le point implanté `P12_stkd` sera appairé au point projet `P12`.
+| Pool | Contenu |
+|------|---------|
+| Pool central | Points non assignés (état initial après import) |
+| Points projet | Coordonnées théoriques issues du plan |
+| Points implantés | Coordonnées mesurées sur le terrain |
 
-    **Appairage par distance** : l'outil associe chaque point implanté au point projet le plus proche, dans un seuil de distance configurable. Le calcul peut se faire en distance 2D (planimétrique) ou 3D.
+### Modes d'appairage
 
-    <Warning>
-      Vérifiez toujours le résultat de l'appairage automatique. Si des noms de points sont ambigus ou si plusieurs points sont proches les uns des autres, des erreurs d'appairage sont possibles. Corrigez manuellement les associations si nécessaire.
-    </Warning>
-  </Step>
+| Mode | Méthode | Paramètres |
+|------|---------|------------|
+| Par nom | Extraction de marqueurs, comparaison insensible à la casse | Marqueurs : stkd, stked, imp (+ personnalisés) |
+| Par distance | Plus proche voisin avec seuil | Seuil en mètres, mode 2D ou 3D |
 
-  <Step title="Enrichir les points (optionnel)">
-    Pour chaque point ou paire de points, il est possible de :
-    - Ajouter des **photos** (matérialisation du point sur le terrain)
-    - Ajouter des **notes** (observations, remarques)
-    - Modifier les coordonnées via l'**éditeur de masse** (modification en lot dans un tableau interactif)
-  </Step>
+### Format de précision
 
-  <Step title="Générer le PDF">
-    Le PDF signalétique généré contient, pour chaque paire de points :
-    - Les coordonnées du point projet
-    - Les coordonnées du point implanté
-    - Les écarts (DX, DY, DZ et distance)
-    - La photo du point (si fournie)
-    - Un aperçu cartographique
-    - Les notes associées
+| Format | Décimales affichées |
+|--------|-------------------|
+| Décimétrique | Coordonnées arrondies au décimètre |
+| Centimétrique | Coordonnées au centimètre |
 
-    Le document est formaté pour être directement transmis au maître d'ouvrage ou archivé dans le dossier de chantier.
-  </Step>
-</Steps>
+### Contenu du PDF par paire
 
-## Fonctionnalités
-
-### Sélection du système de coordonnées
-
-Lors de la configuration du projet, sélectionnez le système de coordonnées (CRS) des données. Ce choix conditionne l'affichage sur la carte et garantit que les aperçus cartographiques sont corrects.
-
-### Import CSV avec format de précision
-
-L'import CSV permet de spécifier le niveau de précision des coordonnées. Cela influence l'affichage des valeurs et le nombre de décimales dans le PDF final.
-
-### Assignation des rôles
-
-Le système comporte trois pools :
-- **Pool central** : les points non encore assignés (après import)
-- **Points Projet** : les coordonnées théoriques
-- **Points Implantés** : les coordonnées mesurées
-
-Déplacez les points entre ces pools pour les classer. L'interface est conçue pour rendre cette opération rapide, même avec un grand nombre de points.
-
-### Appairage automatique
-
-Deux algorithmes sont disponibles :
-
-<AccordionGroup>
-  <Accordion title="Appairage par nom">
-    L'algorithme analyse les noms de points et extrait un identifiant commun en ignorant les marqueurs d'implantation courants (`stkd`, `imp`, `stakeout`, etc.). Il fonctionne bien lorsque les points projet et implantés suivent une convention de nommage cohérente.
-
-    Exemple : `PT-001` (projet) sera appairé à `PT-001_stkd` (implanté).
-  </Accordion>
-
-  <Accordion title="Appairage par distance">
-    L'algorithme calcule la distance entre chaque point implanté et tous les points projet, puis associe les paires les plus proches. Définissez un seuil de distance maximale (en mètres) au-delà duquel l'association est refusée. Le calcul peut être fait en 2D (XY uniquement) ou en 3D (XYZ).
-
-    Cette méthode est utile lorsque les noms de points ne correspondent pas ou lorsque les conventions de nommage varient.
-  </Accordion>
-</AccordionGroup>
-
-### Éditeur de masse
-
-L'éditeur de masse permet de modifier les coordonnées et les propriétés de plusieurs points simultanément dans un tableau interactif de type tableur. C'est particulièrement utile pour :
-- Corriger des erreurs d'import
-- Ajouter des notes en lot
-- Vérifier rapidement l'ensemble des données
-
-### Photos et notes
-
-Chaque point peut recevoir une ou plusieurs photos et des notes textuelles. Ces éléments sont intégrés dans le PDF final, à côté des coordonnées et des écarts.
-
-### Aperçu cartographique
-
-Chaque point est localisé sur un fond de carte. Dans le PDF, un aperçu cartographique est inclus pour chaque paire de points, montrant la position du point projet et du point implanté.
-
-## Voir aussi
-
-- [Assignation des rôles](/fr/fonctionnalites/assignateur-roles) -- Détail du système d'assignation projet/implanté
-- [Appairage automatique](/fr/fonctionnalites/appairage-automatique) -- Algorithmes d'appairage par nom et par distance
-- [Éditeur de masse](/fr/fonctionnalites/editeur-masse) -- Modification en lot des points
-- [Photos de points](/fr/fonctionnalites/photos-points) -- Gestion des photos
-- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Formats CSV supportés
+Chaque paire de points dans le PDF inclut : coordonnées projet, coordonnées implantées, écarts (DX, DY, DZ), distance entre les deux points, photo (si fournie), aperçu cartographique et notes associées.

@@ -1,102 +1,55 @@
 ---
 title: "Fiche de contrôle"
-description: "Générez des fiches terrain PDF avec vos points topographiques, coordonnées, notes et photos."
+description: "Génère un PDF de contrôle à partir de points X/Y/Z avec notes et photos optionnelles."
 icon: "clipboard-check"
 ---
 
-La **Fiche de contrôle** est l'outil de base pour générer des rapports terrain. Les points topographiques sont saisis avec leurs coordonnées, enrichis de notes ou de photos, puis exportés en PDF formaté, prêt à imprimer ou à transmettre.
+## Résumé
 
-<Note>
-  **Disponible sur :** Tous les plans
-</Note>
+Crée une fiche de contrôle PDF à partir de points topographiques (X, Y, Z) avec notes et photos optionnelles. Les points sont saisis manuellement ou importés par CSV, puis exportés en PDF formaté.
 
-## À quoi sert cet outil ?
+## Principe
 
-Lors d'un contrôle d'implantation sur chantier, des points sont relevés et un document récapitulatif doit être produit. La fiche de contrôle permet de :
+L'outil prend en entrée une liste de points avec leurs coordonnées (X, Y, Z), enrichis éventuellement de notes textuelles et de photos. Il génère un document PDF contenant l'en-tête du projet, le tableau des points, les notes, les photos et un aperçu cartographique.
 
-- Rassembler toutes les informations du projet (client, chantier, opérateur, référence, date)
-- Lister les points avec leurs coordonnées X, Y, Z
-- Ajouter des observations ou des photos par point
-- Visualiser les points sur une carte interactive
-- Générer un PDF professionnel en un clic
+Les coordonnées doivent être dans un système projeté (Lambert 93, UTM, etc.) pour que l'aperçu cartographique fonctionne. Les points en système local sans géoréférencement ne s'affichent pas sur la carte.
 
-Ce document se transmet au maître d'ouvrage, au conducteur de travaux, ou se conserve dans le dossier de chantier.
+## Étapes d'utilisation
 
-## Comment l'utiliser
+**Étape 1 -- Remplir les informations du projet**
+Compléter le formulaire projet : client, chantier, opérateur, référence, date. Ces champs apparaissent dans l'en-tête du PDF. Tous sont optionnels.
 
-<Steps>
-  <Step title="Remplir les informations du projet">
-    Commencez par compléter le formulaire du projet :
-    - **Client** : le nom du maître d'ouvrage ou du donneur d'ordre
-    - **Chantier** : le nom ou l'adresse du chantier
-    - **Opérateur** : le nom du topographe
-    - **Référence** : le numéro de dossier ou de commande
-    - **Date** : la date du relevé
+**Étape 2 -- Ajouter les points**
+Saisir les points manuellement (nom, X, Y, Z) ou importer un fichier CSV. L'import détecte automatiquement les colonnes. Voir [Import/export CSV](/fr/fonctionnalites/import-export-csv) pour les formats acceptés.
 
-    Ces informations apparaîtront dans l'en-tête du PDF.
-  </Step>
+**Étape 3 -- Enrichir les points (optionnel)**
+Ajouter des notes ou des photos à chaque point. Notes et photos sont incluses dans le PDF à côté des coordonnées du point correspondant. Voir [Photos de points](/fr/fonctionnalites/photos-points) pour les spécifications.
 
-  <Step title="Ajouter les points">
-    Deux options sont disponibles pour ajouter des points :
+**Étape 4 -- Générer le PDF**
+Le PDF est créé dans le navigateur et téléchargé automatiquement. Il contient : en-tête projet, tableau des points avec coordonnées, notes, photos et aperçu cartographique.
 
-    **Saisie manuelle** : cliquez sur le bouton d'ajout et renseignez le nom du point ainsi que ses coordonnées X, Y et Z.
+## Détails techniques
 
-    **Import CSV** : importez un fichier CSV contenant les points. Le format attendu est simple : une colonne par champ (nom, X, Y, Z). L'outil détecte automatiquement les colonnes.
+### Champs du formulaire projet
 
-    <Tip>
-      Pour un grand nombre de points, l'import CSV fait gagner un temps considérable. Les données peuvent être exportées depuis un carnet de terrain ou un logiciel de post-traitement.
-    </Tip>
-  </Step>
+| Champ | Description |
+|-------|-------------|
+| Client | Nom du maître d'ouvrage ou donneur d'ordre |
+| Chantier | Nom ou adresse du chantier |
+| Opérateur | Nom du topographe |
+| Référence | Numéro de dossier ou de commande |
+| Date | Date du relevé |
 
-  <Step title="Enrichir les points (optionnel)">
-    Pour chaque point, il est possible de :
-    - Ajouter une **note** (observation terrain, remarque sur la matérialisation, etc.)
-    - Joindre une **photo** (prise avec un téléphone ou une tablette)
+### Format CSV attendu
 
-    Les notes et photos apparaîtront dans le PDF à côté des coordonnées du point correspondant.
-  </Step>
+Le format minimal est `Nom,X,Y,Z`. La colonne Z est optionnelle. Les en-têtes reconnus sont détaillés dans [Import/export CSV](/fr/fonctionnalites/import-export-csv).
 
-  <Step title="Vérifier sur la carte">
-    L'aperçu cartographique affiche tous les points sur un fond de carte. Utilisez-le pour vérifier visuellement que les points sont cohérents et correctement positionnés.
+### Photos
 
-    <Warning>
-      Si les points n'apparaissent pas sur la carte, vérifiez que les coordonnées sont dans un système projeté reconnu (Lambert 93, UTM, etc.) et non dans un système local sans géoréférencement.
-    </Warning>
-  </Step>
-
-  <Step title="Générer le PDF">
-    Cliquez sur **Générer PDF**. Le document est créé dans le navigateur et téléchargé automatiquement. Il contient :
-    - L'en-tête avec les informations du projet
-    - Le tableau des points et coordonnées
-    - Les notes et photos
-    - Un aperçu cartographique
-  </Step>
-</Steps>
-
-## Fonctionnalités
-
-### Formulaire projet
-
-Le formulaire projet regroupe les métadonnées du relevé. Tous les champs sont optionnels, mais remplir au minimum le client et le chantier rend le document plus professionnel et plus facile à retrouver.
-
-### Import et export CSV
-
-Les points peuvent être importés depuis un fichier CSV et exportés à tout moment. Cela permet de :
-- Reprendre des données issues d'une station totale ou d'un récepteur GNSS
-- Sauvegarder le travail pour le reprendre plus tard
-- Partager les données avec un collègue
-
-### Photos de points
-
-Chaque point peut recevoir une ou plusieurs photos. Sur le terrain, photographiez la matérialisation du point (clou, piquet, repère) directement depuis un téléphone ou une tablette. La photo sera incluse dans le PDF final.
+Les photos sont compressées côté client (max 1 Mo, 1024 px côté le plus long) et stockées en Base64 dans le navigateur. Formats acceptés : JPG, PNG, WebP.
 
 ### Aperçu cartographique
 
-La carte interactive montre l'ensemble des points. Il est possible de zoomer, déplacer la vue et vérifier la cohérence du relevé avant de générer le PDF.
-
-## Voir aussi
-
-- [Premiers pas](/fr/premiers-pas) -- Créez votre compte et générez votre premier PDF
-- [Fiche de contrôle par axe](/fr/outils/fiche-axe) -- Organisez vos points par axes de référence
-- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Détails sur les formats CSV supportés
-- [Photos de points](/fr/fonctionnalites/photos-points) -- Gestion des photos de points
+<Warning>
+L'aperçu cartographique nécessite des coordonnées dans un système projeté reconnu (Lambert 93, UTM, etc.). Les coordonnées en système local sans géoréférencement ne s'affichent pas sur la carte.
+</Warning>
