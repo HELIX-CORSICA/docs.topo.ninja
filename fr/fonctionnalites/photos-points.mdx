@@ -1,43 +1,43 @@
 ---
 title: "Photos de points"
-description: "Ajoutez des photos a vos points topographiques pour documenter vos levers et enrichir vos rapports PDF."
+description: "Ajoutez des photos à vos points topographiques pour documenter vos levers et enrichir vos rapports PDF."
 icon: "camera"
 ---
 
-La fonctionnalite de photos de points vous permet d'associer des images a chacun de vos points topographiques. Ces photos sont ensuite integrees dans les rapports PDF generes, offrant un contexte visuel precieux pour la verification et la traçabilite de vos travaux.
+La fonctionnalité de photos de points vous permet d'associer des images à chacun de vos points topographiques. Ces photos sont ensuite intégrées dans les rapports PDF générés, offrant un contexte visuel précieux pour la vérification et la traçabilité de vos travaux.
 
 <Note>
-  Disponible dans les outils **Fiche signaletique** et **Fiche axe**, sur tous les plans.
+  Disponible dans les outils **Fiche signalétique** et **Fiche axe**, sur tous les plans.
 </Note>
 
-## Comment ca fonctionne
+## Comment ça fonctionne
 
-Chaque point de votre projet peut recevoir une ou plusieurs photos. Les images sont automatiquement compressees dans votre navigateur avant d'etre integrees au projet. Aucune image n'est envoyee vers un serveur : tout reste local dans votre navigateur.
+Chaque point de votre projet peut recevoir une ou plusieurs photos. Les images sont automatiquement compressées dans votre navigateur avant d'être intégrées au projet. Aucune image n'est envoyée vers un serveur : tout reste local dans votre navigateur.
 
 **Compression automatique :**
-- Taille maximale : **1 Mo** par image apres compression
-- Dimension maximale : **1024 px** (le cote le plus long)
-- Format : les images sont converties et optimisees automatiquement
+- Taille maximale : **1 Mo** par image après compression
+- Dimension maximale : **1024 px** (le côté le plus long)
+- Format : les images sont converties et optimisées automatiquement
 
 ## Utilisation
 
 <Steps>
-  <Step title="Selectionner un point">
-    Dans la fiche signaletique ou la fiche axe, cliquez sur le point auquel vous souhaitez ajouter une photo.
+  <Step title="Sélectionner un point">
+    Dans la fiche signalétique ou la fiche axe, cliquez sur le point auquel vous souhaitez ajouter une photo.
   </Step>
   <Step title="Ajouter une photo">
-    Deux methodes :
-    - **Glisser-deposer** : faites glisser votre image directement sur la zone de depot
-    - **Selecteur de fichier** : cliquez sur le bouton d'ajout de photo et choisissez votre fichier
+    Deux méthodes :
+    - **Glisser-déposer** : faites glisser votre image directement sur la zone de dépôt
+    - **Sélecteur de fichier** : cliquez sur le bouton d'ajout de photo et choisissez votre fichier
   </Step>
-  <Step title="Verifier la compression">
-    L'image est automatiquement compressee. Vous pouvez visualiser le resultat directement dans l'interface. Si la photo est trop lourde, la compression est appliquee automatiquement pour respecter les limites.
+  <Step title="Vérifier la compression">
+    L'image est automatiquement compressée. Vous pouvez visualiser le résultat directement dans l'interface. Si la photo est trop lourde, la compression est appliquée automatiquement pour respecter les limites.
   </Step>
   <Step title="Ajouter d'autres photos (optionnel)">
-    Repetez l'operation pour ajouter plusieurs photos au meme point. Il n'y a pas de limite stricte au nombre de photos par point.
+    Répétez l'opération pour ajouter plusieurs photos au même point. Il n'y a pas de limite stricte au nombre de photos par point.
   </Step>
-  <Step title="Generer le PDF">
-    Lorsque vous generez le rapport PDF, les photos sont automatiquement integrees a cote des donnees du point correspondant.
+  <Step title="Générer le PDF">
+    Lorsque vous générez le rapport PDF, les photos sont automatiquement intégrées à côté des données du point correspondant.
   </Step>
 </Steps>
 
@@ -45,52 +45,52 @@ Chaque point de votre projet peut recevoir une ou plusieurs photos. Les images s
 
 <AccordionGroup>
   <Accordion title="Cadrage de la photo">
-    Centrez le marqueur ou le clou topographique dans la photo. Incluez suffisamment d'environnement pour que le point soit facilement identifiable sur le terrain lors d'une visite ulterieure.
+    Centrez le marqueur ou le clou topographique dans la photo. Incluez suffisamment d'environnement pour que le point soit facilement identifiable sur le terrain lors d'une visite ultérieure.
   </Accordion>
-  <Accordion title="Eclairage">
-    Evitez les contre-jours et les ombres fortes sur le marqueur. En exterieur, le temps couvert offre un eclairage homogene ideal.
+  <Accordion title="Éclairage">
+    Évitez les contre-jours et les ombres fortes sur le marqueur. En extérieur, le temps couvert offre un éclairage homogène idéal.
   </Accordion>
-  <Accordion title="Informations complementaires">
-    Prenez une photo rapprochee du marqueur, puis une photo de contexte montrant l'environnement autour du point. Les deux types sont utiles pour les rapports.
+  <Accordion title="Informations complémentaires">
+    Prenez une photo rapprochée du marqueur, puis une photo de contexte montrant l'environnement autour du point. Les deux types sont utiles pour les rapports.
   </Accordion>
   <Accordion title="Organisation">
-    Nommez vos photos avec le nom du point correspondant avant l'import. Cela facilite l'association et la traçabilite.
+    Nommez vos photos avec le nom du point correspondant avant l'import. Cela facilite l'association et la traçabilité.
   </Accordion>
 </AccordionGroup>
 
-## Specifications techniques
+## Spécifications techniques
 
-| Parametre | Valeur |
+| Paramètre | Valeur |
 |-----------|--------|
-| Taille max par image | 1 Mo (apres compression) |
-| Dimension max | 1024 px (cote le plus long) |
-| Formats acceptes | JPG, PNG, WebP |
-| Stockage | Local (navigateur), encode en Base64 |
-| Compression | Automatique, cote client |
-| Inclusion PDF | Automatique a la generation |
+| Taille max par image | 1 Mo (après compression) |
+| Dimension max | 1024 px (côté le plus long) |
+| Formats acceptés | JPG, PNG, WebP |
+| Stockage | Local (navigateur), encodé en Base64 |
+| Compression | Automatique, côté client |
+| Inclusion PDF | Automatique à la génération |
 
 <Info>
-  Les photos sont stockees dans les donnees du projet en Base64. Elles sont sauvegardees avec votre projet et restaurees automatiquement lorsque vous rouvrez le projet. Aucun telechargement vers un serveur n'est necessaire.
+  Les photos sont stockées dans les données du projet en Base64. Elles sont sauvegardées avec votre projet et restaurées automatiquement lorsque vous rouvrez le projet. Aucun téléchargement vers un serveur n'est nécessaire.
 </Info>
 
 ## Astuces
 
 <Tip>
-  **Prenez les photos sur le terrain** : l'ideal est de photographier chaque point au moment du lever ou de l'implantation. Cela evite de devoir retourner sur site pour documenter les points.
+  **Prenez les photos sur le terrain** : l'idéal est de photographier chaque point au moment du lever ou de l'implantation. Cela évite de devoir retourner sur site pour documenter les points.
 </Tip>
 
 <Tip>
-  **Pas besoin de redimensionner** : ne perdez pas de temps a redimensionner vos photos avant l'import. La compression automatique s'en charge. Importez directement depuis votre telephone ou appareil photo.
+  **Pas besoin de redimensionner** : ne perdez pas de temps à redimensionner vos photos avant l'import. La compression automatique s'en charge. Importez directement depuis votre téléphone ou appareil photo.
 </Tip>
 
 <Tip>
-  **Plusieurs photos par point** : n'hesitez pas a ajouter une vue rapprochee et une vue d'ensemble. Dans le PDF, les deux photos apparaitront et faciliteront l'identification du point.
+  **Plusieurs photos par point** : n'hésitez pas à ajouter une vue rapprochée et une vue d'ensemble. Dans le PDF, les deux photos apparaîtront et faciliteront l'identification du point.
 </Tip>
 
 ## Voir aussi
 
 <CardGroup cols={2}>
-  <Card title="Fiche signaletique" icon="id-card" href="/fr/outils/fiche-signaletique">
+  <Card title="Fiche signalétique" icon="id-card" href="/fr/outils/fiche-signaletique">
     Outil principal pour les photos de points
   </Card>
   <Card title="Fiche axe" icon="road" href="/fr/outils/fiche-axe">

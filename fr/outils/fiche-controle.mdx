@@ -1,102 +1,102 @@
 ---
-title: "Fiche de controle"
-description: "Generez des fiches terrain PDF avec vos points topographiques, coordonnees, notes et photos."
+title: "Fiche de contrôle"
+description: "Générez des fiches terrain PDF avec vos points topographiques, coordonnées, notes et photos."
 icon: "clipboard-check"
 ---
 
-La **Fiche de controle** est l'outil de base pour generer des rapports terrain. Vous saisissez vos points topographiques avec leurs coordonnees, ajoutez des notes ou des photos, et generez un PDF formate pret a imprimer ou a transmettre.
+La **Fiche de contrôle** est l'outil de base pour générer des rapports terrain. Vous saisissez vos points topographiques avec leurs coordonnées, ajoutez des notes ou des photos, et générez un PDF formaté prêt à imprimer ou à transmettre.
 
 <Note>
-  **Disponible sur :** Tous les plans (y compris le plan gratuit)
+  **Disponible sur :** Tous les plans
 </Note>
 
-## A quoi sert cet outil ?
+## À quoi sert cet outil ?
 
-Lors d'un controle d'implantation sur chantier, vous relevez des points et devez produire un document recapitulatif. La fiche de controle vous permet de :
+Lors d'un contrôle d'implantation sur chantier, vous relevez des points et devez produire un document récapitulatif. La fiche de contrôle vous permet de :
 
-- Rassembler toutes les informations du projet (client, chantier, operateur, reference, date)
-- Lister vos points avec leurs coordonnees X, Y, Z
+- Rassembler toutes les informations du projet (client, chantier, opérateur, référence, date)
+- Lister vos points avec leurs coordonnées X, Y, Z
 - Ajouter des observations ou des photos par point
 - Visualiser les points sur une carte interactive
-- Generer un PDF professionnel en un clic
+- Générer un PDF professionnel en un clic
 
-C'est le document que vous transmettez au maitre d'ouvrage, au conducteur de travaux ou que vous conservez dans votre dossier de chantier.
+C'est le document que vous transmettez au maître d'ouvrage, au conducteur de travaux ou que vous conservez dans votre dossier de chantier.
 
 ## Comment l'utiliser
 
 <Steps>
   <Step title="Remplir les informations du projet">
-    Commencez par completer le formulaire du projet :
-    - **Client** : le nom du maitre d'ouvrage ou du donneur d'ordre
+    Commencez par compléter le formulaire du projet :
+    - **Client** : le nom du maître d'ouvrage ou du donneur d'ordre
     - **Chantier** : le nom ou l'adresse du chantier
-    - **Operateur** : votre nom ou celui du topographe
-    - **Reference** : le numero de dossier ou de commande
-    - **Date** : la date du releve
+    - **Opérateur** : votre nom ou celui du topographe
+    - **Référence** : le numéro de dossier ou de commande
+    - **Date** : la date du relevé
 
-    Ces informations apparaitront dans l'en-tete du PDF.
+    Ces informations apparaîtront dans l'en-tête du PDF.
   </Step>
 
   <Step title="Ajouter vos points">
     Vous avez deux options pour ajouter des points :
 
-    **Saisie manuelle** : cliquez sur le bouton d'ajout et renseignez le nom du point ainsi que ses coordonnees X, Y et Z.
+    **Saisie manuelle** : cliquez sur le bouton d'ajout et renseignez le nom du point ainsi que ses coordonnées X, Y et Z.
 
-    **Import CSV** : importez un fichier CSV contenant vos points. Le format attendu est simple : une colonne par champ (nom, X, Y, Z). L'outil detecte automatiquement les colonnes.
+    **Import CSV** : importez un fichier CSV contenant vos points. Le format attendu est simple : une colonne par champ (nom, X, Y, Z). L'outil détecte automatiquement les colonnes.
 
     <Tip>
-      Si vous avez beaucoup de points, l'import CSV vous fera gagner un temps considerable. Vous pouvez exporter depuis votre carnet de terrain ou votre logiciel de post-traitement.
+      Si vous avez beaucoup de points, l'import CSV vous fera gagner un temps considérable. Vous pouvez exporter depuis votre carnet de terrain ou votre logiciel de post-traitement.
     </Tip>
   </Step>
 
   <Step title="Enrichir les points (optionnel)">
     Pour chaque point, vous pouvez :
-    - Ajouter une **note** (observation terrain, remarque sur la materialisation, etc.)
-    - Joindre une **photo** (prise avec votre telephone ou tablette)
+    - Ajouter une **note** (observation terrain, remarque sur la matérialisation, etc.)
+    - Joindre une **photo** (prise avec votre téléphone ou tablette)
 
-    Les notes et photos apparaitront dans le PDF a cote des coordonnees du point correspondant.
+    Les notes et photos apparaîtront dans le PDF à côté des coordonnées du point correspondant.
   </Step>
 
-  <Step title="Verifier sur la carte">
-    L'apercu cartographique affiche tous vos points sur un fond de carte. Utilisez-le pour verifier visuellement que vos points sont coherents et correctement positionnes.
+  <Step title="Vérifier sur la carte">
+    L'aperçu cartographique affiche tous vos points sur un fond de carte. Utilisez-le pour vérifier visuellement que vos points sont cohérents et correctement positionnés.
 
     <Warning>
-      Si vos points n'apparaissent pas sur la carte, verifiez que les coordonnees sont dans un systeme projete reconnu (Lambert 93, UTM, etc.) et non dans un systeme local sans georeferencement.
+      Si vos points n'apparaissent pas sur la carte, vérifiez que les coordonnées sont dans un système projeté reconnu (Lambert 93, UTM, etc.) et non dans un système local sans géoréférencement.
     </Warning>
   </Step>
 
-  <Step title="Generer le PDF">
-    Cliquez sur **Generer PDF**. Le document est cree dans votre navigateur et telecharge automatiquement. Il contient :
-    - L'en-tete avec les informations du projet
-    - Le tableau des points et coordonnees
+  <Step title="Générer le PDF">
+    Cliquez sur **Générer PDF**. Le document est créé dans votre navigateur et téléchargé automatiquement. Il contient :
+    - L'en-tête avec les informations du projet
+    - Le tableau des points et coordonnées
     - Les notes et photos
-    - Un apercu cartographique
+    - Un aperçu cartographique
   </Step>
 </Steps>
 
-## Fonctionnalites
+## Fonctionnalités
 
 ### Formulaire projet
 
-Le formulaire projet regroupe les metadonnees de votre releve. Tous les champs sont optionnels, mais remplir au minimum le client et le chantier rend votre document plus professionnel et plus facile a retrouver.
+Le formulaire projet regroupe les métadonnées de votre relevé. Tous les champs sont optionnels, mais remplir au minimum le client et le chantier rend votre document plus professionnel et plus facile à retrouver.
 
 ### Import et export CSV
 
-Vous pouvez importer vos points depuis un fichier CSV et les exporter a tout moment. C'est pratique pour :
-- Reprendre des donnees issues de votre station totale ou recepteur GNSS
+Vous pouvez importer vos points depuis un fichier CSV et les exporter à tout moment. C'est pratique pour :
+- Reprendre des données issues de votre station totale ou récepteur GNSS
 - Sauvegarder votre travail pour le reprendre plus tard
-- Partager les donnees avec un collegue
+- Partager les données avec un collègue
 
 ### Photos de points
 
-Chaque point peut recevoir une ou plusieurs photos. Sur le terrain, prenez en photo la materialisation du point (clou, piquet, repere) directement depuis votre telephone ou tablette. La photo sera incluse dans le PDF final.
+Chaque point peut recevoir une ou plusieurs photos. Sur le terrain, prenez en photo la matérialisation du point (clou, piquet, repère) directement depuis votre téléphone ou tablette. La photo sera incluse dans le PDF final.
 
-### Apercu cartographique
+### Aperçu cartographique
 
-La carte interactive vous montre l'ensemble de vos points. Vous pouvez zoomer, deplacer la vue et verifier la coherence de votre releve avant de generer le PDF.
+La carte interactive vous montre l'ensemble de vos points. Vous pouvez zoomer, déplacer la vue et vérifier la cohérence de votre relevé avant de générer le PDF.
 
 ## Voir aussi
 
-- [Premiers pas](/fr/premiers-pas) -- Creez votre compte et generez votre premier PDF
-- [Fiche de controle par axe](/fr/outils/fiche-axe) -- Organisez vos points par axes de reference
-- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Details sur les formats CSV supportes
+- [Premiers pas](/fr/premiers-pas) -- Créez votre compte et générez votre premier PDF
+- [Fiche de contrôle par axe](/fr/outils/fiche-axe) -- Organisez vos points par axes de référence
+- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Détails sur les formats CSV supportés
 - [Photos de points](/fr/fonctionnalites/photos-points) -- Gestion des photos de points

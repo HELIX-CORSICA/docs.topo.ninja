@@ -1,94 +1,94 @@
 ---
-title: "Fiche de controle par axe"
-description: "Generez des fiches de controle organisees par axes de reference, avec calcul automatique des distances orthogonales."
+title: "Fiche de contrôle par axe"
+description: "Générez des fiches de contrôle organisées par axes de référence, avec calcul automatique des distances orthogonales."
 icon: "ruler-combined"
 ---
 
-La **Fiche de controle par axe** permet de generer des fiches de controle ou les points sont organises par rapport a des axes de reference. L'outil calcule automatiquement les distances orthogonales de chaque point par rapport a son axe, ce qui facilite le controle d'alignement et de decalage sur le terrain.
+La **Fiche de contrôle par axe** permet de générer des fiches de contrôle où les points sont organisés par rapport à des axes de référence. L'outil calcule automatiquement les distances orthogonales de chaque point par rapport à son axe, ce qui facilite le contrôle d'alignement et de décalage sur le terrain.
 
 <Note>
   **Disponible sur :** Standard, Premium, Enterprise
 </Note>
 
-## A quoi sert cet outil ?
+## À quoi sert cet outil ?
 
-Sur de nombreux chantiers, le controle d'implantation se fait par rapport a des axes de reference : axe de voirie, axe de batiment, fil d'eau, etc. Plutot que de simplement lister des coordonnees absolues, vous avez besoin de connaitre la position de chaque point **par rapport a l'axe** : est-il a droite, a gauche, de combien ?
+Sur de nombreux chantiers, le contrôle d'implantation se fait par rapport à des axes de référence : axe de voirie, axe de bâtiment, fil d'eau, etc. Plutôt que de simplement lister des coordonnées absolues, vous avez besoin de connaître la position de chaque point **par rapport à l'axe** : est-il à droite, à gauche, de combien ?
 
-La fiche par axe repond a ce besoin en :
-- Vous permettant de definir un ou plusieurs axes de reference (chacun defini par deux points)
-- Assignant vos points a l'axe correspondant
+La fiche par axe répond à ce besoin en :
+- Vous permettant de définir un ou plusieurs axes de référence (chacun défini par deux points)
+- Assignant vos points à l'axe correspondant
 - Calculant automatiquement la distance orthogonale et la distance le long de l'axe
-- Generant un PDF organise par axe, avec les distances calculees
+- Générant un PDF organisé par axe, avec les distances calculées
 
-C'est l'outil ideal pour les controles de voirie, d'alignement de facades, de reseaux enterres ou toute implantation lineaire.
+C'est l'outil idéal pour les contrôles de voirie, d'alignement de façades, de réseaux enterrés ou toute implantation linéaire.
 
 ## Comment l'utiliser
 
 <Steps>
-  <Step title="Definir vos axes de reference">
-    Un axe est defini par **deux points** (point de depart et point d'arrivee). Ajoutez un ou plusieurs axes en renseignant les coordonnees de leurs extremites.
+  <Step title="Définir vos axes de référence">
+    Un axe est défini par **deux points** (point de départ et point d'arrivée). Ajoutez un ou plusieurs axes en renseignant les coordonnées de leurs extrémités.
 
     <Info>
       Le sens de l'axe est important. La convention de signe est la suivante :
-      - **Positif** (+) : le point est a **droite** dans le sens de l'axe (du point de depart vers le point d'arrivee)
-      - **Negatif** (-) : le point est a **gauche** dans le sens de l'axe
+      - **Positif** (+) : le point est à **droite** dans le sens de l'axe (du point de départ vers le point d'arrivée)
+      - **Négatif** (-) : le point est à **gauche** dans le sens de l'axe
     </Info>
   </Step>
 
   <Step title="Ajouter vos points">
-    Ajoutez vos points manuellement ou importez-les par CSV. Chaque point est defini par son nom et ses coordonnees X, Y, Z.
+    Ajoutez vos points manuellement ou importez-les par CSV. Chaque point est défini par son nom et ses coordonnées X, Y, Z.
   </Step>
 
   <Step title="Assigner les points aux axes">
-    Associez chaque point a l'axe par rapport auquel vous souhaitez calculer les distances. Un point ne peut etre assigne qu'a un seul axe.
+    Associez chaque point à l'axe par rapport auquel vous souhaitez calculer les distances. Un point ne peut être assigné qu'à un seul axe.
 
     <Tip>
-      Si un meme point physique doit etre controle par rapport a plusieurs axes, vous pouvez le dupliquer et assigner chaque copie a un axe different.
+      Si un même point physique doit être contrôlé par rapport à plusieurs axes, vous pouvez le dupliquer et assigner chaque copie à un axe différent.
     </Tip>
   </Step>
 
-  <Step title="Verifier les distances calculees">
-    L'editeur affiche un tableau de type Excel avec les colonnes suivantes :
+  <Step title="Vérifier les distances calculées">
+    L'éditeur affiche un tableau de type Excel avec les colonnes suivantes :
     - **Nom** : identifiant du point
-    - **X, Y, Z** : coordonnees du point
-    - **Distance le long de l'axe** : position projetee sur l'axe (abscisse curviligne)
-    - **Distance orthogonale** : ecart par rapport a l'axe (avec signe)
+    - **X, Y, Z** : coordonnées du point
+    - **Distance le long de l'axe** : position projetée sur l'axe (abscisse curviligne)
+    - **Distance orthogonale** : écart par rapport à l'axe (avec signe)
 
-    Les colonnes de distance sont en lecture seule : elles sont calculees automatiquement a partir des coordonnees et de la definition de l'axe.
+    Les colonnes de distance sont en lecture seule : elles sont calculées automatiquement à partir des coordonnées et de la définition de l'axe.
   </Step>
 
-  <Step title="Generer le PDF">
-    Le PDF genere est organise par axe. Pour chaque axe, vous retrouvez :
-    - La definition de l'axe (coordonnees des deux points)
-    - Le tableau des points assignes avec leurs distances
+  <Step title="Générer le PDF">
+    Le PDF généré est organisé par axe. Pour chaque axe, vous retrouvez :
+    - La définition de l'axe (coordonnées des deux points)
+    - Le tableau des points assignés avec leurs distances
     - Les informations du projet
   </Step>
 </Steps>
 
-## Fonctionnalites
+## Fonctionnalités
 
 ### Axes multiples
 
-Vous pouvez definir autant d'axes que necessaire dans un meme projet. Chaque axe possede un nom et deux points de definition. Le PDF final regroupera les points par axe.
+Vous pouvez définir autant d'axes que nécessaire dans un même projet. Chaque axe possède un nom et deux points de définition. Le PDF final regroupera les points par axe.
 
-### Editeur de type tableur
+### Éditeur de type tableur
 
-L'editeur affiche vos points dans un tableau interactif. Vous pouvez modifier les coordonnees directement dans le tableau. Les distances orthogonales sont recalculees en temps reel.
+L'éditeur affiche vos points dans un tableau interactif. Vous pouvez modifier les coordonnées directement dans le tableau. Les distances orthogonales sont recalculées en temps réel.
 
 ### Convention de signe
 
-La convention est coherente et previsible :
-- En regardant du point de depart vers le point d'arrivee de l'axe
-- Un point situe a **droite** a une distance orthogonale **positive**
-- Un point situe a **gauche** a une distance orthogonale **negative**
-- Un point exactement sur l'axe a une distance orthogonale de **zero**
+La convention est cohérente et prévisible :
+- En regardant du point de départ vers le point d'arrivée de l'axe
+- Un point situé à **droite** a une distance orthogonale **positive**
+- Un point situé à **gauche** a une distance orthogonale **négative**
+- Un point exactement sur l'axe a une distance orthogonale de **zéro**
 
 ### Import CSV
 
-Comme pour la fiche de controle classique, vous pouvez importer vos points depuis un fichier CSV. Apres l'import, il vous suffit d'assigner chaque point a son axe.
+Comme pour la fiche de contrôle classique, vous pouvez importer vos points depuis un fichier CSV. Après l'import, il vous suffit d'assigner chaque point à son axe.
 
 ## Voir aussi
 
-- [Fiche de controle](/fr/outils/fiche-controle) -- Fiche de controle classique sans axes
+- [Fiche de contrôle](/fr/outils/fiche-controle) -- Fiche de contrôle classique sans axes
 - [Distances orthogonales](/fr/formules/distances-orthogonales) -- Formules de calcul des distances orthogonales
-- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Details sur les formats CSV supportes
+- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Détails sur les formats CSV supportés

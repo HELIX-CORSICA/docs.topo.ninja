@@ -1,140 +1,140 @@
 ---
-title: "Convertisseur de coordonnees"
-description: "Convertissez vos coordonnees entre differents systemes de reference (Lambert 93, WGS84, UTM, etc.) avec ou sans geoide."
+title: "Convertisseur de coordonnées"
+description: "Convertissez vos coordonnées entre différents systèmes de référence (Lambert 93, WGS84, UTM, etc.) avec ou sans géoïde."
 icon: "arrow-right-arrow-left"
 ---
 
-Le **Convertisseur de coordonnees** vous permet de transformer des coordonnees d'un systeme de reference (CRS) vers un autre. Il prend en charge les projections courantes en topographie francaise et internationale, et propose une variante avec geoide pour les transformations altimetriques.
+Le **Convertisseur de coordonnées** vous permet de transformer des coordonnées d'un système de référence (CRS) vers un autre. Il prend en charge les projections courantes en topographie française et internationale, et propose une variante avec géoïde pour les transformations altimétriques.
 
 <Note>
-  **Disponible sur :** Tous les plans (y compris le plan gratuit)
+  **Disponible sur :** Tous les plans
 </Note>
 
-## A quoi sert cet outil ?
+## À quoi sert cet outil ?
 
-En topographie, vous travaillez regulierement avec plusieurs systemes de coordonnees. Vos points GNSS sont en WGS84, votre plan est en Lambert 93, et votre client vous demande des coordonnees UTM. Le convertisseur vous evite les conversions manuelles et les risques d'erreur :
+En topographie, vous travaillez régulièrement avec plusieurs systèmes de coordonnées. Vos points GNSS sont en WGS84, votre plan est en Lambert 93, et votre client vous demande des coordonnées UTM. Le convertisseur vous évite les conversions manuelles et les risques d'erreur :
 
-- Conversion entre n'importe quels CRS definis par un code EPSG
-- Conversion par lot de plusieurs points en une seule operation
-- Support des coordonnees en degres-minutes-secondes (DMS)
-- Transformation altimetrique avec grille de geoide
+- Conversion entre n'importe quels CRS définis par un code EPSG
+- Conversion par lot de plusieurs points en une seule opération
+- Support des coordonnées en degrés-minutes-secondes (DMS)
+- Transformation altimétrique avec grille de géoïde
 
 ## Deux variantes
 
 <Tabs>
   <Tab title="Convertisseur standard">
-    Le convertisseur standard effectue une transformation CRS vers CRS. Vous choisissez le systeme source et le systeme cible via leurs codes EPSG, et l'outil convertit toutes vos coordonnees.
+    Le convertisseur standard effectue une transformation CRS vers CRS. Vous choisissez le système source et le système cible via leurs codes EPSG, et l'outil convertit toutes vos coordonnées.
 
-    C'est la variante a utiliser pour les conversions planimétriques courantes (Lambert 93 vers WGS84, UTM vers Lambert, etc.).
+    C'est la variante à utiliser pour les conversions planimétriques courantes (Lambert 93 vers WGS84, UTM vers Lambert, etc.).
   </Tab>
-  <Tab title="Convertisseur avec geoide">
-    La variante avec geoide ajoute la prise en charge d'une **grille de geoide** pour la transformation verticale. Cela vous permet de passer d'une altitude ellipsoidale a une altitude sur le geoide (et inversement).
+  <Tab title="Convertisseur avec géoïde">
+    La variante avec géoïde ajoute la prise en charge d'une **grille de géoïde** pour la transformation verticale. Cela vous permet de passer d'une altitude ellipsoïdale à une altitude sur le géoïde (et inversement).
 
-    Utilisez cette variante lorsque vous avez besoin de convertir des altitudes entre le systeme ellipsoidal WGS84 et le systeme altimetrique francais (RAF20, RAF18, etc.) ou tout autre geoide.
+    Utilisez cette variante lorsque vous avez besoin de convertir des altitudes entre le système ellipsoïdal WGS84 et le système altimétrique français (RAF20, RAF18, etc.) ou tout autre géoïde.
   </Tab>
 </Tabs>
 
 ## Comment l'utiliser
 
 <Steps>
-  <Step title="Choisir les systemes de coordonnees">
-    Selectionnez le **CRS source** (le systeme dans lequel sont vos coordonnees actuelles) et le **CRS cible** (le systeme vers lequel vous voulez convertir).
+  <Step title="Choisir les systèmes de coordonnées">
+    Sélectionnez le **CRS source** (le système dans lequel sont vos coordonnées actuelles) et le **CRS cible** (le système vers lequel vous voulez convertir).
 
-    Utilisez le selecteur de code EPSG pour trouver votre systeme. Les codes les plus courants en France :
+    Utilisez le sélecteur de code EPSG pour trouver votre système. Les codes les plus courants en France :
 
-    | Systeme | Code EPSG |
+    | Système | Code EPSG |
     |---------|-----------|
     | Lambert 93 | 2154 |
-    | WGS84 geographique | 4326 |
+    | WGS84 géographique | 4326 |
     | UTM zone 31N | 32631 |
     | UTM zone 32N | 32632 |
     | RGF93 v2 / Lambert-93 | 9794 |
-    | CC42 a CC50 | 3942 a 3950 |
+    | CC42 à CC50 | 3942 à 3950 |
 
     <Tip>
-      Si vous ne connaissez pas le code EPSG de votre systeme, tapez son nom dans le champ de recherche. Le selecteur filtre les resultats en temps reel.
+      Si vous ne connaissez pas le code EPSG de votre système, tapez son nom dans le champ de recherche. Le sélecteur filtre les résultats en temps réel.
     </Tip>
   </Step>
 
   <Step title="Saisir ou importer vos points">
-    Ajoutez vos points dans l'editeur CSV integre :
+    Ajoutez vos points dans l'éditeur CSV intégré :
     - **Saisie manuelle** : renseignez le nom, X, Y et Z de chaque point
     - **Import CSV** : chargez un fichier CSV avec vos points
 
-    Pour les coordonnees geographiques (latitude/longitude), vous pouvez saisir les valeurs en **degres-minutes-secondes** (DMS). L'outil les convertira automatiquement en degres decimaux avant la transformation.
+    Pour les coordonnées géographiques (latitude/longitude), vous pouvez saisir les valeurs en **degrés-minutes-secondes** (DMS). L'outil les convertira automatiquement en degrés décimaux avant la transformation.
   </Step>
 
   <Step title="Lancer la conversion">
-    Cliquez sur **Convertir**. Les coordonnees converties apparaissent dans le tableau de resultats. Si vous avez active l'option geoide, les altitudes transformees sont egalement affichees.
+    Cliquez sur **Convertir**. Les coordonnées converties apparaissent dans le tableau de résultats. Si vous avez activé l'option géoïde, les altitudes transformées sont également affichées.
 
     <Info>
-      Les conversions sont effectuees avec la bibliotheque PROJ, qui est la reference en matiere de transformations geodesiques. Les resultats sont fiables et conformes aux standards internationaux.
+      Les conversions sont effectuées avec la bibliothèque PROJ, qui est la référence en matière de transformations géodésiques. Les résultats sont fiables et conformes aux standards internationaux.
     </Info>
   </Step>
 
-  <Step title="Exporter les resultats">
+  <Step title="Exporter les résultats">
     Deux options d'export sont disponibles :
-    - **CSV fusionne** : un fichier contenant les coordonnees originales ET les coordonnees converties cote a cote
-    - **CSV converti uniquement** : un fichier contenant uniquement les coordonnees dans le systeme cible
+    - **CSV fusionné** : un fichier contenant les coordonnées originales ET les coordonnées converties côte à côte
+    - **CSV converti uniquement** : un fichier contenant uniquement les coordonnées dans le système cible
 
-    Choisissez le format qui correspond a votre usage.
+    Choisissez le format qui correspond à votre usage.
   </Step>
 </Steps>
 
-## Fonctionnalites
+## Fonctionnalités
 
-### Selecteur EPSG
+### Sélecteur EPSG
 
-Le selecteur de code EPSG vous donne acces a des milliers de systemes de coordonnees. Tapez un nom ou un code pour filtrer la liste. Les systemes les plus utilises en topographie francaise sont disponibles.
+Le sélecteur de code EPSG vous donne accès à des milliers de systèmes de coordonnées. Tapez un nom ou un code pour filtrer la liste. Les systèmes les plus utilisés en topographie française sont disponibles.
 
 ### Conversion par lot
 
-Vous pouvez convertir des dizaines ou des centaines de points en une seule operation. L'import CSV est la methode la plus rapide pour les gros volumes de donnees.
+Vous pouvez convertir des dizaines ou des centaines de points en une seule opération. L'import CSV est la méthode la plus rapide pour les gros volumes de données.
 
 ### Support DMS
 
-Pour les coordonnees geographiques, le convertisseur accepte les valeurs en degres-minutes-secondes. C'est pratique lorsque vous travaillez avec des coordonnees issues de GPS de poche ou de fiches existantes.
+Pour les coordonnées géographiques, le convertisseur accepte les valeurs en degrés-minutes-secondes. C'est pratique lorsque vous travaillez avec des coordonnées issues de GPS de poche ou de fiches existantes.
 
-### Grille de geoide
+### Grille de géoïde
 
-La variante avec geoide vous permet de charger un fichier de grille de geoide (RAF20, RAF18, etc.) pour effectuer des transformations altimetriques precises. La grille est utilisee pour calculer l'ondulation du geoide a chaque point et convertir entre altitude ellipsoidale et altitude normale.
+La variante avec géoïde vous permet de charger un fichier de grille de géoïde (RAF20, RAF18, etc.) pour effectuer des transformations altimétriques précises. La grille est utilisée pour calculer l'ondulation du géoïde à chaque point et convertir entre altitude ellipsoïdale et altitude normale.
 
 <Warning>
-  La precision de la transformation altimetrique depend de la grille de geoide utilisee. Assurez-vous d'utiliser la grille adaptee a votre zone de travail et a l'epoque de vos mesures.
+  La précision de la transformation altimétrique dépend de la grille de géoïde utilisée. Assurez-vous d'utiliser la grille adaptée à votre zone de travail et à l'époque de vos mesures.
 </Warning>
 
 ### Cas d'usage courants
 
 <AccordionGroup>
   <Accordion title="Lambert 93 vers WGS84">
-    Conversion classique pour obtenir des coordonnees geographiques (latitude/longitude) a partir de coordonnees en projection Lambert 93. Utile pour la localisation sur Google Maps ou pour des applications SIG.
+    Conversion classique pour obtenir des coordonnées géographiques (latitude/longitude) à partir de coordonnées en projection Lambert 93. Utile pour la localisation sur Google Maps ou pour des applications SIG.
 
     - Source : EPSG 2154 (Lambert 93)
     - Cible : EPSG 4326 (WGS84)
   </Accordion>
 
   <Accordion title="WGS84 vers Lambert 93">
-    L'operation inverse : transformer des coordonnees GPS (WGS84) en coordonnees Lambert 93 pour les integrer a votre plan de projet.
+    L'opération inverse : transformer des coordonnées GPS (WGS84) en coordonnées Lambert 93 pour les intégrer à votre plan de projet.
 
     - Source : EPSG 4326 (WGS84)
     - Cible : EPSG 2154 (Lambert 93)
   </Accordion>
 
   <Accordion title="Conversion entre zones UTM">
-    Lorsque votre chantier est a cheval sur deux zones UTM, vous devez convertir les points d'une zone a l'autre pour travailler dans un systeme unique.
+    Lorsque votre chantier est à cheval sur deux zones UTM, vous devez convertir les points d'une zone à l'autre pour travailler dans un système unique.
 
     - Source : EPSG 32631 (UTM 31N)
     - Cible : EPSG 32632 (UTM 32N)
   </Accordion>
 
-  <Accordion title="Transformation altimetrique avec geoide">
-    Passage d'altitudes ellipsoidales (GPS) en altitudes normales (NGF/IGN69) a l'aide d'une grille de geoide RAF20.
+  <Accordion title="Transformation altimétrique avec géoïde">
+    Passage d'altitudes ellipsoïdales (GPS) en altitudes normales (NGF/IGN69) à l'aide d'une grille de géoïde RAF20.
 
-    Utilisez la variante avec geoide et chargez le fichier de grille correspondant.
+    Utilisez la variante avec géoïde et chargez le fichier de grille correspondant.
   </Accordion>
 </AccordionGroup>
 
 ## Voir aussi
 
-- [Transformations de coordonnees](/fr/formules/transformations-coordonnees) -- Formules et methodes de transformation utilisees
-- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Details sur les formats CSV supportes
+- [Transformations de coordonnées](/fr/formules/transformations-coordonnees) -- Formules et méthodes de transformation utilisées
+- [Import/export CSV](/fr/fonctionnalites/import-export-csv) -- Détails sur les formats CSV supportés

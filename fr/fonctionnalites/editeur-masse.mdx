@@ -1,79 +1,79 @@
 ---
-title: "Editeur en masse"
-description: "Editez vos points dans un tableur integre, comme dans Excel ou Google Sheets."
+title: "Éditeur en masse"
+description: "Éditez vos points dans un tableur intégré, comme dans Excel ou Google Sheets."
 icon: "table-cells-large"
 ---
 
-L'editeur en masse vous offre une experience de tableur directement dans Topo.ninja. Base sur la librairie Handsontable, il vous permet de manipuler vos donnees avec la meme fluidite qu'un tableur classique, sans quitter l'application.
+L'éditeur en masse vous offre une expérience de tableur directement dans Topo.ninja. Basé sur la librairie Handsontable, il vous permet de manipuler vos données avec la même fluidité qu'un tableur classique, sans quitter l'application.
 
 <Note>
   Disponible sur les plans **Premium** et **Enterprise**.
 </Note>
 
-## Comment ca fonctionne
+## Comment ça fonctionne
 
-L'editeur en masse remplace les formulaires traditionnels par une grille de cellules modifiables. Chaque ligne represente un point ou une entree, et chaque colonne correspond a un champ (nom, coordonnees, axe, reference, etc.).
+L'éditeur en masse remplace les formulaires traditionnels par une grille de cellules modifiables. Chaque ligne représente un point ou une entrée, et chaque colonne correspond à un champ (nom, coordonnées, axe, référence, etc.).
 
-Vous retrouvez l'editeur dans les outils suivants :
+Vous retrouvez l'éditeur dans les outils suivants :
 
 <CardGroup cols={3}>
-  <Card title="Fiche signaletique" icon="id-card" href="/fr/outils/fiche-signaletique">
-    Points projet et points implantes
+  <Card title="Fiche signalétique" icon="id-card" href="/fr/outils/fiche-signaletique">
+    Points projet et points implantés
   </Card>
   <Card title="Fiche axe" icon="road" href="/fr/outils/fiche-axe">
     Points d'axe et profils
   </Card>
-  <Card title="Resection 3D" icon="cube" href="/fr/outils/resection-3d">
-    Points de reference et stations
+  <Card title="Résection 3D" icon="cube" href="/fr/outils/resection-3d">
+    Points de référence et stations
   </Card>
 </CardGroup>
 
 ## Utilisation
 
 <Steps>
-  <Step title="Ouvrir l'editeur">
-    Accedez a l'un des outils compatibles (Fiche signaletique, Fiche axe ou Resection 3D). L'editeur en masse s'affiche automatiquement sous forme de grille.
+  <Step title="Ouvrir l'éditeur">
+    Accédez à l'un des outils compatibles (Fiche signalétique, Fiche axe ou Résection 3D). L'éditeur en masse s'affiche automatiquement sous forme de grille.
   </Step>
-  <Step title="Saisir ou coller vos donnees">
-    Cliquez sur une cellule pour la modifier. Vous pouvez aussi coller des donnees directement depuis Excel ou Google Sheets avec **Ctrl+V**.
+  <Step title="Saisir ou coller vos données">
+    Cliquez sur une cellule pour la modifier. Vous pouvez aussi coller des données directement depuis Excel ou Google Sheets avec **Ctrl+V**.
   </Step>
   <Step title="Naviguer dans la grille">
-    Utilisez **Tab** pour passer a la cellule suivante, **Entree** pour valider et descendre, ou les **fleches directionnelles** pour vous deplacer librement.
+    Utilisez **Tab** pour passer à la cellule suivante, **Entrée** pour valider et descendre, ou les **flèches directionnelles** pour vous déplacer librement.
   </Step>
   <Step title="Manipuler les lignes">
     Faites un clic droit pour ouvrir le menu contextuel : ajoutez ou supprimez des lignes selon vos besoins.
   </Step>
-  <Step title="Utiliser la poignee de remplissage">
-    Cliquez sur le coin inferieur droit d'une cellule et faites glisser vers le bas pour copier sa valeur dans les cellules suivantes, exactement comme dans Excel.
+  <Step title="Utiliser la poignée de remplissage">
+    Cliquez sur le coin inférieur droit d'une cellule et faites glisser vers le bas pour copier sa valeur dans les cellules suivantes, exactement comme dans Excel.
   </Step>
 </Steps>
 
 ## Types de colonnes
 
-L'editeur propose differents types de colonnes selon le contexte :
+L'éditeur propose différents types de colonnes selon le contexte :
 
 | Type de colonne | Description | Exemple |
 |-----------------|-------------|---------|
-| **Case a cocher** | Active ou desactive une ligne | Inclusion dans le calcul |
-| **Texte** | Saisie libre | Nom du point, coordonnees |
-| **Liste deroulante** | Choix parmi des options | Assignation d'axe, point de reference |
-| **Lecture seule** | Valeurs calculees automatiquement | Ecarts, distances |
+| **Case à cocher** | Active ou désactive une ligne | Inclusion dans le calcul |
+| **Texte** | Saisie libre | Nom du point, coordonnées |
+| **Liste déroulante** | Choix parmi des options | Assignation d'axe, point de référence |
+| **Lecture seule** | Valeurs calculées automatiquement | Écarts, distances |
 
-## Fonctionnalites detaillees
+## Fonctionnalités détaillées
 
 <AccordionGroup>
   <Accordion title="Copier-coller depuis Excel">
-    Selectionnez vos cellules dans Excel ou Google Sheets, copiez-les avec **Ctrl+C**, puis collez-les dans l'editeur avec **Ctrl+V**. La structure lignes/colonnes est conservee. C'est la methode la plus rapide pour transferer des donnees existantes.
+    Sélectionnez vos cellules dans Excel ou Google Sheets, copiez-les avec **Ctrl+C**, puis collez-les dans l'éditeur avec **Ctrl+V**. La structure lignes/colonnes est conservée. C'est la méthode la plus rapide pour transférer des données existantes.
   </Accordion>
   <Accordion title="Tri et filtrage">
-    Cliquez sur l'en-tete d'une colonne pour trier les donnees par ordre croissant ou decroissant. Utilisez les filtres pour afficher uniquement les lignes qui correspondent a vos criteres.
+    Cliquez sur l'en-tête d'une colonne pour trier les données par ordre croissant ou décroissant. Utilisez les filtres pour afficher uniquement les lignes qui correspondent à vos critères.
   </Accordion>
   <Accordion title="Redimensionnement">
-    Faites glisser les bordures des en-tetes de colonnes ou de lignes pour ajuster leur taille. Pratique quand les noms de points sont longs ou que vous voulez voir plus de donnees a l'ecran.
+    Faites glisser les bordures des en-têtes de colonnes ou de lignes pour ajuster leur taille. Pratique quand les noms de points sont longs ou que vous voulez voir plus de données à l'écran.
   </Accordion>
   <Accordion title="Menu contextuel (clic droit)">
     Un clic droit sur la grille ouvre un menu avec les options suivantes :
-    - **Inserer une ligne au-dessus / en-dessous**
+    - **Insérer une ligne au-dessus / en-dessous**
     - **Supprimer la ligne**
     - **Copier / Coller**
   </Accordion>
@@ -84,35 +84,35 @@ L'editeur propose differents types de colonnes selon le contexte :
 | Raccourci | Action |
 |-----------|--------|
 | **Tab** | Cellule suivante |
-| **Shift + Tab** | Cellule precedente |
-| **Entree** | Valider et descendre |
-| **Echap** | Annuler la modification |
+| **Shift + Tab** | Cellule précédente |
+| **Entrée** | Valider et descendre |
+| **Échap** | Annuler la modification |
 | **Ctrl + C** | Copier |
 | **Ctrl + V** | Coller |
 | **Ctrl + Z** | Annuler |
-| **Fleches** | Navigation dans la grille |
+| **Flèches** | Navigation dans la grille |
 
 ## Astuces
 
 <Tip>
-  **Coller depuis Excel** : si vous avez deja vos points dans un tableur, selectionnez la plage de cellules, copiez, puis collez directement dans l'editeur. C'est beaucoup plus rapide que la saisie manuelle.
+  **Coller depuis Excel** : si vous avez déjà vos points dans un tableur, sélectionnez la plage de cellules, copiez, puis collez directement dans l'éditeur. C'est beaucoup plus rapide que la saisie manuelle.
 </Tip>
 
 <Tip>
-  **Poignee de remplissage** : pour repeter une meme valeur sur plusieurs lignes (par exemple un axe de reference), saisissez la valeur une fois puis faites glisser la poignee vers le bas.
+  **Poignée de remplissage** : pour répéter une même valeur sur plusieurs lignes (par exemple un axe de référence), saisissez la valeur une fois puis faites glisser la poignée vers le bas.
 </Tip>
 
 <Tip>
-  **Colonnes en lecture seule** : les colonnes grises contiennent des valeurs calculees (ecarts, distances). Elles se mettent a jour automatiquement lorsque vous modifiez les donnees sources.
+  **Colonnes en lecture seule** : les colonnes grises contiennent des valeurs calculées (écarts, distances). Elles se mettent à jour automatiquement lorsque vous modifiez les données sources.
 </Tip>
 
 ## Voir aussi
 
 <CardGroup cols={2}>
   <Card title="Import / Export CSV" icon="file-csv" href="/fr/fonctionnalites/import-export-csv">
-    Importez vos donnees depuis un fichier CSV
+    Importez vos données depuis un fichier CSV
   </Card>
-  <Card title="Fiche signaletique" icon="id-card" href="/fr/outils/fiche-signaletique">
-    Outil principal utilisant l'editeur en masse
+  <Card title="Fiche signalétique" icon="id-card" href="/fr/outils/fiche-signaletique">
+    Outil principal utilisant l'éditeur en masse
   </Card>
 </CardGroup>

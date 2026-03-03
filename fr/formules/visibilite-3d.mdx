@@ -1,29 +1,29 @@
 ---
-title: "Visibilite 3D et detection d'obstacles"
-description: "Algorithme de calcul de la visibilite entre une station et ses points de reference, avec prise en compte des obstacles 3D et du filtrage angulaire."
+title: "Visibilité 3D et détection d'obstacles"
+description: "Algorithme de calcul de la visibilité entre une station et ses points de référence, avec prise en compte des obstacles 3D et du filtrage angulaire."
 icon: "calculator"
 ---
 
 ## Contexte
 
-Avant d'installer une station totale sur le terrain, il est essentiel de verifier que les points de reference sont **visibles** depuis la position envisagee. Un obstacle (mur, batiment, talus) peut bloquer la ligne de visee et rendre une reference inutilisable.
+Avant d'installer une station totale sur le terrain, il est essentiel de vérifier que les points de référence sont **visibles** depuis la position envisagée. Un obstacle (mur, bâtiment, talus) peut bloquer la ligne de visée et rendre une référence inutilisable.
 
-L'algorithme de visibilite 3D de Topo.ninja resout ce probleme en simulant le lancer de rayons entre la station et chaque reference, en tenant compte :
+L'algorithme de visibilité 3D de Topo.ninja résout ce problème en simulant le lancer de rayons entre la station et chaque référence, en tenant compte :
 
 - de la **hauteur des obstacles** ;
 - de la **hauteur d'instrument** et de la **hauteur de prisme** ;
 - de l'**orientation des cibles** (angle d'incidence) ;
-- de la **separation angulaire** entre les visees.
+- de la **séparation angulaire** entre les visées.
 
 <Note>
-  Cet algorithme est utilise dans l'outil **Resection 3D** pour determiner quelles references sont exploitables depuis une position de station donnee.
+  Cet algorithme est utilisé dans l'outil **Résection 3D** pour déterminer quelles références sont exploitables depuis une position de station donnée.
 </Note>
 
 ## Formule
 
-### Etape 1 -- Construction du rayon
+### Étape 1 -- Construction du rayon
 
-On lance un rayon depuis la station vers chaque point de reference.
+On lance un rayon depuis la station vers chaque point de référence.
 
 **Origine du rayon** (position de l'oculaire de la station) :
 
@@ -31,28 +31,28 @@ $$
 O = (s_x,\ s_y,\ s_z + h_{\text{instrument}})
 $$
 
-ou $h_{\text{instrument}}$ est la hauteur d'instrument saisie par l'utilisateur.
+où $h_{\text{instrument}}$ est la hauteur d'instrument saisie par l'utilisateur.
 
-**Extremite du rayon** (position du point vise) :
+**Extrémité du rayon** (position du point visé) :
 
 <Tabs>
   <Tab title="Clous (prisme)">
-    Pour un clou topographique, le prisme est place au-dessus du point :
+    Pour un clou topographique, le prisme est placé au-dessus du point :
 
     $$
     T = (r_x,\ r_y,\ r_z + h_{\text{prisme}})
     $$
 
-    ou $h_{\text{prisme}}$ est la hauteur de prisme configuree dans les preferences.
+    où $h_{\text{prisme}}$ est la hauteur de prisme configurée dans les préférences.
   </Tab>
   <Tab title="Cibles (surface)">
-    Pour une cible peinte ou collee sur une surface, la visee se fait directement sur la surface :
+    Pour une cible peinte ou collée sur une surface, la visée se fait directement sur la surface :
 
     $$
     T = (r_x,\ r_y,\ r_z)
     $$
 
-    Pas d'ajout de hauteur de prisme, car la cible est a la surface de l'objet.
+    Pas d'ajout de hauteur de prisme, car la cible est à la surface de l'objet.
   </Tab>
 </Tabs>
 
@@ -62,180 +62,180 @@ $$
 \vec{R} = T - O = (\Delta x,\ \Delta y,\ \Delta z)
 $$
 
-### Etape 2 -- Angle vertical du rayon
+### Étape 2 -- Angle vertical du rayon
 
-L'angle vertical du rayon par rapport a l'horizontale est :
+L'angle vertical du rayon par rapport à l'horizontale est :
 
 $$
 \theta = \arctan\!\left(\frac{|\Delta z|}{d_{2D}}\right) \times \frac{180}{\pi}
 $$
 
-ou $d_{2D} = \sqrt{\Delta x^2 + \Delta y^2}$ est la distance horizontale.
+où $d_{2D} = \sqrt{\Delta x^2 + \Delta y^2}$ est la distance horizontale.
 
-Cet angle est utilise pour la regle de plongee raide (voir ci-dessous).
+Cet angle est utilisé pour la règle de plongée raide (voir ci-dessous).
 
-### Etape 3 -- Test d'intersection 3D avec les obstacles
+### Étape 3 -- Test d'intersection 3D avec les obstacles
 
-Pour chaque obstacle (polygone ou mur) du projet, l'algorithme verifie si le rayon le traverse :
+Pour chaque obstacle (polygone ou mur) du projet, l'algorithme vérifie si le rayon le traverse :
 
 <AccordionGroup>
-  <Accordion title="3a -- Intersection 2D (rayon vs aretes de l'obstacle)">
-    Le rayon et chaque arete de l'obstacle sont projetes dans le plan horizontal $(x, y)$. On cherche un parametre $t$ tel que :
+  <Accordion title="3a -- Intersection 2D (rayon vs arêtes de l'obstacle)">
+    Le rayon et chaque arête de l'obstacle sont projetés dans le plan horizontal $(x, y)$. On cherche un paramètre $t$ tel que :
 
     $$
     0 < t < 1
     $$
 
-    ou $t$ represente la fraction du trajet station-reference a laquelle le rayon croise l'arete. Si $t = 0$, l'intersection est a la station ; si $t = 1$, elle est au point de reference.
+    où $t$ représente la fraction du trajet station-référence à laquelle le rayon croise l'arête. Si $t = 0$, l'intersection est à la station ; si $t = 1$, elle est au point de référence.
 
     Ce test utilise l'algorithme classique d'intersection de deux segments en 2D.
   </Accordion>
-  <Accordion title="3b -- Verification de la hauteur au point d'intersection">
-    Si une intersection 2D est trouvee au parametre $t$, on calcule la hauteur du rayon a ce point :
+  <Accordion title="3b -- Vérification de la hauteur au point d'intersection">
+    Si une intersection 2D est trouvée au paramètre $t$, on calcule la hauteur du rayon à ce point :
 
     $$
     h_{\text{rayon}}(t) = s_z + h_{\text{instrument}} + \Delta z \times t
     $$
 
-    Le rayon est **bloque** si :
+    Le rayon est **bloqué** si :
 
     $$
     h_{\text{rayon}}(t) < z_{\text{obstacle}}
     $$
 
-    ou $z_{\text{obstacle}}$ est l'altitude du sommet de l'obstacle a cet endroit.
+    où $z_{\text{obstacle}}$ est l'altitude du sommet de l'obstacle à cet endroit.
   </Accordion>
-  <Accordion title="3c -- Exception : plongee raide">
-    Si l'angle de plongee minimum $\alpha_{\text{min}}$ est configure (valeur > 0) et que l'angle vertical du rayon depasse ce seuil :
+  <Accordion title="3c -- Exception : plongée raide">
+    Si l'angle de plongée minimum $\alpha_{\text{min}}$ est configuré (valeur > 0) et que l'angle vertical du rayon dépasse ce seuil :
 
     $$
     \theta \geq \alpha_{\text{min}}
     $$
 
-    alors le rayon est considere comme **passant au-dessus** de l'obstacle, meme si le test de hauteur indique un blocage. Cela modelise les situations ou la station est en hauteur et la visee plonge fortement vers le bas, passant par-dessus un muret ou une bordure.
+    alors le rayon est considéré comme **passant au-dessus** de l'obstacle, même si le test de hauteur indique un blocage. Cela modélise les situations où la station est en hauteur et la visée plonge fortement vers le bas, passant par-dessus un muret ou une bordure.
 
     <Tip>
-      La plongee raide est utile quand la station est sur un batiment ou une butte et que les obstacles sont bas par rapport a la ligne de visee. Ce parametre evite de marquer comme invisible une reference qui serait en realite accessible en visee plongeante.
+      La plongée raide est utile quand la station est sur un bâtiment ou une butte et que les obstacles sont bas par rapport à la ligne de visée. Ce paramètre évite de marquer comme invisible une référence qui serait en réalité accessible en visée plongeante.
     </Tip>
   </Accordion>
 </AccordionGroup>
 
-**Resultat** : si aucun obstacle ne bloque le rayon, le point de reference est considere comme **visible en 3D** depuis la station.
+**Résultat** : si aucun obstacle ne bloque le rayon, le point de référence est considéré comme **visible en 3D** depuis la station.
 
-### Etape 4 -- Qualite de visibilite des cibles (angle d'incidence)
+### Étape 4 -- Qualité de visibilité des cibles (angle d'incidence)
 
-Pour les **cibles directionnelles** (peintes ou collees sur une surface), la visibilite seule ne suffit pas. Il faut aussi verifier que l'angle sous lequel la cible est vue est acceptable.
+Pour les **cibles directionnelles** (peintes ou collées sur une surface), la visibilité seule ne suffit pas. Il faut aussi vérifier que l'angle sous lequel la cible est vue est acceptable.
 
-**Angle d'incidence** : c'est l'angle entre le rayon de visee et la **normale a la surface** de la cible (son orientation).
+**Angle d'incidence** : c'est l'angle entre le rayon de visée et la **normale à la surface** de la cible (son orientation).
 
 $$
 \alpha_{\text{incidence}} = \arccos\!\left(\frac{|\vec{R} \cdot \vec{n}|}{|\vec{R}| \cdot |\vec{n}|}\right)
 $$
 
-ou $\vec{n}$ est le vecteur normal a la surface de la cible (defini par l'orientation saisie par l'utilisateur).
+où $\vec{n}$ est le vecteur normal à la surface de la cible (défini par l'orientation saisie par l'utilisateur).
 
-**Classification de la qualite** :
+**Classification de la qualité** :
 
-| Condition | Qualite |
+| Condition | Qualité |
 |-----------|---------|
 | $\alpha_{\text{incidence}} < 0.6 \times \alpha_{\text{max}}$ | **Bonne** -- La cible est vue de face ou presque |
-| $0.6 \times \alpha_{\text{max}} \leq \alpha_{\text{incidence}} \leq \alpha_{\text{max}}$ | **Acceptable** -- La cible est vue de biais, precision reduite |
+| $0.6 \times \alpha_{\text{max}} \leq \alpha_{\text{incidence}} \leq \alpha_{\text{max}}$ | **Acceptable** -- La cible est vue de biais, précision réduite |
 | $\alpha_{\text{incidence}} > \alpha_{\text{max}}$ | **Mauvaise** -- La cible est vue sous un angle trop rasant |
 
-ou $\alpha_{\text{max}}$ est l'angle d'incidence maximum configure dans les preferences.
+où $\alpha_{\text{max}}$ est l'angle d'incidence maximum configuré dans les préférences.
 
 <Info>
-  **Pourquoi l'angle d'incidence importe ?** Une cible vue de face reflechit bien le signal de la station totale. Plus l'angle augmente, plus la cible est vue de biais, ce qui degrade la precision de la mesure (reflexion partielle, distorsion du spot laser). Au-dela de l'angle maximum, la mesure devient peu fiable.
+  **Pourquoi l'angle d'incidence importe ?** Une cible vue de face réfléchit bien le signal de la station totale. Plus l'angle augmente, plus la cible est vue de biais, ce qui dégrade la précision de la mesure (réflexion partielle, distorsion du spot laser). Au-delà de l'angle maximum, la mesure devient peu fiable.
 </Info>
 
-### Etape 5 -- Visibilite des clous (omnidirectionnelle)
+### Étape 5 -- Visibilité des clous (omnidirectionnelle)
 
-Pour les **clous** equipes d'un prisme, seule la visibilite 3D (etapes 1 a 3) est necessaire :
+Pour les **clous** équipés d'un prisme, seule la visibilité 3D (étapes 1 à 3) est nécessaire :
 
-- Les prismes topographiques sont omnidirectionnels (ou quasi-omnidirectionnels) : ils reflechissent le signal quelle que soit la direction d'observation.
-- Si le clou est visible (aucun obstacle ne bloque le rayon), sa qualite est automatiquement **bonne**.
+- Les prismes topographiques sont omnidirectionnels (ou quasi-omnidirectionnels) : ils réfléchissent le signal quelle que soit la direction d'observation.
+- Si le clou est visible (aucun obstacle ne bloque le rayon), sa qualité est automatiquement **bonne**.
 - Pas de calcul d'angle d'incidence.
 
-### Etape 6 -- Filtrage angulaire
+### Étape 6 -- Filtrage angulaire
 
-Apres avoir determine la visibilite de toutes les references, l'algorithme verifie la **separation angulaire** entre les visees :
+Après avoir déterminé la visibilité de toutes les références, l'algorithme vérifie la **séparation angulaire** entre les visées :
 
-1. Pour chaque paire de references visibles, calculer l'ecart angulaire (en gisement) entre les deux directions vues depuis la station.
+1. Pour chaque paire de références visibles, calculer l'écart angulaire (en gisement) entre les deux directions vues depuis la station.
 
-2. Si deux references sont trop proches angulairement :
+2. Si deux références sont trop proches angulairement :
 
 $$
 |\Delta G| < G_{\text{min}}
 $$
 
-ou $G_{\text{min}}$ est la separation angulaire minimum (configurable), l'une des deux est retrogradee en reference **optionnelle** (non comptee dans le score GDOP principal).
+où $G_{\text{min}}$ est la séparation angulaire minimum (configurable), l'une des deux est rétrogradée en référence **optionnelle** (non comptée dans le score GDOP principal).
 
-**Regles de priorite** pour choisir laquelle rester principale :
+**Règles de priorité** pour choisir laquelle rester principale :
 
-| Critere | Priorite |
+| Critère | Priorité |
 |---------|----------|
 | Type | Cibles > Clous |
 | Distance | Plus proche > Plus loin |
-| Qualite | Meilleure qualite > Moins bonne |
+| Qualité | Meilleure qualité > Moins bonne |
 
 <Warning>
-  Au minimum **2 references principales** doivent rester apres le filtrage angulaire. Si le filtrage en elimine trop, l'algorithme conserve les 2 meilleures meme si elles sont proches angulairement.
+  Au minimum **2 références principales** doivent rester après le filtrage angulaire. Si le filtrage en élimine trop, l'algorithme conserve les 2 meilleures même si elles sont proches angulairement.
 </Warning>
 
-## Implementation dans Topo.ninja
+## Implémentation dans Topo.ninja
 
-Dans l'outil **Resection 3D** :
+Dans l'outil **Résection 3D** :
 
-1. L'utilisateur place les obstacles (murs, batiments) sur la carte avec leur altitude.
-2. Les points de reference (clous et cibles) sont positionnes avec leurs coordonnees 3D.
-3. La station est placee et l'utilisateur renseigne la hauteur d'instrument.
-4. A chaque modification, l'algorithme recalcule la visibilite de toutes les references.
-5. L'affichage indique pour chaque reference :
-   - **Visible** ou **masquee** (et par quel obstacle) ;
-   - **Qualite** de la visee (bonne, acceptable, mauvaise) ;
-   - **Principale** ou **optionnelle** (apres filtrage angulaire).
+1. L'utilisateur place les obstacles (murs, bâtiments) sur la carte avec leur altitude.
+2. Les points de référence (clous et cibles) sont positionnés avec leurs coordonnées 3D.
+3. La station est placée et l'utilisateur renseigne la hauteur d'instrument.
+4. À chaque modification, l'algorithme recalcule la visibilité de toutes les références.
+5. L'affichage indique pour chaque référence :
+   - **Visible** ou **masquée** (et par quel obstacle) ;
+   - **Qualité** de la visée (bonne, acceptable, mauvaise) ;
+   - **Principale** ou **optionnelle** (après filtrage angulaire).
 
-Les parametres de l'algorithme sont configurables dans les preferences de l'outil :
+Les paramètres de l'algorithme sont configurables dans les préférences de l'outil :
 
-| Parametre | Description | Valeur type |
+| Paramètre | Description | Valeur type |
 |-----------|-------------|-------------|
 | Hauteur d'instrument | Hauteur de la lunette au-dessus du sol | 1.60 m |
 | Hauteur de prisme | Hauteur du prisme au-dessus du clou | 0.10 m |
-| Angle d'incidence max | Angle au-dela duquel la cible est jugee mauvaise | 65 deg |
-| Separation angulaire min | Ecart minimum entre deux visees | 20 deg |
-| Angle de plongee min | Seuil pour la regle de plongee raide | 0 deg (desactive) |
+| Angle d'incidence max | Angle au-delà duquel la cible est jugée mauvaise | 65 deg |
+| Séparation angulaire min | Écart minimum entre deux visées | 20 deg |
+| Angle de plongée min | Seuil pour la règle de plongée raide | 0 deg (désactivé) |
 
-## Interpretation des resultats
+## Interprétation des résultats
 
 <AccordionGroup>
-  <Accordion title="Reference visible, qualite bonne">
-    La ligne de visee est degagee et l'angle d'observation est favorable. Cette reference sera pleinement exploitee dans le calcul de resection.
+  <Accordion title="Référence visible, qualité bonne">
+    La ligne de visée est dégagée et l'angle d'observation est favorable. Cette référence sera pleinement exploitée dans le calcul de résection.
   </Accordion>
-  <Accordion title="Reference visible, qualite acceptable">
-    La ligne de visee est degagee mais l'angle d'incidence est eleve. La mesure sera possible mais avec une precision reduite. Si d'autres references de meilleure qualite sont disponibles, privilegiez-les.
+  <Accordion title="Référence visible, qualité acceptable">
+    La ligne de visée est dégagée mais l'angle d'incidence est élevé. La mesure sera possible mais avec une précision réduite. Si d'autres références de meilleure qualité sont disponibles, privilégiez-les.
   </Accordion>
-  <Accordion title="Reference visible, qualite mauvaise">
-    La cible est vue sous un angle trop rasant. La mesure sera peu fiable. Cette reference est deconseille pour la resection.
+  <Accordion title="Référence visible, qualité mauvaise">
+    La cible est vue sous un angle trop rasant. La mesure sera peu fiable. Cette référence est déconseillée pour la résection.
   </Accordion>
-  <Accordion title="Reference masquee">
-    Un obstacle bloque la ligne de visee. Cette reference ne peut pas etre utilisee depuis cette position de station. Deplacez la station ou utilisez d'autres references.
+  <Accordion title="Référence masquée">
+    Un obstacle bloque la ligne de visée. Cette référence ne peut pas être utilisée depuis cette position de station. Déplacez la station ou utilisez d'autres références.
   </Accordion>
-  <Accordion title="Reference optionnelle (filtrage angulaire)">
-    Cette reference est visible mais trop proche angulairement d'une autre reference principale. Elle est conservee comme option de secours mais n'est pas comptee dans le score de qualite principal. Si la reference principale associee devient inaccessible sur le terrain, celle-ci peut prendre le relais.
+  <Accordion title="Référence optionnelle (filtrage angulaire)">
+    Cette référence est visible mais trop proche angulairement d'une autre référence principale. Elle est conservée comme option de secours mais n'est pas comptée dans le score de qualité principal. Si la référence principale associée devient inaccessible sur le terrain, celle-ci peut prendre le relais.
   </Accordion>
 </AccordionGroup>
 
 <Tip>
-  Pour optimiser la visibilite, essayez de placer la station en position sureelevee (si possible) et de repartir les references a des gisements bien espaces. Un espacement angulaire regulier (par exemple 4 references a environ 90 deg d'ecart) donne generalement les meilleurs resultats en termes de visibilite et de GDOP.
+  Pour optimiser la visibilité, essayez de placer la station en position surélevée (si possible) et de répartir les références à des gisements bien espacés. Un espacement angulaire régulier (par exemple 4 références à environ 90 deg d'écart) donne généralement les meilleurs résultats en termes de visibilité et de GDOP.
 </Tip>
 
 ## Voir aussi
 
 <CardGroup cols={2}>
-  <Card title="Resection 3D" icon="location-crosshairs" href="/fr/outils/resection-3d">
+  <Card title="Résection 3D" icon="location-crosshairs" href="/fr/outils/resection-3d">
     L'outil qui utilise cet algorithme
   </Card>
-  <Card title="GDOP et score de qualite" icon="chart-line" href="/fr/formules/gdop-qualite">
-    Le score de qualite geometrique, calcule apres le filtrage de visibilite
+  <Card title="GDOP et score de qualité" icon="chart-line" href="/fr/formules/gdop-qualite">
+    Le score de qualité géométrique, calculé après le filtrage de visibilité
   </Card>
 </CardGroup>
