@@ -4,11 +4,15 @@ description: "Entrée : .csv / .txt  -  Sortie : .pdf"
 icon: "clipboard-check"
 ---
 
-## Résumé
+# Résumé
 
 > Génère une fiche de contrôle PDF à partir de points projet (ID, X, Y, Z) et de points implantés (ID_STK, X, Y, Z).
 
-## Principe
+<Frame>
+  ![Image](/images/image-11.png)
+</Frame>
+
+# Principe
 
 L’outil prend en entrée une liste de points au format CSV ou TXT contenant les coordonnées (X, Y, Z).
 
@@ -23,9 +27,9 @@ Des notes textuelles et des photos peuvent être ajoutées via l’interface. À
   Pour que l’aperçu cartographique fonctionne, les coordonnées doivent être exprimées dans un système projeté (Lambert-93, UTM, etc.).  Les points en système local non géoréférencé ne peuvent pas être affichés sur la carte.
 </Tip>
 
-## Étapes d'utilisation
+# Étapes d'utilisation
 
-### Étape 1 — Renseigner les informations du projet
+## Étape 1 — Renseigner les informations du projet
 
 Lorsque vous ouvrez l’outil, commencez par renseigner les informations du projet : client, chantier, opérateur, référence et date : Ces informations apparaîtront dans l’en-tête du PDF généré.
 
@@ -39,7 +43,7 @@ Lorsque vous ouvrez l’outil, commencez par renseigner les informations du proj
 
 ---
 
-### Étape 2 — Ajout des points
+## Étape 2 — Ajout des points
 
 Vous pouvez ensuite ajouter vos points de deux manières :
 
@@ -54,7 +58,7 @@ Lors de l’import, l’outil détecte automatiquement les en têtes, sinon un o
 
 ---
 
-### Étape 3 — Assigner les points
+## Étape 3 — Assigner les points
 
 <Frame>
   ![Image](/images/image-7.png)
@@ -93,7 +97,7 @@ _Une bonne assignation des points est importante pour permettre leur appairage c
 
 ---
 
-### Étape 4 — Ajouter des notes ou des photos (optionnel)
+## Étape 4 — Ajouter des notes ou des photos (optionnel)
 
 \
 Chaque point peut être complété avec une note technique et une photo\
@@ -106,9 +110,9 @@ Voir [**Photos de points**](https://docs.topo.ninja/fr/fonctionnalites/photos-po
 
 ---
 
-### Étape 5 — Appairer les points
+## Étape 5 — Appairer les points
 
-_Cette étape consiste à associer chaque_ **_point projet_**\_ avec son **__point implanté afin de calculer ses deltas__**.\
+_Cette étape consiste à associer chaque_ **_point projet_**\_ avec son ****point implanté afin de calculer ses deltas****.\
 Deux méthodes sont disponibles :\_
 
 **→ Appairage par nom :**
@@ -125,7 +129,7 @@ Si les points n’ont pas été renommés correctement, l’outil peut recherche
 
 ---
 
-### Étape 6 — Générer la fiche PDF
+## Étape 6 — Générer la fiche PDF
 
 Une fois les points appairés, cliquez sur **Générer le PDF**.
 
@@ -141,9 +145,9 @@ Il contient :
 
 ---
 
-## Détails techniques
+# Détails techniques
 
-### Champs du formulaire projet
+## Champs du formulaire projet
 
 | Champ     | Description                                |
 | --------- | ------------------------------------------ |
@@ -153,15 +157,15 @@ Il contient :
 | Référence | Numéro de dossier ou de commande           |
 | Date      | Date du relevé                             |
 
-### Format CSV attendu
+## Format CSV attendu
 
 Le format minimal est `Nom,X,Y,Z`. La colonne Z est optionnelle. Les en-têtes reconnus sont détaillés dans [Import/export CSV](/fr/fonctionnalites/import-export-csv).
 
-### Photos
+## Photos
 
 Les photos sont compressées côté client (max 1 Mo, 1024 px côté le plus long) et stockées en Base64 dans le navigateur. Formats acceptés : JPG, PNG, WebP.
 
-### Aperçu cartographique
+## Aperçu cartographique
 
 <Warning>
   L'aperçu cartographique nécessite des coordonnées dans un système projeté reconnu (Lambert 93, UTM, etc.). Les coordonnées en système local sans géoréférencement ne s'affichent pas sur la carte.
