@@ -31,7 +31,7 @@ _Des notes textuelles et des photos peuvent être ajoutées via l’interface._
 1. l’en-tête du projet
 2. le tableau des axes et des points implantés
 3. les déports calculés
-   - _Distance Orthogonale :  l’écart perpendiculaire à l’axe_ 
+   - _Distance Orthogonale :  l’écart perpendiculaire à l’axe_
    - _Abcisse curviligne : la projection du point sur l’axe_
    - _Le calcul des distances orthogonales est détaillé dans_  [Distances orthogonales](/fr/formules/distances-orthogonales).
 4. les notes et photos associées
@@ -40,6 +40,8 @@ _Des notes textuelles et des photos peuvent être ajoutées via l’interface._
 <Check>
   Pour que l’aperçu cartographique fonctionne, les coordonnées doivent être exprimées dans un système **projeté** (Lambert-93, UTM, etc.). Les points en système local non géoréférencé ne peuvent pas être affichés sur la carte.
 </Check>
+
+---
 
 # Étapes d'utilisation
 
@@ -68,6 +70,10 @@ Sinon un outil dédié vous permettra de les assigner.
 
 Voir [Import / export CSV ](https://docs.topo.ninja/fr/fonctionnalites/import-export-csv)pour les formats acceptés.
 
+<Frame>
+  ![Image](/images/image-12.png)
+</Frame>
+
 ---
 
 ## Étape 3 — Assigner les points / Assignateur
@@ -90,7 +96,7 @@ _STKD  STKD  STKED  IMP  IMP_
 - d’assigner manuellement chaque point comme **point d’axe** ou **point implanté**
 - Drag and drop + outils de sélection avancés (ctrl + click ou shift + click).
 
-**Assignation automatique :** 
+**Assignation automatique :**
 
 Une fonction d’assignation automatique est également disponible. Elle trie les points en fonction de préfixes ou suffixes d’implantation.
 
@@ -99,6 +105,10 @@ Par défaut les règles suivantes sont utilisées :
 ```text
 stkd  stked  imp  _stkd  IMP_
 ```
+
+<Frame>
+  ![Image](/images/image-14.png)
+</Frame>
 
 <Check>
   Avec le **plan Pro**, il est possible d’ajouter des règles personnalisées.
@@ -118,6 +128,10 @@ Deux méthodes sont disponibles :
 2. **Tous les axes d’abord :**
    - Créer tous les axes du projet, puis assigner les points implantés ensuite.
 
+<Frame>
+  ![Image](/images/image-15.png)
+</Frame>
+
 _Les axes sont créés dans l’interface graphique en cliquant sur deux points d’axe._
 
 **Chaque axe apparaît :**
@@ -126,6 +140,14 @@ _Les axes sont créés dans l’interface graphique en cliquant sur deux points 
 - dans le tableau récapitulatif à gauche de votre écran
 
 Chaque axe possède **une couleur différente** pour faciliter la lecture.
+
+<Frame>
+  ![Image](/images/image-16.png)
+</Frame>
+
+<Tip>
+  Il est possible d'uploader une orthophotographie géoréférencée dans le projet pour faciliter votre tracé.
+</Tip>
 
 ---
 
@@ -142,6 +164,29 @@ Ces valeurs apparaissent dans le tableau de l’axe.
 
 -→ Cela permet de visualiser rapidement les écarts d’implantation.
 
+<Frame>
+  ![Image](/images/image-17.png)
+</Frame>
+
+### Assignation automatique
+
+Un outil d’assignation automatique est disponible.
+
+Il permet d’associer les points implantés aux axes en fonction de deux critères :
+
+- **Seuil orthogonal (cm)**\
+  distance maximale autorisée entre un point implanté et l’axe.
+- **Distance max. aux bornes de l’axe (m)**\
+  permet d’ignorer les points trop éloignés des extrémités de l’axe.
+
+Seuls les points respectant ces critères sont automatiquement assignés à l’axe correspondant.
+
+_Permet d’assigner rapidement un grand nombre de points lorsque les implantations sont proches des axes._
+
+<Frame>
+  ![Image](/images/image-18.png)
+</Frame>
+
 ---
 
 ## Étape 6 — Ajouter des notes ou des photos (optionnel)
@@ -151,6 +196,10 @@ Chaque point peut être complété avec une note technique et une photo.
 Ces éléments seront intégrés dans le PDF à côté des coordonnées du point correspondant.
 
 Voir [**Photos de points**](https://docs.topo.ninja/fr/fonctionnalites/photos-points) pour les spécifications.
+
+<Frame>
+  ![Image](/images/image-19.png)
+</Frame>
 
 ---
 
@@ -168,6 +217,18 @@ Il contient :
 - les déports orthogonaux calculés
 - les notes et photos
 - un aperçu cartographique
+
+<Frame>
+  ![Image](/images/image-20.png)
+</Frame>
+
+<Frame>
+  ![Image](/images/image-21.png)
+</Frame>
+
+<Frame>
+  ![Image](/images/image-22.png)
+</Frame>
 
 ---
 
