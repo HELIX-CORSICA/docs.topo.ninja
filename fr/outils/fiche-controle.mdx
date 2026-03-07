@@ -1,44 +1,157 @@
 ---
 title: "Fiche de contrôle"
-description: "Génère un PDF de contrôle à partir de points X/Y/Z avec notes et photos optionnelles."
+description: "Entrée : .csv / .txt  -  Sortie : .pdf"
 icon: "clipboard-check"
 ---
 
 ## Résumé
 
-Crée une fiche de contrôle PDF à partir de points topographiques (X, Y, Z) avec notes et photos optionnelles. Les points sont saisis manuellement ou importés par CSV, puis exportés en PDF formaté.
+> Génère une fiche de contrôle PDF à partir de points projet (ID, X, Y, Z) et de points implantés (ID_STK, X, Y, Z).
 
 ## Principe
 
-L'outil prend en entrée une liste de points avec leurs coordonnées (X, Y, Z), enrichis éventuellement de notes textuelles et de photos. Il génère un document PDF contenant l'en-tête du projet, le tableau des points, les notes, les photos et un aperçu cartographique.
+L’outil prend en entrée une liste de points au format CSV ou TXT contenant les coordonnées (X, Y, Z).
 
-Les coordonnées doivent être dans un système projeté (Lambert 93, UTM, etc.) pour que l'aperçu cartographique fonctionne. Les points en système local sans géoréférencement ne s'affichent pas sur la carte.
+Des notes textuelles et des photos peuvent être ajoutées via l’interface. À partir de ces informations, l’outil génère automatiquement un document PDF contenant :
+
+1. l’en-tête du projet
+2. le tableau des points et leurs coordonnées
+3. les notes et photos associées
+4. un aperçu cartographique des points
+
+<Tip>
+  Pour que l’aperçu cartographique fonctionne, les coordonnées doivent être exprimées dans un système projeté (Lambert-93, UTM, etc.).  Les points en système local non géoréférencé ne peuvent pas être affichés sur la carte.
+</Tip>
 
 ## Étapes d'utilisation
 
-**Étape 1 -- Remplir les informations du projet**
-Compléter le formulaire projet : client, chantier, opérateur, référence, date. Ces champs apparaissent dans l'en-tête du PDF. Tous sont optionnels.
+### Étape 1 — Renseigner les informations du projet
 
-**Étape 2 -- Ajouter les points**
-Saisir les points manuellement (nom, X, Y, Z) ou importer un fichier CSV. L'import détecte automatiquement les colonnes. Voir [Import/export CSV](/fr/fonctionnalites/import-export-csv) pour les formats acceptés.
+Lorsque vous ouvrez l’outil, commencez par renseigner les informations du projet : client, chantier, opérateur, référence et date : Ces informations apparaîtront dans l’en-tête du PDF généré.
 
-**Étape 3 -- Enrichir les points (optionnel)**
-Ajouter des notes ou des photos à chaque point. Notes et photos sont incluses dans le PDF à côté des coordonnées du point correspondant. Voir [Photos de points](/fr/fonctionnalites/photos-points) pour les spécifications.
+<Frame>
+  ![Image](/images/image-2.png)
+</Frame>
 
-**Étape 4 -- Générer le PDF**
-Le PDF est créé dans le navigateur et téléchargé automatiquement. Il contient : en-tête projet, tableau des points avec coordonnées, notes, photos et aperçu cartographique.
+<Tip>
+  Le nom du client et le nom du chantier servent à créer automatiquement les dossiers dans Google Drive ou Dropbox.
+</Tip>
+
+---
+
+### Étape 2 — Ajout des points
+
+Vous pouvez ensuite ajouter vos points de deux manières :
+
+- CSV combiné : Vos points projets + points implantés dans le même fichier.
+- CSV séparés : Vos points projet d'un côté, et vos points implantés de l'autre.
+
+<Frame>
+  ![Image](/images/image-3.png)
+</Frame>
+
+Lors de l’import, l’outil détecte automatiquement les en têtes, sinon un outil dédié vous permettra de les assigner. Voir **Import / export CSV** pour les formats acceptés.
+
+---
+
+### Étape 3 — Assigner les points
+
+<Frame>
+  ![Image](/images/image-7.png)
+</Frame>
+
+L’assignateur permet de distinguer :
+
+- les **points projet**
+- les **points implantés**
+
+_Dans la plupart des workflows topo, les points implantés possèdent un suffixe ou un préfixe, par exemple :_
+
+```text
+_STKD STKD STKED IMP IMP_
+```
+
+**L’assignateur permet :**
+
+- de filtrer par **nom / ID**
+- de filtrer par **altitude** (par exemple si les points projet sont à Z = 0) ou par position.
+- d’assigner manuellement chaque point comme **point projet** ou **point implanté**
+  - _Drag and drop + outils de séléction avancés ( crtl + click ou shift + click )_
+
+→ Une fonction d’**assignation automatique** est également disponible : \
+Elle trie les points en fonction de préfixes ou suffixes d’implantation.
+
+Par défaut les règles suivantes sont utilisées :
+
+```text
+stkd stked imp _stkd IMP_
+```
+
+Avec le **plan Pro**, il est possible d’ajouter des règles personnalisées.
+
+_Une bonne assignation des points est importante pour permettre leur appairage correct par la suite._
+
+---
+
+### Étape 4 — Ajouter des notes ou des photos (optionnel)
+
+\
+Chaque point peut être complété avec une note technique et une photo\
+Ces éléments seront intégrés dans le PDF à côté des coordonnées du point correspondant.\
+Voir [**Photos de points**](https://docs.topo.ninja/fr/fonctionnalites/photos-points) pour les spécifications.
+
+<Frame>
+  ![Image](/images/image-8.png)
+</Frame>
+
+---
+
+### Étape 5 — Appairer les points
+
+_Cette étape consiste à associer chaque_ **_point projet_**_ avec son _**_point implanté afin de calculer ses deltas_**_.\
+Deux méthodes sont disponibles :_
+
+**→ Appairage par nom :**
+
+Si la nomenclature est cohérente (ex : `P12` et `P12_STKD`), l’outil peut associer automatiquement les points en fonction de leur nom.
+
+**→ Appairage par distance :**
+
+Si les points n’ont pas été renommés correctement, l’outil peut rechercher le point implanté le plus proche d’un point projet. Dans ce cas, on considère généralement qu’un point implanté se trouve à **moins de quelques centimètres** du point projet.
+
+<Frame>
+  ![Image](/images/image-9.png)
+</Frame>
+
+---
+
+### Étape 6 — Générer la fiche PDF
+
+Une fois les points appairés, cliquez sur **Générer le PDF**.
+
+Le document est créé directement dans le navigateur puis téléchargé automatiquement.
+
+Il contient :
+
+- l’en-tête du projet
+- le tableau des points projet et implantés
+- les écarts calculés
+- les notes et photos
+- un aperçu cartographique
+
+---
 
 ## Détails techniques
 
 ### Champs du formulaire projet
 
-| Champ | Description |
-|-------|-------------|
-| Client | Nom du maître d'ouvrage ou donneur d'ordre |
-| Chantier | Nom ou adresse du chantier |
-| Opérateur | Nom du topographe |
-| Référence | Numéro de dossier ou de commande |
-| Date | Date du relevé |
+| Champ     | Description                                |
+| --------- | ------------------------------------------ |
+| Client    | Nom du maître d'ouvrage ou donneur d'ordre |
+| Chantier  | Nom ou adresse du chantier                 |
+| Opérateur | Nom du topographe                          |
+| Référence | Numéro de dossier ou de commande           |
+| Date      | Date du relevé                             |
 
 ### Format CSV attendu
 
@@ -51,5 +164,5 @@ Les photos sont compressées côté client (max 1 Mo, 1024 px côté le plus lon
 ### Aperçu cartographique
 
 <Warning>
-L'aperçu cartographique nécessite des coordonnées dans un système projeté reconnu (Lambert 93, UTM, etc.). Les coordonnées en système local sans géoréférencement ne s'affichent pas sur la carte.
+  L'aperçu cartographique nécessite des coordonnées dans un système projeté reconnu (Lambert 93, UTM, etc.). Les coordonnées en système local sans géoréférencement ne s'affichent pas sur la carte.
 </Warning>
