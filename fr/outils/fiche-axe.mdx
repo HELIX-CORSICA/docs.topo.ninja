@@ -1,6 +1,8 @@
 ---
 title: "Fiche de contrôle par axe"
-description: "Génère des fiches de contrôle organisées par axes de référence avec calcul automatique des distances orthogonales."
+description: "Entrée : .csv / .txt - Sortie : .pdf
+
+"
 icon: "ruler-combined"
 ---
 
@@ -16,17 +18,13 @@ Le calcul des distances orthogonales est détaillé dans [Distances orthogonales
 
 ## Étapes d'utilisation
 
-**Étape 1 -- Définir les axes de référence**
-Un axe est défini par deux points (départ et arrivée). Renseigner les coordonnées des extrémités. Plusieurs axes peuvent être définis dans un même projet.
+**Étape 1 -- Définir les axes de référence** Un axe est défini par deux points (départ et arrivée). Renseigner les coordonnées des extrémités. Plusieurs axes peuvent être définis dans un même projet.
 
-**Étape 2 -- Ajouter les points**
-Saisir les points manuellement ou les importer par CSV. Chaque point est défini par son nom et ses coordonnées X, Y, Z.
+**Étape 2 -- Ajouter les points** Saisir les points manuellement ou les importer par CSV. Chaque point est défini par son nom et ses coordonnées X, Y, Z.
 
-**Étape 3 -- Assigner les points aux axes**
-Associer chaque point à l'axe par rapport auquel les distances doivent être calculées. Un point ne peut être assigné qu'à un seul axe. Pour contrôler un point par rapport à plusieurs axes, le dupliquer.
+**Étape 3 -- Assigner les points aux axes** Associer chaque point à l'axe par rapport auquel les distances doivent être calculées. Un point ne peut être assigné qu'à un seul axe. Pour contrôler un point par rapport à plusieurs axes, le dupliquer.
 
-**Étape 4 -- Générer le PDF**
-Le PDF est organisé par axe. Pour chaque axe : définition (coordonnées des deux points), tableau des points assignés avec distances calculées, informations du projet.
+**Étape 4 -- Générer le PDF** Le PDF est organisé par axe. Pour chaque axe : définition (coordonnées des deux points), tableau des points assignés avec distances calculées, informations du projet.
 
 ## Détails techniques
 
@@ -34,20 +32,20 @@ Le PDF est organisé par axe. Pour chaque axe : définition (coordonnées des de
 
 Le sens de l'axe (du point de départ vers le point d'arrivée) détermine le signe de la distance orthogonale :
 
-| Position du point | Distance orthogonale |
-|-------------------|---------------------|
-| À droite de l'axe (dans le sens départ → arrivée) | Positive (+) |
-| À gauche de l'axe | Négative (-) |
-| Sur l'axe | Zéro (0) |
+| Position du point                                 | Distance orthogonale |
+| ------------------------------------------------- | -------------------- |
+| À droite de l'axe (dans le sens départ → arrivée) | Positive (+)         |
+| À gauche de l'axe                                 | Négative (-)         |
+| Sur l'axe                                         | Zéro (0)             |
 
 ### Colonnes de l'éditeur
 
-| Colonne | Type | Description |
-|---------|------|-------------|
-| Nom | Texte | Identifiant du point |
-| X, Y, Z | Texte | Coordonnées du point |
+| Colonne                   | Type          | Description                                       |
+| ------------------------- | ------------- | ------------------------------------------------- |
+| Nom                       | Texte         | Identifiant du point                              |
+| X, Y, Z                   | Texte         | Coordonnées du point                              |
 | Distance le long de l'axe | Lecture seule | Position projetée sur l'axe (abscisse curviligne) |
-| Distance orthogonale | Lecture seule | Écart perpendiculaire à l'axe (avec signe) |
+| Distance orthogonale      | Lecture seule | Écart perpendiculaire à l'axe (avec signe)        |
 
 Les colonnes de distance sont calculées automatiquement à partir des coordonnées du point et de la définition de l'axe.
 
