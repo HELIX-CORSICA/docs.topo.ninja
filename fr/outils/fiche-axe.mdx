@@ -1,31 +1,177 @@
 ---
 title: "Fiche de contrôle : Point vs Axe"
-description: "Entrée : .csv / .txt - Sortie : .pdf
-"
+description: "Entrée : .csv / .txt - Sortie : .pdf "
 icon: "ruler-combined"
 ---
 
-## Résumé
+# Résumé
 
-Crée une fiche de contrôle organisée par axes de référence. Chaque axe est défini par deux points. L'outil calcule automatiquement la distance orthogonale et la distance le long de l'axe pour chaque point assigné.
+> Génère une fiche de contrôle PDF à partir de **points d’axe** (ID, X, Y, Z) et de **points implantés associés à ces axes**.
+>
+> Les axes sont définis graphiquement à partir de deux points d’axe.\
+> Les points implantés sont ensuite assignés aux axes afin de calculer les **déports orthogonaux**.
 
-## Principe
+<Frame>
+  ![Image](/images/image-10.png)
+</Frame>
 
-L'outil prend en entrée des axes de référence (définis par deux points chacun) et des points topographiques (X, Y, Z). Chaque point est assigné à un axe. L'outil calcule alors deux distances : la projection du point sur l'axe (abscisse curviligne) et l'écart perpendiculaire à l'axe (distance orthogonale, avec signe). Le PDF généré est organisé par axe, avec les distances calculées pour chaque point.
+# Principe
 
-Le calcul des distances orthogonales est détaillé dans [Distances orthogonales](/fr/formules/distances-orthogonales).
+L’outil prend en entrée une liste de points au format CSV ou TXT contenant les coordonnées (X, Y, Z).
 
-## Étapes d'utilisation
+Deux types de points sont utilisés :
 
-**Étape 1 -- Définir les axes de référence** Un axe est défini par deux points (départ et arrivée). Renseigner les coordonnées des extrémités. Plusieurs axes peuvent être définis dans un même projet.
+- **points d’axe** : servent à définir la géométrie des axes ( tracés manuels )
+- **points implantés** : points implantés sur le terrain
 
-**Étape 2 -- Ajouter les points** Saisir les points manuellement ou les importer par CSV. Chaque point est défini par son nom et ses coordonnées X, Y, Z.
+_Des notes textuelles et des photos peuvent être ajoutées via l’interface._
 
-**Étape 3 -- Assigner les points aux axes** Associer chaque point à l'axe par rapport auquel les distances doivent être calculées. Un point ne peut être assigné qu'à un seul axe. Pour contrôler un point par rapport à plusieurs axes, le dupliquer.
+À partir de ces informations, l’outil génère automatiquement un document PDF contenant :
 
-**Étape 4 -- Générer le PDF** Le PDF est organisé par axe. Pour chaque axe : définition (coordonnées des deux points), tableau des points assignés avec distances calculées, informations du projet.
+1. l’en-tête du projet
+2. le tableau des axes et des points implantés
+3. les déports calculés
+   - _Distance Orthogonale :  l’écart perpendiculaire à l’axe_ 
+   - _Abcisse curviligne : la projection du point sur l’axe_
+   - _Le calcul des distances orthogonales est détaillé dans_  [Distances orthogonales](/fr/formules/distances-orthogonales).
+4. les notes et photos associées
+5. un aperçu cartographique
 
-## Détails techniques
+<Check>
+  Pour que l’aperçu cartographique fonctionne, les coordonnées doivent être exprimées dans un système **projeté** (Lambert-93, UTM, etc.). Les points en système local non géoréférencé ne peuvent pas être affichés sur la carte.
+</Check>
+
+# Étapes d'utilisation
+
+## Étape 1 — Renseigner les informations du projet
+
+Lorsque vous ouvrez l’outil, commencez par renseigner les informations du projet : client, chantier, opérateur, référence et date. Ces informations apparaîtront dans l’en-tête du PDF généré.
+
+<Info>
+  Le nom du client et le nom du chantier servent à créer automatiquement les dossiers dans Google Drive ou Dropbox.
+</Info>
+
+---
+
+## Étape 2 — Ajout des points
+
+_Vous pouvez ensuite ajouter vos points de deux manières :_
+
+**CSV combiné :**\
+Vos points d’axe + points implantés dans le même fichier.
+
+**CSV séparés :**\
+Vos points d’axe d’un côté, et vos points implantés de l’autre.
+
+Lors de l’import, l’outil détecte automatiquement les en-têtes.\
+Sinon un outil dédié vous permettra de les assigner.
+
+Voir [Import / export CSV ](https://docs.topo.ninja/fr/fonctionnalites/import-export-csv)pour les formats acceptés.
+
+---
+
+## Étape 3 — Assigner les points / Assignateur
+
+L’assignateur permet de distinguer :
+
+- les **points d’axe**
+- les **points implantés**
+
+Dans la plupart des workflows topo, les points implantés possèdent un suffixe ou un préfixe, par exemple :
+
+```text
+_STKD  STKD  STKED  IMP  IMP_
+```
+
+**L’assignateur permet :**
+
+- de filtrer par nom / ID
+- de filtrer par altitude (par exemple si les points d’axe sont à Z = 0) ou par position
+- d’assigner manuellement chaque point comme **point d’axe** ou **point implanté**
+- Drag and drop + outils de sélection avancés (ctrl + click ou shift + click).
+
+**Assignation automatique :** 
+
+Une fonction d’assignation automatique est également disponible. Elle trie les points en fonction de préfixes ou suffixes d’implantation.
+
+Par défaut les règles suivantes sont utilisées :
+
+```text
+stkd  stked  imp  _stkd  IMP_
+```
+
+<Check>
+  Avec le **plan Pro**, il est possible d’ajouter des règles personnalisées.
+
+  Une bonne assignation des points est importante pour pouvoir créer les axes correctement.
+</Check>
+
+---
+
+## Étape 4 — Création des axes
+
+\
+Deux méthodes sont disponibles :
+
+1. **Axe → points → axe :**
+   - Créer un axe puis assigner immédiatement ses points implantés.
+2. **Tous les axes d’abord :**
+   - Créer tous les axes du projet, puis assigner les points implantés ensuite.
+
+_Les axes sont créés dans l’interface graphique en cliquant sur deux points d’axe._
+
+**Chaque axe apparaît :**
+
+- sur la carte
+- dans le tableau récapitulatif à gauche de votre écran
+
+Chaque axe possède **une couleur différente** pour faciliter la lecture.
+
+---
+
+## Étape 5 — Assigner les points aux axes
+
+Une fois les axes créés, les points implantés peuvent être assignés aux axes.
+
+Lorsqu’un point est associé à un axe, l’outil calcule automatiquement :
+
+- la distance le long de l’axe
+- le **déport orthogonal**
+
+Ces valeurs apparaissent dans le tableau de l’axe.
+
+-→ Cela permet de visualiser rapidement les écarts d’implantation.
+
+---
+
+## Étape 6 — Ajouter des notes ou des photos (optionnel)
+
+Chaque point peut être complété avec une note technique et une photo.
+
+Ces éléments seront intégrés dans le PDF à côté des coordonnées du point correspondant.
+
+Voir [**Photos de points**](https://docs.topo.ninja/fr/fonctionnalites/photos-points) pour les spécifications.
+
+---
+
+## Étape 7 — Générer la fiche PDF
+
+Une fois les axes et les points assignés, cliquez sur **Générer le PDF**.
+
+Le document est créé directement dans le navigateur puis téléchargé automatiquement.
+
+Il contient :
+
+- l’en-tête du projet
+- les axes définis
+- les points implantés associés
+- les déports orthogonaux calculés
+- les notes et photos
+- un aperçu cartographique
+
+---
+
+# Détails techniques
 
 ### Convention de signe
 
